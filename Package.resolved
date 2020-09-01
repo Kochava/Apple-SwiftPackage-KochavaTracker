@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "KochavaCore",
+        "repositoryURL": "https://github.com/Kochava/Apple-SwiftPackage-KochavaCore",
+        "state": {
+          "branch": null,
+          "revision": "8c9a1ffe2683473268f61efe00d8f39fb48a05df",
+          "version": "4.0.0-alpha.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
