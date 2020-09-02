@@ -20,7 +20,7 @@ The Kochava SDK is a lightweight and easy to integrate SDK written in Objective-
 
 KochavaTracker is a Swift package.  To install it, simply add this package as a dependency.
 
-In Xcode, see File - Swift Packages - Add Package Dependency ..., and use the URL for this repository.
+In Xcode, see File > Swift Packages > Add Package Dependency ... > and enter the URL for this package repository.
 
 ## Author
 

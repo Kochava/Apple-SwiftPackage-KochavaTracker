@@ -148,7 +148,7 @@
  
  @param storageIdString An optional storage identifier.
  
- @discussion The storage identifier should be left unset unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor + tracker.
+ @discussion The storage identifier should be left unset unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
  */
 + (nonnull instancetype)trackerWithStorageIdString:(nullable NSString *)storageIdString NS_SWIFT_NAME(init(storageIdString:));
     
