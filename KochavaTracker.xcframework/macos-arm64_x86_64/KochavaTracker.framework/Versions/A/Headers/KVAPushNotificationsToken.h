@@ -108,6 +108,17 @@
 
 
 /*!
+ @method + remove
+ 
+ @brief A method which removes any assocation for this device with any previously registered device token.
+ 
+ @discussion This is equivalent to calling method removeWithData and passing nil.
+ */
++ (void)remove NS_SWIFT_NAME(remove());
+
+
+
+/*!
  @method + removeWithData:
  
  @brief A method which removes any assocation for this device with any previously registered device token.

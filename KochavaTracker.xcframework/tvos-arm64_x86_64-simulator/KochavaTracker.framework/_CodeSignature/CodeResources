@@ -42,7 +42,7 @@
 		</data>
 		<key>Headers/KVAPushNotificationsToken.h</key>
 		<data>
-		mZg2qZRwcpSOnIoAtvBuDcwm/zo=
+		uTh3Wz6jtqpK5pWVScBsazkecOc=
 		</data>
 		<key>Headers/KVATracker.h</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		TH6vPQi3Vz9uVcpVa7mDubar4pY=
+		9T37ae1KdBZAFBkRvmZSlOiXbI8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -170,11 +170,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mZg2qZRwcpSOnIoAtvBuDcwm/zo=
+			uTh3Wz6jtqpK5pWVScBsazkecOc=
 			</data>
 			<key>hash2</key>
 			<data>
-			NlVJhnl/C0Cf633ObNNpfM9X6zX6Iu82BnWdo+fQQ6Y=
+			GUtO2VlNCjXVH6sbMr0gkspk/fOQ2k1Pwx+4sAm3B/0=
 			</data>
 		</dict>
 		<key>Headers/KVATracker.h</key>
