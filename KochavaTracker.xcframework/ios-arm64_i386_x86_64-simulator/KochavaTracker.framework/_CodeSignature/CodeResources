@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/KVAAppTrackingTransparency.h</key>
 		<data>
-		EqHsOYmSQNo9LEgSxR4DBNWCkZo=
+		xkX5EA3sheynAGawPuqaVmWSDbc=
 		</data>
 		<key>Headers/KVAAttribution.h</key>
 		<data>
@@ -15,6 +15,10 @@
 		<key>Headers/KVAAttributionResult.h</key>
 		<data>
 		34zEzYCEeQC8Iykwao1h2QgiwoM=
+		</data>
+		<key>Headers/KVACustomIdentifiers.h</key>
+		<data>
+		y45obnr70nfyWQIpRppQJsoqRPk=
 		</data>
 		<key>Headers/KVADeeplink.h</key>
 		<data>
@@ -46,7 +50,7 @@
 		</data>
 		<key>Headers/KVATracker.h</key>
 		<data>
-		67Na1plbEI0tX71vYSVt6JKuR1E=
+		Y3Ol4Fe7J3z7ZkRcNPxEetysxnE=
 		</data>
 		<key>Headers/KVATrackerProduct.h</key>
 		<data>
@@ -54,11 +58,11 @@
 		</data>
 		<key>Headers/KochavaTracker.h</key>
 		<data>
-		AR4lM5zwXH8XaPBD3ZPajGBplfE=
+		ybsJJqnnebZObpuFNz91lO9bMXk=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		zwL0syLvDVLb2Wku5HbZCxazzLc=
+		sf5E1HAP/PuBlBd3Nc53Pirr/WE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -71,11 +75,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			EqHsOYmSQNo9LEgSxR4DBNWCkZo=
+			xkX5EA3sheynAGawPuqaVmWSDbc=
 			</data>
 			<key>hash2</key>
 			<data>
-			o84AlZRMSmK52NEM7BzkFsK3L+sxTq7jFH/pnoOIpOs=
+			WIeHTExCXrdP9hQ0+SB8yi4KkXbQwIe+QNH4G3Lfg1k=
 			</data>
 		</dict>
 		<key>Headers/KVAAttribution.h</key>
@@ -98,6 +102,17 @@
 			<key>hash2</key>
 			<data>
 			SQcyH9Fcxri8iBuGO9KyI1IwIRFlF7j9jTkPK+0XreI=
+			</data>
+		</dict>
+		<key>Headers/KVACustomIdentifiers.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			y45obnr70nfyWQIpRppQJsoqRPk=
+			</data>
+			<key>hash2</key>
+			<data>
+			ndqvKul90dCOWOIgzd0p5/BCKy++hPaHM43I25egtKg=
 			</data>
 		</dict>
 		<key>Headers/KVADeeplink.h</key>
@@ -181,11 +196,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			67Na1plbEI0tX71vYSVt6JKuR1E=
+			Y3Ol4Fe7J3z7ZkRcNPxEetysxnE=
 			</data>
 			<key>hash2</key>
 			<data>
-			WhQ+Z+J8pkSzV5dmiFuK5veh6x17zGHVS93lJMT8/Qk=
+			GX1cGpTXwSJj0slOK/b3QJdcMXkFLompDZJeHMeMh50=
 			</data>
 		</dict>
 		<key>Headers/KVATrackerProduct.h</key>
@@ -203,11 +218,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			AR4lM5zwXH8XaPBD3ZPajGBplfE=
+			ybsJJqnnebZObpuFNz91lO9bMXk=
 			</data>
 			<key>hash2</key>
 			<data>
-			KRxEscgUpcfgi+7gauW0NyNOXybaq2PnQPNc2K+gvag=
+			RlgQ5ehFxMmxAPdZnNFu5KVp48sna03kFGZ5sAKUCew=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

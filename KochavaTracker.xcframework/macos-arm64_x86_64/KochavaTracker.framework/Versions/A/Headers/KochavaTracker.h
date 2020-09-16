@@ -24,6 +24,7 @@
 #import <KochavaTracker/KVAAppTrackingTransparency.h>
 #import <KochavaTracker/KVAAttribution.h>
 #import <KochavaTracker/KVAAttributionResult.h>
+#import <KochavaTracker/KVACustomIdentifiers.h>
 #import <KochavaTracker/KVADeeplink.h>
 #import <KochavaTracker/KVADeeplinks.h>
 #import <KochavaTracker/KVAEvent+Standard.h>

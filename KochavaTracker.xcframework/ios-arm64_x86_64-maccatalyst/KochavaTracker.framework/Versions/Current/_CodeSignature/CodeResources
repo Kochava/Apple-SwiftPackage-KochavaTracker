@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		JJlIEXaX3b/6zrZdhakx2qNcHxk=
+		Avkbx983Apzm6MBqTZHS1eQF0Ac=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,7 +15,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			o84AlZRMSmK52NEM7BzkFsK3L+sxTq7jFH/pnoOIpOs=
+			WIeHTExCXrdP9hQ0+SB8yi4KkXbQwIe+QNH4G3Lfg1k=
 			</data>
 		</dict>
 		<key>Headers/KVAAttribution.h</key>
@@ -30,6 +30,13 @@
 			<key>hash2</key>
 			<data>
 			SQcyH9Fcxri8iBuGO9KyI1IwIRFlF7j9jTkPK+0XreI=
+			</data>
+		</dict>
+		<key>Headers/KVACustomIdentifiers.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ndqvKul90dCOWOIgzd0p5/BCKy++hPaHM43I25egtKg=
 			</data>
 		</dict>
 		<key>Headers/KVADeeplink.h</key>
@@ -85,7 +92,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WhQ+Z+J8pkSzV5dmiFuK5veh6x17zGHVS93lJMT8/Qk=
+			GX1cGpTXwSJj0slOK/b3QJdcMXkFLompDZJeHMeMh50=
 			</data>
 		</dict>
 		<key>Headers/KVATrackerProduct.h</key>
@@ -99,7 +106,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			KRxEscgUpcfgi+7gauW0NyNOXybaq2PnQPNc2K+gvag=
+			RlgQ5ehFxMmxAPdZnNFu5KVp48sna03kFGZ5sAKUCew=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -113,7 +120,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4lM0nLyWun2G55tJkDZyk+6rnNiVX7D0VSUnkI1Yxxs=
+			AsjeSepWekyvrwkZfFEVebX+tGf9bNzqsWbIahopkic=
 			</data>
 		</dict>
 	</dict>

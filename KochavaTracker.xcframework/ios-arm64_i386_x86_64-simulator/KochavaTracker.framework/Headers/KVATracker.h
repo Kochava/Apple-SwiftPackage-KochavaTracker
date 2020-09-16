@@ -201,6 +201,19 @@ KVATracker.shared.start(withPartnerNameString: "_YOUR_KOCHAVA_PARTNER_NAME_")
 
 
 
+/*!
+ @method - executeAdvancedInstructionWithIdentifierString:
+ 
+ @brief A method to execute an advanced instruction.
+ 
+ @param identifierString An identifier for the advanced instruction.
+ 
+ @param valueObject A value object for the advanced instruction.
+ */
+- (void)executeAdvancedInstructionWithIdentifierString:(nonnull NSString *)identifierString valueObject:(nullable id)valueObject NS_SWIFT_NAME(executeAdvancedInstruction(withIdentifierString:valueObject:));
+
+
+
 @end
 
 
@@ -346,6 +359,43 @@ KVATracker.shared.start(withPartnerNameString: "_YOUR_KOCHAVA_PARTNER_NAME_")
  @discussion Data sharing privacy laws such as GDPR require consent to be obtained before certain kinds of personal data may be calculated or gathered, kept in memory, persisted or retained in persistent storage, and/or shared with partners.  During the natural lifecycle, there are times where partners may be added and cause the consent status to fall back to an unknown state.  Later the user may again be prompted and the consent status may (or may not) again come to be known.  All of this is predicated upon whether or not consent is required, which is governed by a variety of factors such as location.
  */
 @property (strong, nonatomic, nonnull, readonly) KVAConsent *consent;
+
+
+
+@end
+
+
+
+#pragma mark - feature Custom Identifiers
+
+
+
+@class KVACustomIdentifiers;
+
+
+
+#if TARGET_OS_TV
+@protocol KVATrackerCustomIdentifiersJSExport <JSExport>
+@property (strong, nonatomic, nonnull, readonly) KVACustomIdentifiers *customIdentifiers;
+@end
+#endif
+
+
+
+#if TARGET_OS_TV
+@interface KVATracker (CustomIdentifiers_Public) <KVATrackerCustomIdentifiersJSExport>
+#else
+@interface KVATracker (CustomIdentifiers_Public)
+#endif
+
+
+
+/*!
+ @property customIdentifiers
+ 
+ @brief An instance of class KVACustomIdentifiers.
+ */
+@property (strong, nonatomic, nonnull, readonly) KVACustomIdentifiers *customIdentifiers;
 
 
 

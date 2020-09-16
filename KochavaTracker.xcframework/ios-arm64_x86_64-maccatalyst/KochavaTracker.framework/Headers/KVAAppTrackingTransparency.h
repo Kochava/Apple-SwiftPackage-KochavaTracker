@@ -41,7 +41,7 @@
  
  @author John Bushnell
  
- @copyright 2016 - 2020 Kochava, Inc.
+ @copyright 2020 Kochava, Inc.
  */
 @interface KVAAppTrackingTransparency : NSObject <KVAAsForContextObjectProtocol, KVAConfigureWithObjectProtocol, KVAFromObjectProtocol>
 
@@ -56,37 +56,31 @@
  
  @brief A time interval to wait for the request for tracking authorization before proceeding to send the install.
  
- @discussion This provides time to wait to obtain the authorization necessary to collect the IDFA.
+ @discussion Default 30.0.  Subject to server-based override.  This provides time to wait to obtain the authorization necessary to collect the IDFA.
  */
 @property (readwrite) NSTimeInterval authorizationStatusWaitTimeInterval;
 
 
 
-#pragma mark - GENERAL
+/*!
+ @property autoRequestTrackingAuthorizationBool
+ 
+ @brief A boolean which indicates if the instance should automatically request tracking authorization.
+ 
+ @discussion Default YES.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
+ */
+@property (readwrite) BOOL autoRequestTrackingAuthorizationBool;
 
 
 
 /*!
- @method - authorizationDidComplete
+ @property enabledBool
  
- @brief Notifies that a request for tracking authorization did complete.
+ @brief A boolean indicating if the instance of KVAAppTrackingTransparency is enabled.
+ 
+ @discussion Default NO.  Subject to server-based override.
  */
-- (void)authorizationDidComplete NS_SWIFT_NAME(authorizationDidComplete());
-
-
-
-#if !TARGET_OS_WATCH
-
-/*!
- @method - authorizationDidCompleteWithStatus:
- 
- @brief Notifies that a request for tracking authorization did complete.
- 
- @param authorizationStatus The provided authorization status.
- */
-- (void)authorizationDidCompleteWithStatus:(ATTrackingManagerAuthorizationStatus)authorizationStatus API_AVAILABLE(ios(14.0), macos(11.0), macCatalyst(14.0), tvos(14.0)) NS_SWIFT_NAME(authorizationDidComplete(withStatus:));
-
-#endif
+@property (readwrite) BOOL enabledBool;
 
 
 
