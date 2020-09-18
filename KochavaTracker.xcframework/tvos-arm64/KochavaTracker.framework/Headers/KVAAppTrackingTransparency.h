@@ -16,7 +16,7 @@
 
 
 
-#if !TARGET_OS_WATCH
+#if !TARGET_OS_WATCH && !TARGET_OS_MACCATALYST && !TARGET_OS_OSX
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 #endif
 
