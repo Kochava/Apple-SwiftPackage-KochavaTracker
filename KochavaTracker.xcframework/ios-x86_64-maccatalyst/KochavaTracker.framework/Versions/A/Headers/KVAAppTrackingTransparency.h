@@ -37,7 +37,7 @@
 /*!
  @class KVAAppTrackingTransparency
  
- @brief A controller for working with appTrackingTransparency.
+ @brief This class provides a high-level interface for Apple's app tracking transparency framework.
  
  @author John Bushnell
  
