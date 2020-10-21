@@ -29,7 +29,7 @@ let package = Package(
         .package(
             name: "KochavaCore",
             url: "https://github.com/Kochava/Apple-SwiftPackage-KochavaCore",
-            from: "4.1.0"
+            from: "4.1.1"
         ),
     ],
     targets:
