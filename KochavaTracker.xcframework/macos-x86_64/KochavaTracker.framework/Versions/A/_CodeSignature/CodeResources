@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		pkhxKAI/I6KIS24zWIK952omOkM=
+		EwON8OCb4/1MVEzaPctga7of/MU=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,98 +15,112 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			t9sGUD3RD0ekCDEv8eHgQb1/jSuCYWWpilJHF99442g=
+			6DYTDTSysX7F68o7K80PHge1q/u8aMJwZQ8j2dgsBTg=
 			</data>
 		</dict>
 		<key>Headers/KVAAttribution.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UpqS69ce3E9mgYPrhfHw3s76UwgCxQXwHzKL24AMu0o=
+			8yC+D7YBkcmPOwD6jsC0YwaI/UgO/mEB0aYe2Q03/qs=
 			</data>
 		</dict>
 		<key>Headers/KVAAttributionResult.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SQcyH9Fcxri8iBuGO9KyI1IwIRFlF7j9jTkPK+0XreI=
+			+/AsYNmki5LsgSwCTpHLPFd2Pp7sx1kqEjYNLIGTLM8=
 			</data>
 		</dict>
 		<key>Headers/KVACustomIdentifiers.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ndqvKul90dCOWOIgzd0p5/BCKy++hPaHM43I25egtKg=
+			S3D43TT4bDhG6qe3O7a+BtVyBZlQby4hejkKaN01T9Y=
 			</data>
 		</dict>
 		<key>Headers/KVADeeplink.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			12sj4LRTy/9O4TEAMJN2tIz6LgRnbd8mWHUWUkvOzuU=
+			ikLJqlNOK+FVYZgxdh+NrdD7Otw1n8nZVb+MS096dPA=
 			</data>
 		</dict>
 		<key>Headers/KVADeeplinks.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			D/Iy0Uc/S+l601Jil9TKTtc/ffW5I9KCWcd8YN0MUVU=
+			g30vkUCaF9OMXPZXgwtCPNN3oViG7UTx87pcWruNbjk=
 			</data>
 		</dict>
 		<key>Headers/KVAEvent+Standard.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JwCyI9dnyTwuj/aDRur5NmCP1cyHjY3I2AbxFcNHEA4=
+			YECfcEtENkjAmOJq/X1/xdn0rTHGyS0O0GVeNf18pnM=
 			</data>
 		</dict>
 		<key>Headers/KVAEvents.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			biI+3yclrLkp/D6CKqaLJHGei3Wf6TPg12w7vwrLrYs=
+			2SvjokiUqY/NZT0y0h+hOCB9s5RNJEwPP8USHMMj4s0=
 			</data>
 		</dict>
 		<key>Headers/KVAIdentityLink.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jcvBV99mENnNVP3rPL/qMpQAjAARk3R8PtbEtJE3HUo=
+			GREiSsAn+5fQGlrllKnbgB5i5YH/SFNzcabGXQtBtR8=
+			</data>
+		</dict>
+		<key>Headers/KVAPrivacy.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			okeBq8L3EcZ7xsytRSqxHKD6EeCDL1UiOUAHtwtCAks=
+			</data>
+		</dict>
+		<key>Headers/KVAPrivacyProfile.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			mUUBc0XJx/9vVOKchOiMzZC/yOW/8LrvitOwOzXewBU=
 			</data>
 		</dict>
 		<key>Headers/KVAPushNotifications.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JcCuHqXX2tis0fVFFplhga1NcFI3NfLwxOpOqbbe2b0=
+			ByfxzjEU+tUnx9xe+e4cTujNzxgoQlT9s0WubMYY228=
 			</data>
 		</dict>
 		<key>Headers/KVAPushNotificationsToken.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			GUtO2VlNCjXVH6sbMr0gkspk/fOQ2k1Pwx+4sAm3B/0=
+			7a2zRb69/PPnfxuplT8t++uFpHJwUYk69vWJXifW4kE=
 			</data>
 		</dict>
 		<key>Headers/KVATracker.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			BwuG8s766ZxWuzmqwRpQHhc2GleqznCGFoTXgoPhQk4=
+			zbWt4hqDdie+74iWhnynLLnTuqUg9n2fJnJ4HhblQn4=
 			</data>
 		</dict>
 		<key>Headers/KVATrackerProduct.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			9RGMqYas3Kf6fq0IogrHWhUmuIuzuFSR9GsEI62fcik=
+			7x9x4dPiFVDDtF6lQlh4nv7tw5oqglx8VdQNrRYCISg=
 			</data>
 		</dict>
 		<key>Headers/KochavaTracker.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RlgQ5ehFxMmxAPdZnNFu5KVp48sna03kFGZ5sAKUCew=
+			5dzmU+Pf2XSBo7soB7trtFvkLlwWEuXQJqN6B8OdZsc=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -120,7 +134,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			O4A/iJRlbQFyV/PRP6HajHsNH5z7QtFcmsrC33IDKwY=
+			h8XT9jMcjaNOfNgA5ujQ7S/IfJzCfgw2QuyB5bH/8aU=
 			</data>
 		</dict>
 	</dict>
