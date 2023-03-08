@@ -3,7 +3,7 @@
 //  KochavaTracker
 //
 //  Created by John Bushnell on 10/20/17.
-//  Copyright © 2013 - 2021 Kochava, Inc.  All rights reserved.
+//  Copyright © 2013 - 2022 Kochava, Inc.  All rights reserved.
 //
 
 
@@ -29,24 +29,12 @@
 #import <Foundation/Foundation.h>
 
 #pragma mark KochavaCore
-#import <KochavaCore/KochavaCore.h>
+@import KochavaCore;
 
 #pragma mark KochavaTracker
-#import <KochavaTracker/KVAAppTrackingTransparency.h>
-#import <KochavaTracker/KVAAttribution.h>
-#import <KochavaTracker/KVAAttributionResult.h>
-#import <KochavaTracker/KVACustomIdentifiers.h>
+#import <KochavaTracker/KVAAdNetwork.h>
+#import <KochavaTracker/KVAAdNetworkConversion.h>
 #import <KochavaTracker/KVADeeplink.h>
-#import <KochavaTracker/KVADeeplinks.h>
-#import <KochavaTracker/KVAEvent+Standard.h>
-#import <KochavaTracker/KVAEvents.h>
-#import <KochavaTracker/KVAIdentityLink.h>
-#import <KochavaTracker/KVAPrivacy.h>
-#import <KochavaTracker/KVAPrivacyProfile.h>
-#import <KochavaTracker/KVAPushNotifications.h>
-#import <KochavaTracker/KVAPushNotificationsToken.h>
-#import <KochavaTracker/KVATracker.h>
-#import <KochavaTracker/KVATrackerProduct.h>
 
 
 

@@ -5,7 +5,7 @@ import XCTest
 
 
 
-@testable import KochavaTracker
+import KochavaTracker
 
 
 

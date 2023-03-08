@@ -1,0 +1,613 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)
+// swift-module-flags: -target armv7k-apple-watchos3.2 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name KochavaTracker
+import AVFoundation
+import Foundation
+import KochavaCore
+@_exported import KochavaTracker
+import StoreKit
+import Swift
+import UIKit
+import UserNotifications
+import _Concurrency
+@_hasMissingDesignatedInitializers @objc(KVAEventType) final public class KVAEventType : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc public static let addToCart: KochavaTracker.KVAEventType
+  @objc public static let addToWishList: KochavaTracker.KVAEventType
+  @objc public static let achievement: KochavaTracker.KVAEventType
+  @objc public static let checkoutStart: KochavaTracker.KVAEventType
+  @objc public static let custom: KochavaTracker.KVAEventType
+  @objc public static let levelComplete: KochavaTracker.KVAEventType
+  @objc public static let purchase: KochavaTracker.KVAEventType
+  @objc public static let rating: KochavaTracker.KVAEventType
+  @objc public static let registrationComplete: KochavaTracker.KVAEventType
+  @objc public static let search: KochavaTracker.KVAEventType
+  @objc public static let tutorialComplete: KochavaTracker.KVAEventType
+  @objc public static let view: KochavaTracker.KVAEventType
+  @objc public static let adView: KochavaTracker.KVAEventType
+  @objc public static let pushReceived: KochavaTracker.KVAEventType
+  @objc public static let pushOpened: KochavaTracker.KVAEventType
+  @objc public static let consentGranted: KochavaTracker.KVAEventType
+  @objc public static let deeplink: KochavaTracker.KVAEventType
+  @objc public static let adClick: KochavaTracker.KVAEventType
+  @objc public static let startTrial: KochavaTracker.KVAEventType
+  @objc public static let subscribe: KochavaTracker.KVAEventType
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc final public let nameString: Swift.String
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVAEvent) final public class KVAEvent : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol, KochavaCore.KVANetTransactionServiceLocallyBoolPropertyProvider, KochavaCore.KVANetTransactionSubURLIdStringMethodProvider {
+  @objc override required dynamic public init()
+  @objc(eventWithType:) public static func event(withType type: KochavaTracker.KVAEventType) -> KochavaTracker.KVAEvent
+  @nonobjc public init(type: KochavaTracker.KVAEventType)
+  @objc(eventWithTypeNameString:) public static func event(withTypeNameString typeNameString: Swift.String) -> KochavaTracker.KVAEvent
+  @nonobjc convenience public init(typeNameString: Swift.String)
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc final public func send()
+  @objc(sendWithSenderArray:) final public func send(withSenderArray senderProviderArray: [KochavaTracker.KVAEventSenderProvider]?)
+  @objc final public func eventNameString() -> Swift.String
+  @objc(valueObjectForPropertyIdentifierString:) final public func valueObject(forPropertyIdentifierString propertyIdentifierString: Swift.String?) -> Swift.AnyObject?
+  @objc final public func subURLIdString() -> Swift.String?
+  @objc final public var adNetworkConversionResult: (KochavaCore.KVAAsForContextProtocol & KochavaCore.KVAFromProtocol)?
+  @objc final public var eventType: KochavaTracker.KVAEventType {
+    get
+  }
+  @objc final public var sendDispatchBool: Swift.Bool
+  @objc final public var sendPrintLogMessageBool: Swift.Bool
+  @objc final public var serviceLocallyBool: Swift.Bool {
+    @objc get
+    @objc set(serviceLocallyBool)
+  }
+  @objc final public var actionString: Swift.String?
+  @objc final public var adCampaignIdString: Swift.String?
+  @objc final public var adCampaignNameString: Swift.String?
+  @objc final public var adDeviceTypeString: Swift.String?
+  @objc final public var adGroupIdString: Swift.String?
+  @objc final public var adGroupNameString: Swift.String?
+  @objc final public var adMediationNameString: Swift.String?
+  @objc final public var adNetworkNameString: Swift.String?
+  @objc final public var adPlacementString: Swift.String?
+  @objc final public var adSizeString: Swift.String?
+  @objc final public var adTypeString: Swift.String?
+  @objc final public var appleWatchBool: Swift.Bool
+  @objc final public var appleWatchIdString: Swift.String?
+  @objc final public var appStoreReceiptBase64EncodedString: Swift.String?
+  @objc final public var backgroundBoolNumber: Foundation.NSNumber?
+  @objc final public var checkoutAsGuestString: Swift.String?
+  @objc final public var completedBoolNumber: Foundation.NSNumber?
+  @objc final public var consent: KochavaCore.KVAConsent? {
+    @objc get
+    @objc set(consent)
+  }
+  @objc final public var contentIdString: Swift.String?
+  @objc final public var contentTypeString: Swift.String?
+  @objc final public var currencyString: Swift.String?
+  @objc final public var customEventNameString: Swift.String?
+  @objc final public var date: Foundation.Date?
+  @objc final public var dateString: Swift.String?
+  @objc final public var descriptionString: Swift.String?
+  @objc final public var destinationString: Swift.String?
+  @objc final public var durationTimeIntervalNumber: Foundation.NSNumber?
+  @objc final public var endDate: Foundation.Date?
+  @objc final public var endDateString: Swift.String?
+  @objc final public var infoDictionary: [Swift.AnyHashable : Any]?
+  @objc final public var infoString: Swift.String?
+  @objc final public var itemAddedFromString: Swift.String?
+  @objc final public var levelString: Swift.String?
+  @objc final public var maxRatingValueDoubleNumber: Foundation.NSNumber?
+  @objc final public var nameString: Swift.String?
+  @objc final public var orderIdString: Swift.String?
+  @objc final public var originString: Swift.String?
+  @objc final public var payloadDictionary: [Swift.AnyHashable : Any]?
+  @objc final public var priceDecimalNumber: Foundation.NSDecimalNumber?
+  @objc final public var priceDoubleNumber: Foundation.NSNumber?
+  @objc final public var quantityDoubleNumber: Foundation.NSNumber?
+  @objc final public var ratingValueDoubleNumber: Foundation.NSNumber?
+  @objc final public var receiptIdString: Swift.String?
+  @objc final public var referralFromString: Swift.String?
+  @objc final public var registrationMethodString: Swift.String?
+  @objc final public var resultsString: Swift.String?
+  @objc final public var scoreString: Swift.String?
+  @objc final public var searchTermString: Swift.String?
+  @objc final public var sourceString: Swift.String?
+  @objc final public var spatialXDoubleNumber: Foundation.NSNumber?
+  @objc final public var spatialYDoubleNumber: Foundation.NSNumber?
+  @objc final public var spatialZDoubleNumber: Foundation.NSNumber?
+  @objc final public var startDate: Foundation.Date?
+  @objc final public var startDateString: Swift.String?
+  @objc final public var successString: Swift.String?
+  @objc final public var userIdString: Swift.String?
+  @objc final public var uriString: Swift.String?
+  @objc final public var userNameString: Swift.String?
+  @objc final public var validatedString: Swift.String?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(KVAAppleSearchAdsMethod2Attribution) final public class KVAAppleSearchAdsMethod2Attribution : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVAAdNetwork) final public class KVAAdNetwork : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  convenience public init?(fromObject object: Any?, networking: KochavaCore.KVANetworking, measurementWindowStartDate: Foundation.Date?, delegate: KochavaCore.KVAMutable)
+  public static func adNetwork(fromObject object: Any?, networking: KochavaCore.KVANetworking, measurementWindowStartDate: Foundation.Date?, delegate: KochavaCore.KVAMutable) -> KochavaTracker.KVAAdNetwork?
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  public static let key: Swift.String
+  @objc(configureWithNetworking:measurementWindowStartDate:delegate:) final public func configure(networking: KochavaCore.KVANetworking, measurementWindowStartDate: Foundation.Date?, delegate: KochavaCore.KVAMutable?)
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc(eventNetTransactionWillStartRequestWithNoAdNetworkConversionResult:) final public func eventNetTransactionWillStartRequestWithNoAdNetworkConversionResult(_ event: KochavaTracker.KVAEvent) -> (KochavaCore.KVAAsForContextProtocol & KochavaCore.KVAFromProtocol)?
+  final public func install_didStartFirstDate_didSet(didStartFirstDate: Foundation.Date?)
+  @objc final public func invalidate()
+  @objc final public var didRegisterAppForAttributionBlock: KochavaTracker.KVAAdNetwork.KVAAdNetworkDidRegisterAppForAttributionBlock? {
+    @objc get
+    @objc set(didRegisterAppForAttributionBlock)
+  }
+  public typealias KVAAdNetworkDidRegisterAppForAttributionBlock = (_ adNetwork: KochavaTracker.KVAAdNetwork) -> Swift.Void
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var conversion: KochavaTracker.KVAAdNetworkConversion {
+    @objc get
+    @objc set(conversion)
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVAAppLimitAdTracking) final public class KVAAppLimitAdTracking : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc(boolean) final public var bool: Swift.Bool {
+    @objc get
+    @objc set(bool)
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVAAppTrackingTransparency) final public class KVAAppTrackingTransparency : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var autoRequestTrackingAuthorizationBool: Swift.Bool {
+    @objc get
+    @objc set(autoRequestTrackingAuthorizationBool)
+  }
+  @objc final public var authorizationStatusWaitTimeInterval: Foundation.TimeInterval {
+    @objc get
+    @objc set(authorizationStatusWaitTimeInterval)
+  }
+  @objc final public var enabledBool: Swift.Bool {
+    @objc get
+    @objc set(enabledBool)
+  }
+  @objc final public var authorizationStatusString: Swift.String? {
+    @objc get
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVAAttribution) final public class KVAAttribution : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc(retrieveResultWithCompletionHandler:) final public func retrieveResult(withCompletionHandler completionHandler: @escaping (_ result: KochavaTracker.KVAAttributionResult) -> Swift.Void)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var closure_didRetrieveResult: KochavaTracker.KVAAttribution.Closure_DidRetrieveResult? {
+    @objc get
+    @objc set(closure_didRetrieveResult)
+  }
+  public typealias Closure_DidRetrieveResult = (_ attribution: KochavaTracker.KVAAttribution, _ attributionResult: KochavaTracker.KVAAttributionResult) -> Swift.Void
+  @objc final public var retrieveResultBool: Swift.Bool {
+    @objc get
+    @objc set(retrieveResultBool)
+  }
+  @objc final public var result: KochavaTracker.KVAAttributionResult {
+    @objc get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(KVAAttributionResult) final public class KVAAttributionResult : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public var attributedBool: Swift.Bool {
+    @objc get
+  }
+  @objc final public var firstInstallBool: Swift.Bool {
+    @objc get
+  }
+  @objc final public let rawDictionary: [Swift.AnyHashable : Any]?
+  @objc final public var retrievedBool: Swift.Bool {
+    @objc get
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVACustomIdentifiers) final public class KVACustomIdentifiers : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc(registerWithNameString:identifierString:) final public func register(withNameString nameString: Swift.String, identifierString: Swift.String)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVADeeplink) final public class KVADeeplink : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc(processWithURL:completionHandler:) public static func process(withURL url: Foundation.URL?, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+  @objc(processWithURL:timeoutTimeInterval:completionHandler:) public static func process(withURL url: Foundation.URL?, timeoutTimeInterval: Foundation.TimeInterval, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+  @objc(processWithURL:processor:completionHandler:) public static func process(withURL url: Foundation.URL?, processor: KochavaTracker.KVADeeplinksProcessorProvider?, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+  @objc(processWithURL:timeoutTimeInterval:processor:completionHandler:) public static func process(withURL url: Foundation.URL?, timeoutTimeInterval: Foundation.TimeInterval, processor: KochavaTracker.KVADeeplinksProcessorProvider?, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc override final public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc final public var urlString: Swift.String?
+  @objc final public var destinationString: Swift.String?
+  @objc final public var rawDictionary: [Swift.AnyHashable : Any]? {
+    @objc get
+    @objc set(rawDictionary)
+  }
+  @objc deinit
+}
+@objc public protocol KVADeeplinksProcessor {
+  @objc(processDeeplink:timeoutTimeInterval:completionHandler:) func process(deeplink: KochavaTracker.KVADeeplink, timeoutTimeInterval: Foundation.TimeInterval, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+}
+@objc public protocol KVADeeplinksProcessorProvider {
+  @objc var deeplinksProcessor: KochavaTracker.KVADeeplinksProcessor? { get }
+}
+@_inheritsConvenienceInitializers @objc(KVADeeplinks) final public class KVADeeplinks : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaTracker.KVADeeplinksProcessor, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, Foundation.NSCopying {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc(copyWithZone:) final public func copy(with zone: ObjectiveC.NSZone? = nil) -> Any
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc(processDeeplink:timeoutTimeInterval:completionHandler:) final public func process(deeplink: KochavaTracker.KVADeeplink, timeoutTimeInterval: Foundation.TimeInterval, completionHandler: KochavaTracker.KVADeeplinkProcessCompletionHandler?)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVADeviceId) final public class KVADeviceId : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator {
+  @objc override required dynamic public init()
+  @objc deinit
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc(kva_didMutate_performSideEffectsWithChildObject:infoDictionary:) override final public func kva_didMutate_performSideEffects(childObject: Any?, infoDictionary: [Swift.AnyHashable : Any]?)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var string: Swift.String? {
+    @objc get
+  }
+}
+@_inheritsConvenienceInitializers @objc(KVAEvents) final public class KVAEvents : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaTracker.KVAEventSender, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func send(event: KochavaTracker.KVAEvent)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVAAdNetworkConversion) final public class KVAAdNetworkConversion : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc deinit
+  @objc(kva_from:) public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var didUpdateValueBlock: KochavaTracker.KVAAdNetworkConversion.KVAAdNetworkConversionDidUpdateValueBlock? {
+    @objc get
+    @objc set(didUpdateValueBlock)
+  }
+  public typealias KVAAdNetworkConversionDidUpdateValueBlock = (_ conversion: KochavaTracker.KVAAdNetworkConversion, _ result: KochavaTracker.KVAAdNetworkConversionResult) -> Swift.Void
+  @objc final public var result: KochavaTracker.KVAAdNetworkConversionResult {
+    @objc get
+  }
+}
+@_inheritsConvenienceInitializers @objc(KVAIdentityLink) final public class KVAIdentityLink : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc deinit
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc(registerWithNameString:identifierString:) final public func register(withNameString nameString: Swift.String, identifierString: Swift.String)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVAInstall) final public class KVAInstall : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var didStartFirstDate: Foundation.Date? {
+    @objc get
+    @objc set(didStartFirstDate)
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVAPrivacy) final public class KVAPrivacy : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaTracker.KVAPrivacyProfileRegistrar {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc(registerProfile:) final public func register(profile: KochavaTracker.KVAPrivacyProfile)
+  @objc(setEnabledBoolForProfileNameString:enabledBool:) final public func setEnabledBool(forProfileNameString profileNameString: Swift.String, enabledBool: Swift.Bool)
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(KVAPrivacyProfile) final public class KVAPrivacyProfile : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc(registerWithNameString:payloadKeyStringArray:) public static func register(withNameString nameString: Swift.String, payloadKeyStringArray: [Swift.String]?)
+  @objc(registerWithNameString:payloadKeyStringArray:registrarArray:) public static func register(withNameString nameString: Swift.String, payloadKeyStringArray: [Swift.String]?, registrarArray: [KochavaTracker.KVAPrivacyProfileRegistrarProvider]?)
+  @objc(registerWithNameString:payloadKeyStringArray:payloadIdStringArray:registrarArray:) public static func register(withNameString nameString: Swift.String, payloadKeyStringArray: [Swift.String]?, payloadIdStringArray: [Swift.String]?, registrarArray: [KochavaTracker.KVAPrivacyProfileRegistrarProvider]?)
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc override final public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc final public let nameString: Swift.String
+  @objc final public let payloadKeyStringArray: [Swift.String]?
+  @objc final public let payloadIdStringArray: [Swift.String]?
+  @objc deinit
+}
+@objc(KVAPrivacyProfileRegistrar) public protocol KVAPrivacyProfileRegistrar {
+  @objc(registerProfile:) func register(profile: KochavaTracker.KVAPrivacyProfile)
+}
+@objc(KVAPrivacyProfileRegistrarProvider) public protocol KVAPrivacyProfileRegistrarProvider {
+  @objc var privacyProfileRegistrar: KochavaTracker.KVAPrivacyProfileRegistrar { get }
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVAAdNetworkConversionResult) final public class KVAAdNetworkConversionResult : ObjectiveC.NSObject, Foundation.NSCopying, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAMutableDelegator {
+  @objc(kva_from:) public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc(copyWithZone:) final public func copy(with zone: ObjectiveC.NSZone? = nil) -> Any
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func valueInt() -> Swift.Int
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc final public var modelString: Swift.String? {
+    @objc get
+  }
+  final public var translatedValueInt: Swift.Int? {
+    get
+  }
+  @objc final public var translatedValueIntNumber: Foundation.NSNumber? {
+    @objc get
+  }
+  @objc final public var rawValueNumber: Foundation.NSNumber? {
+    @objc get
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(KVAPushNotifications) final public class KVAPushNotifications : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAMutableDelegator, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaTracker.KVAPushNotificationsTokenRegistrar, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc deinit
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func register(token: KochavaTracker.KVAPushNotificationsToken)
+  @objc final public func invalidate()
+  @objc final public var enabledBool: Swift.Bool {
+    @objc get
+    @objc set(enabledBool)
+  }
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+}
+@_inheritsConvenienceInitializers @objc(KVATrackerGeneral) final public class KVATrackerGeneral : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc deinit
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  final public let instanceCreatedDate: Foundation.Date
+  public static let startSequenceDidCompleteNotificationName: Foundation.Notification.Name
+}
+@_hasMissingDesignatedInitializers @objc(KVAPushNotificationsToken) final public class KVAPushNotificationsToken : ObjectiveC.NSObject, KochavaCore.KVAFromProtocol {
+  @objc(registerWithData:) public static func register(withData deviceTokenData: Foundation.Data)
+  @objc(registerWithDataHexString:) public static func register(withDataHexString deviceTokenDataHexString: Swift.String)
+  @objc(registerWithData:registrarArray:) public static func register(withData deviceTokenData: Foundation.Data, registrarArray: [KochavaTracker.KVAPushNotificationsTokenRegistrarProvider]?)
+  @objc(registerWithDataHexString:registrarArray:) public static func register(withDataHexString deviceTokenDataHexString: Swift.String, registrarArray: [KochavaTracker.KVAPushNotificationsTokenRegistrarProvider]?)
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc override final public func isEqual(_ object: Any?) -> Swift.Bool
+  @objc final public let data: Foundation.Data?
+  @objc final public let providedDate: Foundation.Date?
+  @objc deinit
+}
+@objc public protocol KVAPushNotificationsTokenRegistrar {
+  @objc(registerToken:) func register(token: KochavaTracker.KVAPushNotificationsToken)
+}
+@objc public protocol KVAPushNotificationsTokenRegistrarProvider {
+  @objc var pushNotificationsTokenRegistrar: KochavaTracker.KVAPushNotificationsTokenRegistrar { get }
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(KVATracker) final public class KVATracker : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaTracker.KVADeeplinksProcessorProvider, KochavaTracker.KVAEventSenderProvider, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaTracker.KVAPrivacyProfileRegistrarProvider, KochavaTracker.KVAPushNotificationsTokenRegistrarProvider, KochavaCore.KVASharedPropertyProvider {
+  @objc public static var shared: KochavaTracker.KVATracker {
+    @objc get
+  }
+  @objc public static var shared_optional: KochavaTracker.KVATracker? {
+    @objc get
+  }
+  @objc public static var sharedInstance: Swift.AnyObject {
+    @objc get
+  }
+  @objc(initWithStorageIdString:) required public init(storageIdString: Swift.String?)
+  @objc override convenience dynamic public init()
+  @objc(trackerWithStorageIdString:) public static func tracker(withStorageIdString storageIdString: Swift.String?) -> Self
+  @objc(tracker) public static func tracker() -> Self
+  @objc deinit
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc(configureWith:context:) final public func configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc(startWithAppGUIDString:) final public func start(withAppGUIDString appGUIDString: Swift.String)
+  @objc(startWithPartnerNameString:) final public func start(withPartnerNameString partnerNameString: Swift.String)
+  @objc final public func start()
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  @objc(executeAdvancedInstructionWithIdentifierString:valueObject:) final public func executeAdvancedInstruction(identifierString: Swift.String, valueObject: Any?)
+  @objc final public func invalidate()
+  @objc final public func invalidate(printLogMessageBool: Swift.Bool)
+  @objc final public var adNetwork: KochavaTracker.KVAAdNetwork? {
+    @objc get
+  }
+  @objc final public var appLimitAdTracking: KochavaTracker.KVAAppLimitAdTracking {
+    @objc get
+  }
+  @objc final public var appLimitAdTrackingBool: Swift.Bool {
+    @objc get
+    @objc set(appLimitAdTrackingBool)
+  }
+  @objc final public var appTrackingTransparency: KochavaTracker.KVAAppTrackingTransparency {
+    @objc get
+  }
+  @objc final public var attribution: KochavaTracker.KVAAttribution {
+    @objc get
+  }
+  @objc final public var config: KochavaTracker.KVATrackerConfig {
+    @objc get
+  }
+  @objc final public var consent: KochavaCore.KVAConsent {
+    @objc get
+  }
+  @objc final public var customIdentifiers: KochavaTracker.KVACustomIdentifiers {
+    @objc get
+  }
+  @objc final public var deeplinks: KochavaTracker.KVADeeplinks {
+    @objc get
+  }
+  @objc final public var deviceId: KochavaTracker.KVADeviceId {
+    @objc get
+  }
+  @objc final public var deviceIdString: Swift.String? {
+    @objc get
+  }
+  final public var events: KochavaTracker.KVAEvents {
+    get
+  }
+  final public var general: KochavaTracker.KVATrackerGeneral {
+    get
+  }
+  @objc final public var identityLink: KochavaTracker.KVAIdentityLink {
+    @objc get
+  }
+  @objc final public var install: KochavaTracker.KVAInstall {
+    @objc get
+  }
+  @objc final public var networking: KochavaCore.KVANetworking {
+    @objc get
+  }
+  @objc final public var privacy: KochavaTracker.KVAPrivacy {
+    @objc get
+  }
+  @objc final public var pushNotifications: KochavaTracker.KVAPushNotifications {
+    @objc get
+  }
+  @objc final public var deeplinksProcessor: KochavaTracker.KVADeeplinksProcessor? {
+    @objc get
+  }
+  @objc final public var eventSender: KochavaTracker.KVAEventSender {
+    @objc get
+  }
+  @objc final public var privacyProfileRegistrar: KochavaTracker.KVAPrivacyProfileRegistrar {
+    @objc get
+  }
+  @objc final public var pushNotificationsTokenRegistrar: KochavaTracker.KVAPushNotificationsTokenRegistrar {
+    @objc get
+  }
+  @objc public static var sharedStorageIdString: Swift.String? {
+    @objc get
+    @objc set(sharedStorageIdString)
+  }
+  @objc final public var sleepBool: Swift.Bool {
+    @objc get
+    @objc set(sleepBool)
+  }
+  @objc final public var startedBool: Swift.Bool {
+    @objc get
+  }
+  public static let willDeallocNotificationName: Foundation.Notification.Name
+}
+@_inheritsConvenienceInitializers @objc(KVATrackerConfig) final public class KVATrackerConfig : ObjectiveC.NSObject, KochavaCore.KVAConfigureWithProtocol, KochavaCore.KVAFromProtocol, KochavaCore.KVAFromWithInitializedObjectProtocol, KochavaCore.KVAInvalidatable, KochavaCore.KVAKeyable, KochavaCore.KVAMutableDelegator, KochavaCore.KVAStartable {
+  @objc override required dynamic public init()
+  @objc public static func kva_from(_ object: Any?) -> Self?
+  @objc public static func kva_from(_ object: Any?, initializedObject: Any?) -> Self?
+  @objc(kva_asForContext:) override final public func kva_as(forContext context: KochavaCore.KVAContext?) -> ObjectiveC.NSObject?
+  @objc final public func key(forContext context: KochavaCore.KVAContext?) -> Swift.AnyHashable?
+  @objc final public func kva_configure(with object: Any?, context: KochavaCore.KVAContext?)
+  @objc final public func start()
+  @objc final public func invalidate()
+  @objc weak final public var mutableDelegate: KochavaCore.KVAMutable?
+  @objc deinit
+}
+extension KochavaTracker.KVAEvent {
+  @objc(sendCustomWithNameString:) public static func sendCustom(withNameString customEventNameString: Swift.String)
+  @objc(sendCustomWithNameString:senderArray:) public static func sendCustom(withNameString customEventNameString: Swift.String, senderArray: [KochavaTracker.KVAEventSenderProvider]?)
+  @objc(sendCustomWithNameString:infoDictionary:) public static func sendCustom(withNameString customEventNameString: Swift.String, infoDictionary: [Swift.AnyHashable : Any]?)
+  @objc(sendCustomWithNameString:infoDictionary:senderArray:) public static func sendCustom(withNameString customEventNameString: Swift.String, infoDictionary: [Swift.AnyHashable : Any]?, senderArray: [KochavaTracker.KVAEventSenderProvider]?)
+  @objc(sendCustomWithNameString:infoString:) public static func sendCustom(withNameString customEventNameString: Swift.String, infoString: Swift.String?)
+  @objc(sendCustomWithNameString:infoString:senderArray:) public static func sendCustom(withNameString customEventNameString: Swift.String, infoString: Swift.String?, senderArray: [KochavaTracker.KVAEventSenderProvider]?)
+  @objc(initCustomWithNameString:) convenience dynamic public init(customWithNameString customEventNameString: Swift.String)
+  @objc(customEventWithNameString:) public static func customEvent(withNameString customEventNameString: Swift.String) -> Self
+  @objc(initCustomWithNameString:infoDictionary:) convenience dynamic public init(customWithNameString customEventNameString: Swift.String, infoDictionary: [Swift.AnyHashable : Any]?)
+  @objc(customEventWithNameString:infoDictionary:) public static func customEvent(withNameString customEventNameString: Swift.String, infoDictionary: [Swift.AnyHashable : Any]?) -> Self
+  @objc(initCustomWithNameString:infoString:) convenience dynamic public init(customWithNameString customEventNameString: Swift.String, infoString: Swift.String?)
+  @objc(customEventWithNameString:infoString:) public static func customEvent(withNameString customEventNameString: Swift.String, infoString: Swift.String?) -> Self
+}
+@_inheritsConvenienceInitializers @objc(KVATrackerProduct) final public class KVATrackerProduct : ObjectiveC.NSObject, KochavaCore.KVASharedPropertyProvider {
+  @objc public static let shared: KochavaCore.KVAProduct
+  @objc public static var sharedInstance: Swift.AnyObject {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(KVAEventSender) public protocol KVAEventSender {
+  @objc(sendEvent:) func send(event: KochavaTracker.KVAEvent)
+}
+@objc(KVAEventSenderProvider) public protocol KVAEventSenderProvider {
+  @objc var eventSender: KochavaTracker.KVAEventSender { get }
+}

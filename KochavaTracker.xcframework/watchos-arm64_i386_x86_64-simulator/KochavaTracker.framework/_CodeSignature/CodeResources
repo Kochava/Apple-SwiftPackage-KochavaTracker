@@ -4,266 +4,236 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/KVAAppTrackingTransparency.h</key>
+		<key>Headers/KVAAdNetwork.h</key>
 		<data>
-		p2pLGrAEc7QQeQXXO4SFDViZryE=
+		4s0goNkWrlc6S5nhNw7hwIZQu5g=
 		</data>
-		<key>Headers/KVAAttribution.h</key>
+		<key>Headers/KVAAdNetworkConversion.h</key>
 		<data>
-		cGqs8S2ew3AhFrDdnrcz3kavIG0=
-		</data>
-		<key>Headers/KVAAttributionResult.h</key>
-		<data>
-		1wN00UYDTcOxiZgbTcuj48XeHJw=
-		</data>
-		<key>Headers/KVACustomIdentifiers.h</key>
-		<data>
-		qY/fEgDmz1ZtHYNYp6EhG7ezD4I=
+		1rg+cesE3zIKatWnGR8KhWJE2FI=
 		</data>
 		<key>Headers/KVADeeplink.h</key>
 		<data>
-		yYegC5bDdLUWi5xEqcBxO0dVHAg=
+		wZLIFYtIlUlx2OXE7GC+PAa+aJE=
 		</data>
-		<key>Headers/KVADeeplinks.h</key>
+		<key>Headers/KochavaTracker-Swift.h</key>
 		<data>
-		FzYnbt9lzkRuYyE8/q4CeseXCB0=
-		</data>
-		<key>Headers/KVAEvent+Standard.h</key>
-		<data>
-		Z2+KU/3C8jfG9EkUDCIDZSbEhxw=
-		</data>
-		<key>Headers/KVAEvents.h</key>
-		<data>
-		Tf2Np8+HOZ2bZ91ZtNAGSKEdsWw=
-		</data>
-		<key>Headers/KVAIdentityLink.h</key>
-		<data>
-		yBk6hdP7uAELzY0j0aiZkyn5w0I=
-		</data>
-		<key>Headers/KVAPrivacy.h</key>
-		<data>
-		pgUdEp9vYdXyI8m3cC7DobPnGdA=
-		</data>
-		<key>Headers/KVAPrivacyProfile.h</key>
-		<data>
-		roy3W3gSQzKSPy24rYtcv5RNSXM=
-		</data>
-		<key>Headers/KVAPushNotifications.h</key>
-		<data>
-		f21srGAa8/C38Mrff1cBmAGtTKg=
-		</data>
-		<key>Headers/KVAPushNotificationsToken.h</key>
-		<data>
-		LovYboRd2WbpPuFxpvJ8yFUZI48=
-		</data>
-		<key>Headers/KVATracker.h</key>
-		<data>
-		HiIYIFkCQQef7Qw7oqKat6Mq7nM=
-		</data>
-		<key>Headers/KVATrackerProduct.h</key>
-		<data>
-		9muK70dNVvM3TnBzo7mNauvFhQU=
+		lzDhqEION9rBn5QY8e4ZXJOGCMA=
 		</data>
 		<key>Headers/KochavaTracker.h</key>
 		<data>
-		oZPY/FIHt9BWSNpTOcFTZuWZi70=
+		pWrdrXSpHtylJCTVXFI/C35AIsE=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LtDWHoA4uzD6Ahz47vt7IHptVB8=
+		WtbpRI8YmLsAxEB3PezdwGifYbY=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftdoc</key>
+		<data>
+		ee3StBkIfGMFQFVVZFKnjhSFIFk=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftinterface</key>
+		<data>
+		+4Ix3rfZbbM7FWE/ifrWYyZ1bJc=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftmodule</key>
+		<data>
+		3LxPAfA1RvQc1/5933JmDjEMm+E=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftdoc</key>
+		<data>
+		yOKdmqXNeJroqSEsQ4ubs0zux3E=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftinterface</key>
+		<data>
+		j1tVqBoJ6FO7dCjzi6Ut4s09Uyk=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftmodule</key>
+		<data>
+		aAuvnUtZF66AqhTxpRqkRrN6M5s=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftdoc</key>
+		<data>
+		kzjFTbwPbUS4LAiRGrsmx7wPmgM=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftinterface</key>
+		<data>
+		NASKX8ISe7tR1erryVjuNHHkLOk=
+		</data>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftmodule</key>
+		<data>
+		sdNHNDmLl9Uyo/Y7dbNFjmmGlhs=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		60o+YRvswvV6+hFssPgngekXbAE=
+		ZxJ6FdMADNtcjZTciUoIAjqT+DA=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/KVAAppTrackingTransparency.h</key>
+		<key>Headers/KVAAdNetwork.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			p2pLGrAEc7QQeQXXO4SFDViZryE=
+			4s0goNkWrlc6S5nhNw7hwIZQu5g=
 			</data>
 			<key>hash2</key>
 			<data>
-			XAEzEPR9/F+onOhmK+JbBXPYY2pfktkrRcSVN45N12E=
+			hqE+ovfgjCErlzAcApNomDhFGwFJ19KXyJu/EHRlQc8=
 			</data>
 		</dict>
-		<key>Headers/KVAAttribution.h</key>
+		<key>Headers/KVAAdNetworkConversion.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			cGqs8S2ew3AhFrDdnrcz3kavIG0=
+			1rg+cesE3zIKatWnGR8KhWJE2FI=
 			</data>
 			<key>hash2</key>
 			<data>
-			Q+3NnlcOLXW15npd5Jj7R89/KbOve6R6xzzdCqUqNB0=
-			</data>
-		</dict>
-		<key>Headers/KVAAttributionResult.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			1wN00UYDTcOxiZgbTcuj48XeHJw=
-			</data>
-			<key>hash2</key>
-			<data>
-			iaZtypHswqhMgWfu67gMOTDuwaOH4u7Nn+ehK9ley4E=
-			</data>
-		</dict>
-		<key>Headers/KVACustomIdentifiers.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			qY/fEgDmz1ZtHYNYp6EhG7ezD4I=
-			</data>
-			<key>hash2</key>
-			<data>
-			tWd/5IqJ07vwVYbfbecpa507xS03KL+0/RV1SiDS8n8=
+			4S3P4dMA9OL1ZH4NaPdQ3DtMy5qFs4kfupvnNKaJrbI=
 			</data>
 		</dict>
 		<key>Headers/KVADeeplink.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			yYegC5bDdLUWi5xEqcBxO0dVHAg=
+			wZLIFYtIlUlx2OXE7GC+PAa+aJE=
 			</data>
 			<key>hash2</key>
 			<data>
-			Zu7NbUxAJRVh4D6px7bzK6Qi4uHgCiKvCx5N7+kstJI=
+			NDhyFwvn53iwv/orVu4apRlqyFOJ5XpjYjB5/1mxLAc=
 			</data>
 		</dict>
-		<key>Headers/KVADeeplinks.h</key>
+		<key>Headers/KochavaTracker-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			FzYnbt9lzkRuYyE8/q4CeseXCB0=
+			lzDhqEION9rBn5QY8e4ZXJOGCMA=
 			</data>
 			<key>hash2</key>
 			<data>
-			fCh9rMuR67KpRjClQpxfogFQmNIPFNU4wdOcrugwbts=
-			</data>
-		</dict>
-		<key>Headers/KVAEvent+Standard.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Z2+KU/3C8jfG9EkUDCIDZSbEhxw=
-			</data>
-			<key>hash2</key>
-			<data>
-			3v62Ezsy23+mdt4ikFvCUq11PwVOMCLaiTuBlAodK64=
-			</data>
-		</dict>
-		<key>Headers/KVAEvents.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Tf2Np8+HOZ2bZ91ZtNAGSKEdsWw=
-			</data>
-			<key>hash2</key>
-			<data>
-			3eZT54By0ohoxjkmv+iRZX7bjAFCplqK8HpH0nPkCeg=
-			</data>
-		</dict>
-		<key>Headers/KVAIdentityLink.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			yBk6hdP7uAELzY0j0aiZkyn5w0I=
-			</data>
-			<key>hash2</key>
-			<data>
-			GyEYYdoPfda3cHOQGcLLVzaPwkxEyq5+u63CDKzZ2aU=
-			</data>
-		</dict>
-		<key>Headers/KVAPrivacy.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			pgUdEp9vYdXyI8m3cC7DobPnGdA=
-			</data>
-			<key>hash2</key>
-			<data>
-			FZri1V9NWv3/D4igfZ4fijuVmo48+LEYXmVpP7A8LNM=
-			</data>
-		</dict>
-		<key>Headers/KVAPrivacyProfile.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			roy3W3gSQzKSPy24rYtcv5RNSXM=
-			</data>
-			<key>hash2</key>
-			<data>
-			888OT9nGsUhY2ZgYGn8mNncz0Hw7MPvSpk8ndJBz3Qg=
-			</data>
-		</dict>
-		<key>Headers/KVAPushNotifications.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			f21srGAa8/C38Mrff1cBmAGtTKg=
-			</data>
-			<key>hash2</key>
-			<data>
-			pebLZiLBnxU/sQRlJGgwps39J0+OT3MsF91hfpYs6gI=
-			</data>
-		</dict>
-		<key>Headers/KVAPushNotificationsToken.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			LovYboRd2WbpPuFxpvJ8yFUZI48=
-			</data>
-			<key>hash2</key>
-			<data>
-			tJStLclF70NJ7LW5YAaBrsbduRiC5ZWqvo3RTsQRbn8=
-			</data>
-		</dict>
-		<key>Headers/KVATracker.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			HiIYIFkCQQef7Qw7oqKat6Mq7nM=
-			</data>
-			<key>hash2</key>
-			<data>
-			6bWcThOWPKpmo3xhZ8g1BtsN3CPQWSTZt1YCF9tfVcw=
-			</data>
-		</dict>
-		<key>Headers/KVATrackerProduct.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			9muK70dNVvM3TnBzo7mNauvFhQU=
-			</data>
-			<key>hash2</key>
-			<data>
-			aHIMntR4sBREZmToT873q3TbqrptBCGSkpER6qN6mH4=
+			hTQxLJmRypP3+um9UPZy0oPO7g+Y+youFid5Lz93HLc=
 			</data>
 		</dict>
 		<key>Headers/KochavaTracker.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oZPY/FIHt9BWSNpTOcFTZuWZi70=
+			pWrdrXSpHtylJCTVXFI/C35AIsE=
 			</data>
 			<key>hash2</key>
 			<data>
-			of/KUtPvtIFCCb8ir+/CysRZ7NsMclMnuw7BocRNB+c=
+			Nwsd9p8PdYGsXdpWnlt+zcZ5BiQ50hdH1JZUOYBGbb8=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ee3StBkIfGMFQFVVZFKnjhSFIFk=
+			</data>
+			<key>hash2</key>
+			<data>
+			gVtYDEFnPc/z3DVvYzXUVezyHUTFRAgEDzKaKNERWJA=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+4Ix3rfZbbM7FWE/ifrWYyZ1bJc=
+			</data>
+			<key>hash2</key>
+			<data>
+			qymHR6cKdNPxsdcw5NpRQZQ++c0rkwaI2KyeMJTGlmY=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			3LxPAfA1RvQc1/5933JmDjEMm+E=
+			</data>
+			<key>hash2</key>
+			<data>
+			HzVdMk0XhKp4y9gkfLwSp9EVhWnu5q29mUf2vmjMnGs=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			yOKdmqXNeJroqSEsQ4ubs0zux3E=
+			</data>
+			<key>hash2</key>
+			<data>
+			nOd14zua4Nhz8XTRl8TK5WTMdp7/LbGKj1hZE/KiHls=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			j1tVqBoJ6FO7dCjzi6Ut4s09Uyk=
+			</data>
+			<key>hash2</key>
+			<data>
+			ExlO57vtfMDbzbmO5MPB596VcAAshYUoBitnbn/+Fys=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			aAuvnUtZF66AqhTxpRqkRrN6M5s=
+			</data>
+			<key>hash2</key>
+			<data>
+			lot3PH4QiOuUTSq9kZ03aO0ViSGFrLGhu4bXcJEUeaQ=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			kzjFTbwPbUS4LAiRGrsmx7wPmgM=
+			</data>
+			<key>hash2</key>
+			<data>
+			ztsNq4jho3BaqdJDI3Sx+jbXau4xKJoPep6EOPQZQjQ=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftinterface</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			NASKX8ISe7tR1erryVjuNHHkLOk=
+			</data>
+			<key>hash2</key>
+			<data>
+			207BbO+kqxLlWctlN1ljliLeyAdRHgTdHJcPKKr9Lnw=
+			</data>
+		</dict>
+		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sdNHNDmLl9Uyo/Y7dbNFjmmGlhs=
+			</data>
+			<key>hash2</key>
+			<data>
+			s5XKuxxbpPQVy/+bjZXcZNXmVa1aI1+gis+QHt4YI64=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			60o+YRvswvV6+hFssPgngekXbAE=
+			ZxJ6FdMADNtcjZTciUoIAjqT+DA=
 			</data>
 			<key>hash2</key>
 			<data>
-			ImmqlvKCH1yRvfhKI398KqgQ3zGK+W1sl+QD+rgqeRs=
+			hmjiZZXjE8YJGd3D1XP1bGajD3Bx9KaMg1K6c8dXhxg=
 			</data>
 		</dict>
 	</dict>

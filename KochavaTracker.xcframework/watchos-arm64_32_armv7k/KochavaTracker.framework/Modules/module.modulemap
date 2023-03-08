@@ -4,3 +4,8 @@ framework module KochavaTracker {
   export *
   module * { export * }
 }
+
+module KochavaTracker.Swift {
+    header "KochavaTracker-Swift.h"
+    requires objc
+}
