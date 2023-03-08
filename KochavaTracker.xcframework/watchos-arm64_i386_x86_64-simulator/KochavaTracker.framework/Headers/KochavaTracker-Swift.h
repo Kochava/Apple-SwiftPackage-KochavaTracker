@@ -198,7 +198,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
 @import Foundation;
-@import KochavaCore;
 @import ObjectiveC;
 #endif
 
@@ -219,32 +218,15 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@class KVAContext;
-@class KVANetworking;
-@class NSDate;
-@protocol KVAMutable;
-@class KVAEvent;
-@protocol KVAAsForContextProtocol;
 @class KVAAdNetworkConversion;
 
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 SWIFT_CLASS_NAMED("KVAAdNetwork")
-@interface KVAAdNetwork : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetwork : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking measurementWindowStartDate:(NSDate * _Nullable)measurementWindowStartDate delegate:(id <KVAMutable> _Nullable)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable)eventNetTransactionWillStartRequestWithNoAdNetworkConversionResult:(KVAEvent * _Nonnull)event SWIFT_WARN_UNUSED_RESULT;
-- (void)invalidate;
 /// A closure which is called when the SKAdNetwork registerAppForAdNetworkAttribution API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didRegisterAppForAttributionBlock)(KVAAdNetwork * _Nonnull);
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The current conversion information.
 @property (nonatomic, strong) KVAAdNetworkConversion * _Nonnull conversion;
 @end
@@ -253,15 +235,9 @@ SWIFT_CLASS_NAMED("KVAAdNetwork")
 
 /// A feature which determines adnetwork conversion(s).
 SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
-@interface KVAAdNetworkConversion : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetworkConversion : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when the SKAdNetwork updateConversionValue API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didUpdateValueBlock)(KVAAdNetworkConversion * _Nonnull, KVAAdNetworkConversionResult * _Nonnull);
@@ -273,29 +249,26 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 
 /// A class which defines an adnetwork conversion event.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
-@interface KVAAdNetworkConversionEvent : NSObject <KVAFromProtocol>
+@interface KVAAdNetworkConversionEvent : NSObject
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@class KVAContext;
 @class NSString;
 @class NSNumber;
 
 /// The adnetwork conversion result.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
-@interface KVAAdNetworkConversionResult : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAMutableDelegator>
+@interface KVAAdNetworkConversionResult : NSObject <NSCopying>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
++ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// Return the conversion value integer which is used with the SKAdNetwork updateConversionValue API.
 /// Apple currently restricts this value to 6-bits.  This is a combination (OR) of the translated value (translatedValueIntNumber) with any extension interval value (extensionIntervalTranslatedValueInt.integerValue).
 - (NSInteger)valueInt SWIFT_WARN_UNUSED_RESULT;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A string which represents the model used for the conversion.
 @property (nonatomic, readonly, copy) NSString * _Nullable modelString;
 @property (nonatomic, readonly, strong) NSNumber * _Nullable translatedValueIntNumber;
@@ -307,31 +280,15 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
 
 /// A feature which provides measurement for App Clips.
 SWIFT_CLASS_NAMED("KVAAppClips")
-@interface KVAAppClips : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppClips : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
-@interface KVAAppLimitAdTracking : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+@interface KVAAppLimitAdTracking : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if you want to limit ad tracking at the application level.
 /// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of true from either this feature or Apple’s will result in the limiting of ad tracking.
 @property (nonatomic) BOOL boolean;
@@ -340,23 +297,16 @@ SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
 
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
-@interface KVAAppTrackingTransparency : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppTrackingTransparency : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
 /// Default true.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
 @property (nonatomic) BOOL autoRequestTrackingAuthorizationBool;
 /// A time interval to wait for the request for tracking authorization before proceeding to send the install.
 /// Default 30.0.  Subject to server-based override.  This provides time to wait to obtain the authorization necessary to collect the IDFA.
 @property (nonatomic) NSTimeInterval authorizationStatusWaitTimeInterval;
+/// A boolean indicating if this feature is enabled.
+/// Default: false.
 @property (nonatomic) BOOL enabledBool;
 /// The authorization status expressed as an NSString.
 /// This is optional and will be nil until a status is known.  For this reason this can be checked as a means of determining if a status has been determined.  Current possible values:  “authorized”, “denied”, “notDetermined”, “restricted”, “unknown”.
@@ -366,21 +316,7 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 
 /// A feature which interfaces with Apple Search Ads.
 SWIFT_CLASS_NAMED("KVAAppleSearchAds")
-@interface KVAAppleSearchAds : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure the instance for use.
-/// \param networking An instance of class KVANetworking.
-///
-/// \param delegate A delegate.
-///
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking delegate:(id <KVAMutable> _Nonnull)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAds : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -388,14 +324,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAds")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
-@interface KVAAppleSearchAdsMethod2 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nonnull instancetype)appleSearchAdsMethod2Attribution SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod2 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -403,9 +332,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
 
 /// Apple’s attribution as provided by Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
-@interface KVAAppleSearchAdsMethod2Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod2Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -413,13 +340,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
-@interface KVAAppleSearchAdsMethod3 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod3 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -427,9 +348,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
 
 /// Apple’s attribution as provided by Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
-@interface KVAAppleSearchAdsMethod3Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod3Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -438,21 +357,12 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
 
 /// A feature which provides attribution information related to the install.
 SWIFT_CLASS_NAMED("KVAAttribution")
-@interface KVAAttribution : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAttribution : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Get the attribution result with a completion handler.
 /// \param completionHandler A completion handler to call once the result has been retrieved.
 ///
 - (void)retrieveResultWithCompletionHandler:(void (^ _Nonnull)(KVAAttributionResult * _Nonnull))completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when attribution is retrieved.
 @property (nonatomic, copy) void (^ _Nullable closure_didRetrieveResult)(KVAAttribution * _Nonnull, KVAAttributionResult * _Nonnull);
 /// A boolean indicating if an attribution result should be retrieved.
@@ -466,9 +376,8 @@ SWIFT_CLASS_NAMED("KVAAttribution")
 
 /// The attribution result.
 SWIFT_CLASS_NAMED("KVAAttributionResult")
-@interface KVAAttributionResult : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAttributionResult : NSObject
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// A boolean indicating if the result attributed the install.
 @property (nonatomic, readonly) BOOL attributedBool;
 /// A boolean indicating if the current install is the first install.
@@ -483,15 +392,9 @@ SWIFT_CLASS_NAMED("KVAAttributionResult")
 
 
 /// A feature which is responsible for custom identifiers.
-/// Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVACustomIdentifiers : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a custom identifier.
 /// In order to send a custom identifier it must be whitelisted on your account.
 /// \param nameString The name of the identifier.
@@ -499,9 +402,6 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSURL;
@@ -509,7 +409,7 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 
 /// A deeplink.
 SWIFT_CLASS_NAMED("KVADeeplink")
-@interface KVADeeplink : NSObject <KVAFromProtocol>
+@interface KVADeeplink : NSObject
 /// Create a deeplink and then process it.
 /// \param url The deep link url as provided.
 ///
@@ -543,8 +443,7 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 ///
 + (void)processWithURL:(NSURL * _Nullable)url timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval processor:(id <KVADeeplinksProcessorProvider> _Nullable)processor completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The deeplink url as provided by the operating system.
 @property (nonatomic, copy) NSString * _Nullable urlString;
@@ -569,16 +468,10 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 
 /// A feature which measures deeplink activity.
-/// Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -587,9 +480,6 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param completionHandler A completion handler to call when processing is complete.
 ///
 - (void)processDeeplink:(KVADeeplink * _Nonnull)deeplink timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
@@ -602,19 +492,9 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker29KVADeeplinksProcessorProvider_")
 
 
 /// A feature which is responsible for the identification of a device.
-/// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting var <code>string</code>.
 SWIFT_CLASS_NAMED("KVADeviceId")
-@interface KVADeviceId : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVADeviceId : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A property containing the unique device ID that was generated when the tracker was first initialized on the current install.
 @property (nonatomic, readonly, copy) NSString * _Nullable string;
 @end
@@ -622,20 +502,18 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 @class KVAEventType;
 @protocol KVAEventSenderProvider;
 @class KVAConsent;
+@class NSDate;
 @class NSDecimalNumber;
 
 /// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
-/// Sending events is not required.  To track installation information, you do not need to do anything more than to start a tracker.  Still, many advertisers want to understand and correlate the relationship between conversion and attribution source information with user activity.  This can only be done by tracking events.
-/// Events can be sent from anywhere within the application.  Events will be coupled with device datapoints and general application information.  If they cannot be sent immediately to Kochava they will be queued and retried later.
-/// The KVAEvent class defines an individual event, providing a variety of standardized event types and parameters.  Standard event types may represent a purchase, the completion of a level, an achievement, etc.  Standard parameters may represent a currency, price, level, etc.
-/// The use of standard event types and parameters maximizes parity with external analytics partners and ensures optimal reporting and analytical output via the Kochava platform.  If the data you are sending in events can be sent using standard event types and parameters we recommend you do so.
 SWIFT_CLASS_NAMED("KVAEvent")
-@interface KVAEvent : NSObject <KVAFromProtocol>
+@interface KVAEvent : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (KVAEvent * _Nonnull)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
-+ (KVAEvent * _Nonnull)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a type— using modern Objective-C syntax.
++ (nonnull instancetype)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a typeNameString— using modern Objective-C syntax.
+/// For TVML.  This constructor exists because there doesn’t appear to be a way to export an enumeration using the JSExport system Apple provides.
++ (nonnull instancetype)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Send the event using the default KVAEventSenderProvider.
@@ -651,11 +529,6 @@ SWIFT_CLASS_NAMED("KVAEvent")
 ///
 - (id _Nullable)valueObjectForPropertyIdentifierString:(NSString * _Nullable)propertyIdentifierString SWIFT_WARN_UNUSED_RESULT;
 - (NSString * _Nullable)subURLIdString SWIFT_WARN_UNUSED_RESULT;
-/// An ad network conversion result.
-/// Qualifying events are ammended with this property just prior to starting a send request.
-/// note:
-/// This API is public in order to make it available for the internal use of modules within the Kochava SDK.  It should not be used unless otherwise directed by Kochava.
-@property (nonatomic, strong) id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable adNetworkConversionResult;
 /// A type for the event
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
@@ -758,7 +631,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable endDateString;
 /// A property containing an informational dictionary of key/value pairs.
-/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.
+/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.  The maximum supported depth is 10, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable infoDictionary;
 /// A property containing an informational string.
 /// A informational string.  This can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.
@@ -784,7 +657,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable originString;
 /// A property that contains a payload in the form of a dictionary.
-/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
+/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  The maximum supported depth is 9, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable payloadDictionary;
 /// A property that contains a price.
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  Because it uses an NSDecimalNumber, it is better suited for preserving decimal precision than priceDoubleNumber.  priceDecimalNumber and priceDoubleNumber share the same key when sent to the server.  If both are set, the value within priceDecimalNumber will win.
@@ -853,23 +726,23 @@ SWIFT_CLASS_NAMED("KVAEvent")
 
 
 @interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
@@ -877,13 +750,13 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString An info string.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString A custom string.  It may be an unnested (single dimensional) dictionary converted to a JSON formatted string.
@@ -891,33 +764,33 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
@@ -926,7 +799,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSender")
+SWIFT_PROTOCOL("_TtP14KochavaTracker14KVAEventSender_")
 @protocol KVAEventSender
 /// Send an event from the device to the appropriate server(s).
 /// \param event A KVAEvent configured with the values you want to associate with the event.
@@ -935,7 +808,7 @@ SWIFT_PROTOCOL_NAMED("KVAEventSender")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker22KVAEventSenderProvider_")
 @protocol KVAEventSenderProvider
 /// A property which conforms to protocol KVAEventSender.
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
@@ -944,28 +817,46 @@ SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
 
 /// A class which defines an event type.
 SWIFT_CLASS_NAMED("KVAEventType")
-@interface KVAEventType : NSObject <KVAFromProtocol>
+@interface KVAEventType : NSObject
+/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
++ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was clicked.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
++ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a cart.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToCart;)
 + (KVAEventType * _Nonnull)addToCart SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a wish list.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToWishList;)
 + (KVAEventType * _Nonnull)addToWishList SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
-+ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
++ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a checkout was started.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull checkoutStart;)
 + (KVAEventType * _Nonnull)checkoutStart SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that consent was granted.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
++ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a customEventNameString will be supplied.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull custom;)
 + (KVAEventType * _Nonnull)custom SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that there was a deep link.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
++ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a level was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull levelComplete;)
 + (KVAEventType * _Nonnull)levelComplete SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a purchase was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull purchase;)
 + (KVAEventType * _Nonnull)purchase SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was opened.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
++ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was received.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
++ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was rated.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull rating;)
 + (KVAEventType * _Nonnull)rating SWIFT_WARN_UNUSED_RESULT;
@@ -975,38 +866,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 /// An event type which signifies that a search was performed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull search;)
 + (KVAEventType * _Nonnull)search SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
-+ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
-+ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
-+ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was received.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
-+ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was opened.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
-+ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that consent was granted.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
-+ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that there was a deep link.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
-+ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was clicked.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
-+ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a trial was started.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull startTrial;)
 + (KVAEventType * _Nonnull)startTrial SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that there was a subscription.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull subscribe;)
 + (KVAEventType * _Nonnull)subscribe SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
++ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
++ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// The name.
@@ -1019,31 +890,16 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for linking identities.
-/// Register an identity link using class func <code>register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVAIdentityLink")
-@interface KVAIdentityLink : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAIdentityLink : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -1052,49 +908,30 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which provides information about the install.
-/// The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>KVATracker/config</code>.
 SWIFT_CLASS_NAMED("KVAInstall")
-@interface KVAInstall : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAInstall : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The date that the install did start first.
 /// This will be nil until the first time that the start function for the tracker has executed.
-@property (nonatomic, copy) NSDate * _Nullable didStartFirstDate;
+@property (nonatomic, readonly, copy) NSDate * _Nullable didStartFirstDate;
 @end
 
 @class KVAPrivacyProfile;
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrar")
+SWIFT_PROTOCOL("_TtP14KochavaTracker26KVAPrivacyProfileRegistrar_")
 @protocol KVAPrivacyProfileRegistrar
 - (void)registerProfile:(KVAPrivacyProfile * _Nonnull)profile;
 @end
 
 
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
 SWIFT_CLASS_NAMED("KVAPrivacy")
-@interface KVAPrivacy : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAPrivacyProfileRegistrar>
+@interface KVAPrivacy : NSObject <KVAPrivacyProfileRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a profile.
 /// \param profile The profile to register.
 ///
@@ -1106,16 +943,13 @@ SWIFT_CLASS_NAMED("KVAPrivacy")
 /// \param enabledBool A boolean indicating if enabled.
 ///
 - (void)setEnabledBoolForProfileNameString:(NSString * _Nonnull)profileNameString enabledBool:(BOOL)enabledBool;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @protocol KVAPrivacyProfileRegistrarProvider;
 
 /// A privacy profile.
 SWIFT_CLASS_NAMED("KVAPrivacyProfile")
-@interface KVAPrivacyProfile : NSObject <KVAFromProtocol>
+@interface KVAPrivacyProfile : NSObject
 /// Create a privacy profile and then register it.
 /// \param nameString The name of the privacy profile.
 ///
@@ -1140,8 +974,6 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 /// \param registrarArray An array of KVAPrivacyProfileRegistrarProvider to which to register the KVAPrivacyProfile.
 ///
 + (void)registerWithNameString:(NSString * _Nonnull)nameString payloadKeyStringArray:(NSArray<NSString *> * _Nullable)payloadKeyStringArray payloadIdStringArray:(NSArray<NSString *> * _Nullable)payloadIdStringArray registrarArray:(NSArray<id <KVAPrivacyProfileRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A unique name string.
 @property (nonatomic, readonly, copy) NSString * _Nonnull nameString;
@@ -1155,7 +987,7 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 
 
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrarProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPrivacyProfileRegistrarProvider_")
 @protocol KVAPrivacyProfileRegistrarProvider
 /// A property which conforms to protocol KVAPrivacyProfileRegistrar.
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
@@ -1170,22 +1002,12 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPushNotificationsTokenRegistrar_")
 
 
 /// A feature which provides for the measurement of push notifications.
-/// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 SWIFT_CLASS_NAMED("KVAPushNotifications")
-@interface KVAPushNotifications : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable, KVAPushNotificationsTokenRegistrar>
+@interface KVAPushNotifications : NSObject <KVAPushNotificationsTokenRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 - (void)registerToken:(KVAPushNotificationsToken * _Nonnull)token;
-- (void)invalidate;
 /// A boolean indicating if push notifications is enabled.
 @property (nonatomic) BOOL enabledBool;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSData;
@@ -1193,7 +1015,7 @@ SWIFT_CLASS_NAMED("KVAPushNotifications")
 
 /// A push notifications token.
 SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
-@interface KVAPushNotificationsToken : NSObject <KVAFromProtocol>
+@interface KVAPushNotificationsToken : NSObject
 /// Create a push notifications token using deviceTokenData and then register.
 /// \param deviceTokenData The device token as provided in Data.
 ///
@@ -1214,8 +1036,6 @@ SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
 /// \param registrarArray An array of KVAPushNotificationsTokenRegistrarProvider to which to add the token.
 ///
 + (void)registerWithDataHexString:(NSString * _Nonnull)deviceTokenDataHexString registrarArray:(NSArray<id <KVAPushNotificationsTokenRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The token data as provided by the operating system.
 @property (nonatomic, readonly, copy) NSData * _Nullable data;
@@ -1236,10 +1056,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker42KVAPushNotificationsTokenRegistrarProvider
 
 /// A class which encapsulates a session.
 SWIFT_CLASS_NAMED("KVASession")
-@interface KVASession : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
+@interface KVASession : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1247,107 +1064,20 @@ SWIFT_CLASS_NAMED("KVASession")
 
 /// A feature which provides for the measurement of sessions.
 SWIFT_CLASS_NAMED("KVASessions")
-@interface KVASessions : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVASessions : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVATrackerConfig;
+@class KVATrackerGeneral;
+@class KVANetworking;
 
 /// The class KVATracker provides an interface between a host application and Kochava’s Attribution and Measurement servers.
-/// The class KVATracker is the main interface for module KochavaTracker.  A tracker manages the exchange of data between the client and server, along with the associated tasks and network transactions.  If you have not already integrated the KochavaTracker SDK into your project, refer to our KochavaTracker iOS SDK support documentation.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// From there, the tracker proceeds to start and perform its various tasks.  This is typically done during the earliest phases of the host’s lifecycle, so that installation attribution can be quickly established and post-install events may begin to egress.
-/// You may alternately create an instance.  If you do, it is your responsibility to maintain a strong reference.  And if you create multiple instances, it is your responsibility to configure each with a unique storageIdentifierString.
-/// <h2>Examples</h2>
-/// Example - Starting the shared instance using func <code>start(withAppGUIDString:)</code>:
-/// \code
-/// KVATracker.shared.start(withAppGUIDString: "_YOUR_APP_GUID_")
-///
-/// \endcode<h2>Features</h2>
-/// <ul>
-///   <li>
-///     <em>Ad Network</em> (var <code>adNetwork</code>) — A feature which interfaces with Apple’s SKAdNetwork attribution system.  See class <code>KVAAdNetwork</code>.
-///   </li>
-///   <li>
-///     <em>App Clips</em> (var appClips) — A feature which provides measurement for App Clips.  Implemented in internal class KVAAppClips.
-///   </li>
-///   <li>
-///     <em>Apple Search Ads</em> (var appleSearchAds ) — A feature which interfaces with Apple Search Ads.  Implemented in internal class KVAAppleSearchAds.
-///   </li>
-///   <li>
-///     <em>App Limit Ad Tracking</em> (var <code>appLimitAdTracking</code>) — A feature which may be used to limit advertising tracking from the level of the application (or host).  See class <code>KVAAppLimitAdTracking</code>.
-///   </li>
-///   <li>
-///     <em>App Tracking Transparency</em> (var <code>appTrackingTransparency</code>) — A feature which interfaces with Apple’s App Tracking Transparency system.  See class <code>KVAAppTrackingTransparency</code>.
-///   </li>
-///   <li>
-///     <em>Attribution</em> (var <code>attribution</code>) — A feature which provides attribution information related to the install.  See class <code>KVAAttribution</code>.
-///   </li>
-///   <li>
-///     <em>Config</em> (var <code>config</code>) — A feature which is responsible for controlling and updating the configuration of the tracker.  This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.  See class <code>KVATrackerConfig</code>.
-///   </li>
-///   <li>
-///     <em>Consent</em> (var <code>consent</code>) — A feature which serves as an authority related to consent for the sharing of personal data.  See class KVAConsent in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Crash Reporting</em> (var crashReporting) — A feature which can be used to report crashes.  Implemented in class KVACrashReporting.  Note:  This feature is not being compiled into the SDK at this time.  Please enquire with your Kochava client success manager if you are interested in this feature.
-///   </li>
-///   <li>
-///     <em>Custom Identifiers</em> (var <code>customIdentifiers</code>) — A feature which is responsible for custom identifiers.  See class <code>KVACustomIdentifiers</code>.  Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Datapoints</em> (var dataPoints) — A feature which is responsible for the collection of datapoints.  Datapoints provide insights about the device at the times when events are generated.  Implemented in internal class KVATrackerDataPoints.
-///   </li>
-///   <li>
-///     <em>Deeplinks</em> (var <code>deeplinks</code>) — A feature which measures deeplink activity.  See class <code>KVADeeplinks</code>.  Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
-///   </li>
-///   <li>
-///     <em>Device Id</em> (var <code>deviceId</code>) — A feature which is responsible for the identification of a device.  The managed id is referred to as the <em>Kochava Device Id</em>.  See class <code>KVADeviceId</code>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
-///   </li>
-///   <li>
-///     <em>Events</em> (var <code>events</code>) — A feature which tracks user behavior and actions beyond the install.  See class <code>KVAEvents</code>.  Create and send events using any of the methods available in class <code>KVAEvent</code>.
-///   </li>
-///   <li>
-///     <em>General</em> (var <code>general</code>) — A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.  Implemented in internal class <code>KVATrackerGeneral</code>.
-///   </li>
-///   <li>
-///     <em>Identity Link</em> (var <code>identityLink</code>) — A feature which is responsible for linking identities.  See class <code>KVAIdentityLink</code>.  Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Install</em> (var <code>install</code>) — A feature which provides information about the install.  The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>config</code>.  See class <code>KVAInstall</code>.
-///   </li>
-///   <li>
-///     <em>Logging</em> (var logging) — A feature which is responsible for tracker-specific logging activities.  Implemented in internal class KVATrackerLogging.  You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
-///   </li>
-///   <li>
-///     <em>Networking</em> (var <code>networking</code>) — A feature which provides networking support.  The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Privacy</em> (var <code>privacy</code>) — A feature which is responsible for privacy.  See class <code>KVAPrivacy</code>.  Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
-///   </li>
-///   <li>
-///     <em>Push Notifications</em> (var <code>pushNotifications</code>) — A feature which provides for the measurement of push notifications.  See class <code>KVAPushNotifications</code>.  Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
-///   </li>
-///   <li>
-///     <em>Sessions</em> (var sessions) — A feature which provides for the measurement of sessions.  Implemented in internal class KVASessions.
-///   </li>
-///   <li>
-///     <em>Updates</em> (var updates) — A feature which updates the server when there are changes to tracked components.  Implemented in internal class KVATrackerUpdates.
-///   </li>
-/// </ul>
 SWIFT_CLASS_NAMED("KVATracker")
-@interface KVATracker : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVASharedPropertyProvider, KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
+@interface KVATracker : NSObject <KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
 /// A shared instance, for convenience.
-/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance provides a few benefits.  First, it simplifies your implementation as you do not need to store an instance to the tracker somewhere in a public location in your own code.  Second, it ensures that if your code unintentionally tries to make use of the shared instance prior to configuration that you can receive a warning in the log from the tracker.  If you use your own property to store the tracker, and it is nil, then this provision would not be automatically available to you.
+/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance simplifies your implementation as you do not need to store a tracker instance somewhere in a public location in your own code.
+/// By default this instance will use the default storage location equivalent to calling <code>init(storageIdString:)</code> with storageIdString nil.  If you wish to specify an alternative storage location, see var <code>sharedStorageIdString</code>.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVATracker * _Nonnull shared;)
 + (KVATracker * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
 /// A shared instance, for convenience— optional.
@@ -1361,36 +1091,25 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// class MyClass:
-/// {
-///     let tracker = KVATracker(storageIdString: "alternate")
-/// }
-///
-/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
-///
-- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
-/// Create a tracker.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// <h2>Example</h2>
-/// \code
-/// class MyClass:
+/// class MyClass
 /// {
 ///     let tracker = KVATracker()
 /// }
 ///
 /// \endcode
 - (nonnull instancetype)init;
-/// Create a tracker— using modern Objective-C syntax.
+/// Create a tracker.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// KVATracker *tracker = [KVATracker trackerWithStorageIdString:@"alternate"];
+/// class MyClass
+/// {
+///     let tracker = KVATracker(storageIdString: "alternate")
+/// }
 ///
-/// \endcodenote:
-/// This convenience constructor exists for Objective-C and is expected to be removed in a future version.  In Swift you should use default constructor KVATracker(storageIdString:)— or preferably, the shared instance.
-/// \param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
+/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker().
 ///
-+ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
 /// Create a tracker— using modern Objective-C syntax.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// note:
@@ -1399,28 +1118,17 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// \code
 /// KVATracker *tracker = KVATracker.tracker;
 ///
-/// \endcode
+/// \endcodeFuture: @available(*, deprecated, renamed: “init()”)
 + (nonnull instancetype)tracker SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object.
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object, supporting filling into an existing initializedObject.
-/// This implementation of static func kva_from(…) is special in that this class is viewed as being primarily a container for a set of feature components.  Each of these features takes care of themselves.  At this scope we are mainly setting the fromDictionary property, which will be used as needed when the feature components are brought online.  The principle place where that takes place is when the featureArray is configured, as each feature is added to the array.  To be added this requires them to be instantiated, and, when present, decoded.  See func featureArray_configure().
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-/// \param initializedObject An initialized object.  When this is provided it will fill an existing initialized object.  When this is nil a new blank instance will be created.
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-/// Encode for a specified context.
-/// The returned value will typically be a dictionary formatted as JSON.
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure (update) the instance from another object.
-/// This method is used to configure the instance.  It is the same method used to configure the instance when the config response is returned.  This is referring to kvinit.  It can also be called from the host to override (or else default) various parameters.  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in objects $override$, $override.append$, $default$, or $default.append$, to indicate how these options are treated relative to the server’s options.
-/// $override$:  Elements within this object will override any options of the same name specified by the server.
-/// $override.append$:  Elements within this object will append/override any previously established $override$.  $override$ does not need to be used first.
-/// $default$:  Elements within this object will serve as a default for any options of the same name when not specified by the server.
-/// $default.append$:  Elements within this object will append/override any previously established $default$.  $default$ does not need to be used first.
++ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+/// Configure the instance with an object.
+/// This is the same method which is used to configure the instance when the <code>config</code> response is returned from Kochava’s servers (aka kvinit).  It can also be called from the host to change the defaults of various parameters (or else override them).  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in special objects with special keys <code>$default$</code>, <code>$default.append$</code>, <code>$override$</code>, or <code>$override.append$</code>, to indicate how these options are treated relative to the server’s options.
+/// | Special Key | Treatment  |
+/// — | —
+/// $default$ |  Elements within this object will serve as a default for any options of the same name when not specified by the server.  The use of this option will replace any previous use of <code>$default$</code> or <code>$default.append$</code>.
+/// $default.append$ |  Elements within this object will append to any previously established <code>$default$</code>.  You may use this without using <code>$default$</code> first, allowing you to specify multiple defaults over the course of multiple configuration calls.  The use of this option is generally considered preferred relative to the others.  That is because as a default it still allows for the server to specify overrides, and as an append it will respect any other previous configuration calls which you may have made at other times and places.
+/// $override$ |  Elements within this object will override any options of the same name specified by the server.  Use this option when you do not want to allow the server to specify overrides.  The use of this option will replace any previous use of <code>$override$</code> or <code>$override.append$</code>.
+/// $override.append$ |  Elements within this object will append to any previously established <code>$override$</code>.  You may use this without using <code>$override$</code> first, allowing you to specify multiple overrides over the course of multiple configuration calls.  The use of this option is generally preferred to <code>$override$</code>.  That is because as an append it will respect any other previous configuration calls which you may have made at other times and places.
 /// The following example will deny the collection of two datapoints, the idfa and idfv.  Ordinarily the best way to do this is through the Kochava dashboard, where these can be controlled within multiple version(s) of an app already in production.  However, if at build time you wanted to explicitly override server-side control, such that these two items effectively always appear in the deny datapoints list, the following code would do so:
 /// <h2>Example</h2>
 /// \code
@@ -1441,17 +1149,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// ]
 ///
 /// // KVATracker
-/// KVATracker.shared.configure(with: trackerConfigureObject, context: KVAContext.host)
+/// KVATracker.shared.configure(with: trackerConfigureObject, context: .host)
 /// KVATracker.shared.start(withAppGUIDString: "koapple-sdk-h-random-sn4i")
 ///
 /// \endcode\param object An object from which to configure the instance.  This is most commonly a JSON object.
 ///
-/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.
+/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.  When this method is called from the host, whether an app or an app extension, the specified context should be <code>.host</code>.
 ///
 - (void)configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// Configure (update) the instance from another object.
-/// This function is equivalent to func configure(with:context) however this does not first dispatch to the globalSerial queue.  It is the protocol conformance of KVAConfigureWithProtocol.  You should not use this function directly unless you have a specific need to not perform the preferred dispatch.
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Start the tracker with an appGUIDString.
 /// You may start a tracker with either an appGUIDString or a partnerNameString.  Most commonly this is done with an appGUIDString.  See also func <code>start(withPartnerNameString:)</code>.
 /// <h2>Example</h2>
@@ -1471,36 +1176,33 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 ///
 - (void)startWithPartnerNameString:(NSString * _Nonnull)partnerNameString;
 /// Start the tracker.
-/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func start(withAppGUIDString:) and func start(withPartnerNameString:).  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
+/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func <code>start(withAppGUIDString:)</code> and func <code>start(withPartnerNameString:)</code>.  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
 - (void)start;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Execute an advanced instruction.
+/// This function can be used to executed advanced instruction(s) for certain atypical use cases.  You should only use this if instructed by your Kochava Client Success Manager.
 /// \param identifierString An identifier for the advanced instruction.
 ///
 /// \param valueObject A value object for the advanced instruction.
 ///
 - (void)executeAdvancedInstructionWithIdentifierString:(NSString * _Nonnull)identifierString valueObject:(id _Nullable)valueObject;
 /// Invalidate the instance.
-/// This is similar to allowing an instance of the tracker deallocate, but it can also be used on the shared instance.  It will additionally signal certain sub-systems to invalidate themselves, which can result in a more assured and immediate halt.  The scope of this invalidation is not absolute.  Certain sub-systems will continue to run for a period of time until they may gracefully complete.  When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure it.
-/// When you are not using Intelligent Consent Management, this method can be used to signal that the tracker may no longer run following consent having been denied.  When used this way, you may re-configure a tracker if/when consent is granted.
+/// When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure and start it.
 - (void)invalidate;
 /// Invalidate the instance.
 /// See func <code>invalidate()</code>
-- (void)invalidateWithPrintLogMessageBool:(BOOL)printLogMessageBool;
+- (void)invalidateWithAsyncBool:(BOOL)asyncBool printLogMessageBool:(BOOL)printLogMessageBool;
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 @property (nonatomic, readonly, strong) KVAAdNetwork * _Nullable adNetwork;
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 @property (nonatomic, readonly, strong) KVAAppLimitAdTracking * _Nonnull appLimitAdTracking;
-/// A boolean which indicates if you want to limit ad tracking at the application level (convenience).
-/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
-@property (nonatomic) BOOL appLimitAdTrackingBool;
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 @property (nonatomic, readonly, strong) KVAAppTrackingTransparency * _Nonnull appTrackingTransparency;
 /// A feature which provides attribution information related to the install.
 @property (nonatomic, readonly, strong) KVAAttribution * _Nonnull attribution;
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
+/// This is sometimes referred to by the name of the backing service which provides the configuration, <em>kvinit</em>.
 @property (nonatomic, readonly, strong) KVATrackerConfig * _Nonnull config;
 /// A feature which serves as an authority related to consent for the sharing of personal data.
 /// Data sharing privacy laws such as GDPR require consent to be obtained before certain kinds of personal data may be collected or calculated, kept in memory, persisted or retained in persistent storage, and/or shared with partners.  During the natural lifecycle, there are times where partners may be added and cause the consent status to fall back to an unknown state.  Later the user may again be prompted and the consent status may (or may not) again come to be known.  All of this is predicated upon whether or not consent is required, which is governed by a variety of factors such as location.
@@ -1514,8 +1216,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which is responsible for the identification of a device.
 /// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
 @property (nonatomic, readonly, strong) KVADeviceId * _Nonnull deviceId;
-/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).
-@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
+@property (nonatomic, readonly, strong) KVATrackerGeneral * _Nonnull general;
 /// A feature which is responsible for linking identities.
 /// Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
 @property (nonatomic, readonly, strong) KVAIdentityLink * _Nonnull identityLink;
@@ -1526,89 +1228,61 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
 @property (nonatomic, readonly, strong) KVANetworking * _Nonnull networking;
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
+/// Privacy profiles are automatically registered from the server.  Alternatively create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.  Enable (or explicitly disable) a profile by calling class <code>KVAPrivacy</code> func <code>KVAPrivacy/setEnabledBool(forProfileNameString:enabledBool:)</code>.
 @property (nonatomic, readonly, strong) KVAPrivacy * _Nonnull privacy;
 /// A feature which provides for the measurement of push notifications.
 /// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 @property (nonatomic, readonly, strong) KVAPushNotifications * _Nonnull pushNotifications;
+/// A boolean which indicates if you want to limit ad tracking at the application level.  This is a convenience variable which is equivalent to var <code>appLimitAdTracking</code> func <code>KVAAppLimitAdTracking/bool</code>.
+/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
+@property (nonatomic) BOOL appLimitAdTrackingBool;
+/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).  This is a convenience variable which is equivalent to var <code>deviceId</code> func <code>KVADeviceId/string</code>.
+@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A boolean which when true causes the instance to sleep.  This is a convenience variable which is equivalent to var <code>networking</code> func sleepBool.
+/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
+@property (nonatomic) BOOL sleepBool;
 @property (nonatomic, readonly, strong) id <KVADeeplinksProcessor> _Nullable deeplinksProcessor;
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPushNotificationsTokenRegistrar> _Nonnull pushNotificationsTokenRegistrar;
 /// A string used as a  storage identifier for the shared instance.
-/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.  Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.  If used, it is absolutely imperative that this value be consistently set prior to accessing the shared instance for the first time.
+/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.
+/// Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.
+/// If used, it is imperative that this value be consistently set prior to accessing the shared instance for the first time.  You must make accommodations to set this as early as possible, where it would be prior to any access to var <code>shared</code> throughout all of your code.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nullable sharedStorageIdString;)
 + (NSString * _Nullable)sharedStorageIdString SWIFT_WARN_UNUSED_RESULT;
 + (void)setSharedStorageIdString:(NSString * _Nullable)sharedStorageIdString;
-/// A boolean which when true causes the instance to sleep.
-/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
-@property (nonatomic) BOOL sleepBool;
 /// A boolean indicating whether or not the instance has been started.
 @property (nonatomic, readonly) BOOL startedBool;
 @end
 
 
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
 SWIFT_CLASS_NAMED("KVATrackerConfig")
-@interface KVATrackerConfig : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerConfig : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for the collection of datapoints.
-SWIFT_CLASS_NAMED("KVATrackerDataPoints")
-@interface KVATrackerDataPoints : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+SWIFT_CLASS_NAMED("KVATrackerDatapoints")
+@interface KVATrackerDatapoints : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
 SWIFT_CLASS_NAMED("KVATrackerGeneral")
-@interface KVATrackerGeneral : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerGeneral : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for tracker-specific logging activities.
 /// You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
 SWIFT_CLASS_NAMED("KVATrackerLogging")
-@interface KVATrackerLogging : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerLogging : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVAProduct;
@@ -1618,12 +1292,10 @@ SWIFT_CLASS_NAMED("KVATrackerLogging")
 /// note:
 /// This is currently overridden to be a subclass of NSObject rather than KVAProduct so that it can be represented in Objective-C.  If you use KVAProduct it will still build, but the automatic module registration will fail to locate the class.  You can see early evidence of the problem if you also make the shared property be of the class type, where the compiler will say that it cannot use @objc because it cannot be expressed in Objective-C.  This is apparently a problem that Swift has providing Objective-C compatibility to Swift classes which subclass other Swift classes across modules.  For example, KVACoreProduct does not have this problem, presumably because it’s in the same module as KVAProduct.  In order to convert this class to subclass KVAProduct, or to subsequently allow shared to be of the class’ type, a means of registering/loading the class as a Swift-only class would be required.  More importantly, however, we’d need to give up public Objective-C support.  Since that doesn’t seem possible, the only alternative would be that Apple fixes this issue and provides the necessary support, assuming that’s possible.
 SWIFT_CLASS_NAMED("KVATrackerProduct")
-@interface KVATrackerProduct : NSObject <KVASharedPropertyProvider>
+@interface KVATrackerProduct : NSObject
 /// The singleton shared instance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAProduct * _Nonnull shared;)
 + (KVAProduct * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull sharedInstance;)
-+ (id _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -1637,17 +1309,8 @@ SWIFT_CLASS("_TtC14KochavaTracker23KVATrackerProductParams")
 
 /// A feature which updates the server when there are changes to tracked components.
 SWIFT_CLASS_NAMED("KVATrackerUpdates")
-@interface KVATrackerUpdates : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerUpdates : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 #if __has_attribute(external_source_symbol)
@@ -1855,7 +1518,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
 @import Foundation;
-@import KochavaCore;
 @import ObjectiveC;
 #endif
 
@@ -1876,32 +1538,15 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@class KVAContext;
-@class KVANetworking;
-@class NSDate;
-@protocol KVAMutable;
-@class KVAEvent;
-@protocol KVAAsForContextProtocol;
 @class KVAAdNetworkConversion;
 
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 SWIFT_CLASS_NAMED("KVAAdNetwork")
-@interface KVAAdNetwork : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetwork : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking measurementWindowStartDate:(NSDate * _Nullable)measurementWindowStartDate delegate:(id <KVAMutable> _Nullable)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable)eventNetTransactionWillStartRequestWithNoAdNetworkConversionResult:(KVAEvent * _Nonnull)event SWIFT_WARN_UNUSED_RESULT;
-- (void)invalidate;
 /// A closure which is called when the SKAdNetwork registerAppForAdNetworkAttribution API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didRegisterAppForAttributionBlock)(KVAAdNetwork * _Nonnull);
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The current conversion information.
 @property (nonatomic, strong) KVAAdNetworkConversion * _Nonnull conversion;
 @end
@@ -1910,15 +1555,9 @@ SWIFT_CLASS_NAMED("KVAAdNetwork")
 
 /// A feature which determines adnetwork conversion(s).
 SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
-@interface KVAAdNetworkConversion : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetworkConversion : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when the SKAdNetwork updateConversionValue API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didUpdateValueBlock)(KVAAdNetworkConversion * _Nonnull, KVAAdNetworkConversionResult * _Nonnull);
@@ -1930,29 +1569,26 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 
 /// A class which defines an adnetwork conversion event.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
-@interface KVAAdNetworkConversionEvent : NSObject <KVAFromProtocol>
+@interface KVAAdNetworkConversionEvent : NSObject
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@class KVAContext;
 @class NSString;
 @class NSNumber;
 
 /// The adnetwork conversion result.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
-@interface KVAAdNetworkConversionResult : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAMutableDelegator>
+@interface KVAAdNetworkConversionResult : NSObject <NSCopying>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
++ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// Return the conversion value integer which is used with the SKAdNetwork updateConversionValue API.
 /// Apple currently restricts this value to 6-bits.  This is a combination (OR) of the translated value (translatedValueIntNumber) with any extension interval value (extensionIntervalTranslatedValueInt.integerValue).
 - (NSInteger)valueInt SWIFT_WARN_UNUSED_RESULT;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A string which represents the model used for the conversion.
 @property (nonatomic, readonly, copy) NSString * _Nullable modelString;
 @property (nonatomic, readonly, strong) NSNumber * _Nullable translatedValueIntNumber;
@@ -1964,31 +1600,15 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
 
 /// A feature which provides measurement for App Clips.
 SWIFT_CLASS_NAMED("KVAAppClips")
-@interface KVAAppClips : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppClips : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
-@interface KVAAppLimitAdTracking : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+@interface KVAAppLimitAdTracking : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if you want to limit ad tracking at the application level.
 /// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of true from either this feature or Apple’s will result in the limiting of ad tracking.
 @property (nonatomic) BOOL boolean;
@@ -1997,23 +1617,16 @@ SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
 
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
-@interface KVAAppTrackingTransparency : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppTrackingTransparency : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
 /// Default true.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
 @property (nonatomic) BOOL autoRequestTrackingAuthorizationBool;
 /// A time interval to wait for the request for tracking authorization before proceeding to send the install.
 /// Default 30.0.  Subject to server-based override.  This provides time to wait to obtain the authorization necessary to collect the IDFA.
 @property (nonatomic) NSTimeInterval authorizationStatusWaitTimeInterval;
+/// A boolean indicating if this feature is enabled.
+/// Default: false.
 @property (nonatomic) BOOL enabledBool;
 /// The authorization status expressed as an NSString.
 /// This is optional and will be nil until a status is known.  For this reason this can be checked as a means of determining if a status has been determined.  Current possible values:  “authorized”, “denied”, “notDetermined”, “restricted”, “unknown”.
@@ -2023,21 +1636,7 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 
 /// A feature which interfaces with Apple Search Ads.
 SWIFT_CLASS_NAMED("KVAAppleSearchAds")
-@interface KVAAppleSearchAds : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure the instance for use.
-/// \param networking An instance of class KVANetworking.
-///
-/// \param delegate A delegate.
-///
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking delegate:(id <KVAMutable> _Nonnull)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAds : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2045,14 +1644,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAds")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
-@interface KVAAppleSearchAdsMethod2 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nonnull instancetype)appleSearchAdsMethod2Attribution SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod2 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2060,9 +1652,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
 
 /// Apple’s attribution as provided by Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
-@interface KVAAppleSearchAdsMethod2Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod2Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2070,13 +1660,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
-@interface KVAAppleSearchAdsMethod3 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod3 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2084,9 +1668,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
 
 /// Apple’s attribution as provided by Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
-@interface KVAAppleSearchAdsMethod3Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod3Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2095,21 +1677,12 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
 
 /// A feature which provides attribution information related to the install.
 SWIFT_CLASS_NAMED("KVAAttribution")
-@interface KVAAttribution : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAttribution : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Get the attribution result with a completion handler.
 /// \param completionHandler A completion handler to call once the result has been retrieved.
 ///
 - (void)retrieveResultWithCompletionHandler:(void (^ _Nonnull)(KVAAttributionResult * _Nonnull))completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when attribution is retrieved.
 @property (nonatomic, copy) void (^ _Nullable closure_didRetrieveResult)(KVAAttribution * _Nonnull, KVAAttributionResult * _Nonnull);
 /// A boolean indicating if an attribution result should be retrieved.
@@ -2123,9 +1696,8 @@ SWIFT_CLASS_NAMED("KVAAttribution")
 
 /// The attribution result.
 SWIFT_CLASS_NAMED("KVAAttributionResult")
-@interface KVAAttributionResult : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAttributionResult : NSObject
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// A boolean indicating if the result attributed the install.
 @property (nonatomic, readonly) BOOL attributedBool;
 /// A boolean indicating if the current install is the first install.
@@ -2140,15 +1712,9 @@ SWIFT_CLASS_NAMED("KVAAttributionResult")
 
 
 /// A feature which is responsible for custom identifiers.
-/// Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVACustomIdentifiers : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a custom identifier.
 /// In order to send a custom identifier it must be whitelisted on your account.
 /// \param nameString The name of the identifier.
@@ -2156,9 +1722,6 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSURL;
@@ -2166,7 +1729,7 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 
 /// A deeplink.
 SWIFT_CLASS_NAMED("KVADeeplink")
-@interface KVADeeplink : NSObject <KVAFromProtocol>
+@interface KVADeeplink : NSObject
 /// Create a deeplink and then process it.
 /// \param url The deep link url as provided.
 ///
@@ -2200,8 +1763,7 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 ///
 + (void)processWithURL:(NSURL * _Nullable)url timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval processor:(id <KVADeeplinksProcessorProvider> _Nullable)processor completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The deeplink url as provided by the operating system.
 @property (nonatomic, copy) NSString * _Nullable urlString;
@@ -2226,16 +1788,10 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 
 /// A feature which measures deeplink activity.
-/// Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -2244,9 +1800,6 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param completionHandler A completion handler to call when processing is complete.
 ///
 - (void)processDeeplink:(KVADeeplink * _Nonnull)deeplink timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
@@ -2259,19 +1812,9 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker29KVADeeplinksProcessorProvider_")
 
 
 /// A feature which is responsible for the identification of a device.
-/// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting var <code>string</code>.
 SWIFT_CLASS_NAMED("KVADeviceId")
-@interface KVADeviceId : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVADeviceId : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A property containing the unique device ID that was generated when the tracker was first initialized on the current install.
 @property (nonatomic, readonly, copy) NSString * _Nullable string;
 @end
@@ -2279,20 +1822,18 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 @class KVAEventType;
 @protocol KVAEventSenderProvider;
 @class KVAConsent;
+@class NSDate;
 @class NSDecimalNumber;
 
 /// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
-/// Sending events is not required.  To track installation information, you do not need to do anything more than to start a tracker.  Still, many advertisers want to understand and correlate the relationship between conversion and attribution source information with user activity.  This can only be done by tracking events.
-/// Events can be sent from anywhere within the application.  Events will be coupled with device datapoints and general application information.  If they cannot be sent immediately to Kochava they will be queued and retried later.
-/// The KVAEvent class defines an individual event, providing a variety of standardized event types and parameters.  Standard event types may represent a purchase, the completion of a level, an achievement, etc.  Standard parameters may represent a currency, price, level, etc.
-/// The use of standard event types and parameters maximizes parity with external analytics partners and ensures optimal reporting and analytical output via the Kochava platform.  If the data you are sending in events can be sent using standard event types and parameters we recommend you do so.
 SWIFT_CLASS_NAMED("KVAEvent")
-@interface KVAEvent : NSObject <KVAFromProtocol>
+@interface KVAEvent : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (KVAEvent * _Nonnull)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
-+ (KVAEvent * _Nonnull)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a type— using modern Objective-C syntax.
++ (nonnull instancetype)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a typeNameString— using modern Objective-C syntax.
+/// For TVML.  This constructor exists because there doesn’t appear to be a way to export an enumeration using the JSExport system Apple provides.
++ (nonnull instancetype)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Send the event using the default KVAEventSenderProvider.
@@ -2308,11 +1849,6 @@ SWIFT_CLASS_NAMED("KVAEvent")
 ///
 - (id _Nullable)valueObjectForPropertyIdentifierString:(NSString * _Nullable)propertyIdentifierString SWIFT_WARN_UNUSED_RESULT;
 - (NSString * _Nullable)subURLIdString SWIFT_WARN_UNUSED_RESULT;
-/// An ad network conversion result.
-/// Qualifying events are ammended with this property just prior to starting a send request.
-/// note:
-/// This API is public in order to make it available for the internal use of modules within the Kochava SDK.  It should not be used unless otherwise directed by Kochava.
-@property (nonatomic, strong) id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable adNetworkConversionResult;
 /// A type for the event
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
@@ -2415,7 +1951,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable endDateString;
 /// A property containing an informational dictionary of key/value pairs.
-/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.
+/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.  The maximum supported depth is 10, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable infoDictionary;
 /// A property containing an informational string.
 /// A informational string.  This can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.
@@ -2441,7 +1977,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable originString;
 /// A property that contains a payload in the form of a dictionary.
-/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
+/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  The maximum supported depth is 9, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable payloadDictionary;
 /// A property that contains a price.
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  Because it uses an NSDecimalNumber, it is better suited for preserving decimal precision than priceDoubleNumber.  priceDecimalNumber and priceDoubleNumber share the same key when sent to the server.  If both are set, the value within priceDecimalNumber will win.
@@ -2510,23 +2046,23 @@ SWIFT_CLASS_NAMED("KVAEvent")
 
 
 @interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
@@ -2534,13 +2070,13 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString An info string.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString A custom string.  It may be an unnested (single dimensional) dictionary converted to a JSON formatted string.
@@ -2548,33 +2084,33 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
@@ -2583,7 +2119,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSender")
+SWIFT_PROTOCOL("_TtP14KochavaTracker14KVAEventSender_")
 @protocol KVAEventSender
 /// Send an event from the device to the appropriate server(s).
 /// \param event A KVAEvent configured with the values you want to associate with the event.
@@ -2592,7 +2128,7 @@ SWIFT_PROTOCOL_NAMED("KVAEventSender")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker22KVAEventSenderProvider_")
 @protocol KVAEventSenderProvider
 /// A property which conforms to protocol KVAEventSender.
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
@@ -2601,28 +2137,46 @@ SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
 
 /// A class which defines an event type.
 SWIFT_CLASS_NAMED("KVAEventType")
-@interface KVAEventType : NSObject <KVAFromProtocol>
+@interface KVAEventType : NSObject
+/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
++ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was clicked.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
++ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a cart.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToCart;)
 + (KVAEventType * _Nonnull)addToCart SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a wish list.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToWishList;)
 + (KVAEventType * _Nonnull)addToWishList SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
-+ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
++ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a checkout was started.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull checkoutStart;)
 + (KVAEventType * _Nonnull)checkoutStart SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that consent was granted.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
++ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a customEventNameString will be supplied.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull custom;)
 + (KVAEventType * _Nonnull)custom SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that there was a deep link.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
++ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a level was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull levelComplete;)
 + (KVAEventType * _Nonnull)levelComplete SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a purchase was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull purchase;)
 + (KVAEventType * _Nonnull)purchase SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was opened.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
++ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was received.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
++ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was rated.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull rating;)
 + (KVAEventType * _Nonnull)rating SWIFT_WARN_UNUSED_RESULT;
@@ -2632,38 +2186,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 /// An event type which signifies that a search was performed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull search;)
 + (KVAEventType * _Nonnull)search SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
-+ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
-+ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
-+ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was received.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
-+ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was opened.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
-+ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that consent was granted.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
-+ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that there was a deep link.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
-+ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was clicked.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
-+ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a trial was started.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull startTrial;)
 + (KVAEventType * _Nonnull)startTrial SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that there was a subscription.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull subscribe;)
 + (KVAEventType * _Nonnull)subscribe SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
++ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
++ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// The name.
@@ -2676,31 +2210,16 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for linking identities.
-/// Register an identity link using class func <code>register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVAIdentityLink")
-@interface KVAIdentityLink : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAIdentityLink : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -2709,49 +2228,30 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which provides information about the install.
-/// The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>KVATracker/config</code>.
 SWIFT_CLASS_NAMED("KVAInstall")
-@interface KVAInstall : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAInstall : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The date that the install did start first.
 /// This will be nil until the first time that the start function for the tracker has executed.
-@property (nonatomic, copy) NSDate * _Nullable didStartFirstDate;
+@property (nonatomic, readonly, copy) NSDate * _Nullable didStartFirstDate;
 @end
 
 @class KVAPrivacyProfile;
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrar")
+SWIFT_PROTOCOL("_TtP14KochavaTracker26KVAPrivacyProfileRegistrar_")
 @protocol KVAPrivacyProfileRegistrar
 - (void)registerProfile:(KVAPrivacyProfile * _Nonnull)profile;
 @end
 
 
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
 SWIFT_CLASS_NAMED("KVAPrivacy")
-@interface KVAPrivacy : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAPrivacyProfileRegistrar>
+@interface KVAPrivacy : NSObject <KVAPrivacyProfileRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a profile.
 /// \param profile The profile to register.
 ///
@@ -2763,16 +2263,13 @@ SWIFT_CLASS_NAMED("KVAPrivacy")
 /// \param enabledBool A boolean indicating if enabled.
 ///
 - (void)setEnabledBoolForProfileNameString:(NSString * _Nonnull)profileNameString enabledBool:(BOOL)enabledBool;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @protocol KVAPrivacyProfileRegistrarProvider;
 
 /// A privacy profile.
 SWIFT_CLASS_NAMED("KVAPrivacyProfile")
-@interface KVAPrivacyProfile : NSObject <KVAFromProtocol>
+@interface KVAPrivacyProfile : NSObject
 /// Create a privacy profile and then register it.
 /// \param nameString The name of the privacy profile.
 ///
@@ -2797,8 +2294,6 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 /// \param registrarArray An array of KVAPrivacyProfileRegistrarProvider to which to register the KVAPrivacyProfile.
 ///
 + (void)registerWithNameString:(NSString * _Nonnull)nameString payloadKeyStringArray:(NSArray<NSString *> * _Nullable)payloadKeyStringArray payloadIdStringArray:(NSArray<NSString *> * _Nullable)payloadIdStringArray registrarArray:(NSArray<id <KVAPrivacyProfileRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A unique name string.
 @property (nonatomic, readonly, copy) NSString * _Nonnull nameString;
@@ -2812,7 +2307,7 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 
 
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrarProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPrivacyProfileRegistrarProvider_")
 @protocol KVAPrivacyProfileRegistrarProvider
 /// A property which conforms to protocol KVAPrivacyProfileRegistrar.
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
@@ -2827,22 +2322,12 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPushNotificationsTokenRegistrar_")
 
 
 /// A feature which provides for the measurement of push notifications.
-/// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 SWIFT_CLASS_NAMED("KVAPushNotifications")
-@interface KVAPushNotifications : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable, KVAPushNotificationsTokenRegistrar>
+@interface KVAPushNotifications : NSObject <KVAPushNotificationsTokenRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 - (void)registerToken:(KVAPushNotificationsToken * _Nonnull)token;
-- (void)invalidate;
 /// A boolean indicating if push notifications is enabled.
 @property (nonatomic) BOOL enabledBool;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSData;
@@ -2850,7 +2335,7 @@ SWIFT_CLASS_NAMED("KVAPushNotifications")
 
 /// A push notifications token.
 SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
-@interface KVAPushNotificationsToken : NSObject <KVAFromProtocol>
+@interface KVAPushNotificationsToken : NSObject
 /// Create a push notifications token using deviceTokenData and then register.
 /// \param deviceTokenData The device token as provided in Data.
 ///
@@ -2871,8 +2356,6 @@ SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
 /// \param registrarArray An array of KVAPushNotificationsTokenRegistrarProvider to which to add the token.
 ///
 + (void)registerWithDataHexString:(NSString * _Nonnull)deviceTokenDataHexString registrarArray:(NSArray<id <KVAPushNotificationsTokenRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The token data as provided by the operating system.
 @property (nonatomic, readonly, copy) NSData * _Nullable data;
@@ -2893,10 +2376,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker42KVAPushNotificationsTokenRegistrarProvider
 
 /// A class which encapsulates a session.
 SWIFT_CLASS_NAMED("KVASession")
-@interface KVASession : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
+@interface KVASession : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2904,107 +2384,20 @@ SWIFT_CLASS_NAMED("KVASession")
 
 /// A feature which provides for the measurement of sessions.
 SWIFT_CLASS_NAMED("KVASessions")
-@interface KVASessions : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVASessions : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVATrackerConfig;
+@class KVATrackerGeneral;
+@class KVANetworking;
 
 /// The class KVATracker provides an interface between a host application and Kochava’s Attribution and Measurement servers.
-/// The class KVATracker is the main interface for module KochavaTracker.  A tracker manages the exchange of data between the client and server, along with the associated tasks and network transactions.  If you have not already integrated the KochavaTracker SDK into your project, refer to our KochavaTracker iOS SDK support documentation.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// From there, the tracker proceeds to start and perform its various tasks.  This is typically done during the earliest phases of the host’s lifecycle, so that installation attribution can be quickly established and post-install events may begin to egress.
-/// You may alternately create an instance.  If you do, it is your responsibility to maintain a strong reference.  And if you create multiple instances, it is your responsibility to configure each with a unique storageIdentifierString.
-/// <h2>Examples</h2>
-/// Example - Starting the shared instance using func <code>start(withAppGUIDString:)</code>:
-/// \code
-/// KVATracker.shared.start(withAppGUIDString: "_YOUR_APP_GUID_")
-///
-/// \endcode<h2>Features</h2>
-/// <ul>
-///   <li>
-///     <em>Ad Network</em> (var <code>adNetwork</code>) — A feature which interfaces with Apple’s SKAdNetwork attribution system.  See class <code>KVAAdNetwork</code>.
-///   </li>
-///   <li>
-///     <em>App Clips</em> (var appClips) — A feature which provides measurement for App Clips.  Implemented in internal class KVAAppClips.
-///   </li>
-///   <li>
-///     <em>Apple Search Ads</em> (var appleSearchAds ) — A feature which interfaces with Apple Search Ads.  Implemented in internal class KVAAppleSearchAds.
-///   </li>
-///   <li>
-///     <em>App Limit Ad Tracking</em> (var <code>appLimitAdTracking</code>) — A feature which may be used to limit advertising tracking from the level of the application (or host).  See class <code>KVAAppLimitAdTracking</code>.
-///   </li>
-///   <li>
-///     <em>App Tracking Transparency</em> (var <code>appTrackingTransparency</code>) — A feature which interfaces with Apple’s App Tracking Transparency system.  See class <code>KVAAppTrackingTransparency</code>.
-///   </li>
-///   <li>
-///     <em>Attribution</em> (var <code>attribution</code>) — A feature which provides attribution information related to the install.  See class <code>KVAAttribution</code>.
-///   </li>
-///   <li>
-///     <em>Config</em> (var <code>config</code>) — A feature which is responsible for controlling and updating the configuration of the tracker.  This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.  See class <code>KVATrackerConfig</code>.
-///   </li>
-///   <li>
-///     <em>Consent</em> (var <code>consent</code>) — A feature which serves as an authority related to consent for the sharing of personal data.  See class KVAConsent in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Crash Reporting</em> (var crashReporting) — A feature which can be used to report crashes.  Implemented in class KVACrashReporting.  Note:  This feature is not being compiled into the SDK at this time.  Please enquire with your Kochava client success manager if you are interested in this feature.
-///   </li>
-///   <li>
-///     <em>Custom Identifiers</em> (var <code>customIdentifiers</code>) — A feature which is responsible for custom identifiers.  See class <code>KVACustomIdentifiers</code>.  Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Datapoints</em> (var dataPoints) — A feature which is responsible for the collection of datapoints.  Datapoints provide insights about the device at the times when events are generated.  Implemented in internal class KVATrackerDataPoints.
-///   </li>
-///   <li>
-///     <em>Deeplinks</em> (var <code>deeplinks</code>) — A feature which measures deeplink activity.  See class <code>KVADeeplinks</code>.  Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
-///   </li>
-///   <li>
-///     <em>Device Id</em> (var <code>deviceId</code>) — A feature which is responsible for the identification of a device.  The managed id is referred to as the <em>Kochava Device Id</em>.  See class <code>KVADeviceId</code>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
-///   </li>
-///   <li>
-///     <em>Events</em> (var <code>events</code>) — A feature which tracks user behavior and actions beyond the install.  See class <code>KVAEvents</code>.  Create and send events using any of the methods available in class <code>KVAEvent</code>.
-///   </li>
-///   <li>
-///     <em>General</em> (var <code>general</code>) — A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.  Implemented in internal class <code>KVATrackerGeneral</code>.
-///   </li>
-///   <li>
-///     <em>Identity Link</em> (var <code>identityLink</code>) — A feature which is responsible for linking identities.  See class <code>KVAIdentityLink</code>.  Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Install</em> (var <code>install</code>) — A feature which provides information about the install.  The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>config</code>.  See class <code>KVAInstall</code>.
-///   </li>
-///   <li>
-///     <em>Logging</em> (var logging) — A feature which is responsible for tracker-specific logging activities.  Implemented in internal class KVATrackerLogging.  You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
-///   </li>
-///   <li>
-///     <em>Networking</em> (var <code>networking</code>) — A feature which provides networking support.  The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Privacy</em> (var <code>privacy</code>) — A feature which is responsible for privacy.  See class <code>KVAPrivacy</code>.  Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
-///   </li>
-///   <li>
-///     <em>Push Notifications</em> (var <code>pushNotifications</code>) — A feature which provides for the measurement of push notifications.  See class <code>KVAPushNotifications</code>.  Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
-///   </li>
-///   <li>
-///     <em>Sessions</em> (var sessions) — A feature which provides for the measurement of sessions.  Implemented in internal class KVASessions.
-///   </li>
-///   <li>
-///     <em>Updates</em> (var updates) — A feature which updates the server when there are changes to tracked components.  Implemented in internal class KVATrackerUpdates.
-///   </li>
-/// </ul>
 SWIFT_CLASS_NAMED("KVATracker")
-@interface KVATracker : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVASharedPropertyProvider, KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
+@interface KVATracker : NSObject <KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
 /// A shared instance, for convenience.
-/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance provides a few benefits.  First, it simplifies your implementation as you do not need to store an instance to the tracker somewhere in a public location in your own code.  Second, it ensures that if your code unintentionally tries to make use of the shared instance prior to configuration that you can receive a warning in the log from the tracker.  If you use your own property to store the tracker, and it is nil, then this provision would not be automatically available to you.
+/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance simplifies your implementation as you do not need to store a tracker instance somewhere in a public location in your own code.
+/// By default this instance will use the default storage location equivalent to calling <code>init(storageIdString:)</code> with storageIdString nil.  If you wish to specify an alternative storage location, see var <code>sharedStorageIdString</code>.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVATracker * _Nonnull shared;)
 + (KVATracker * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
 /// A shared instance, for convenience— optional.
@@ -3018,36 +2411,25 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// class MyClass:
-/// {
-///     let tracker = KVATracker(storageIdString: "alternate")
-/// }
-///
-/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
-///
-- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
-/// Create a tracker.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// <h2>Example</h2>
-/// \code
-/// class MyClass:
+/// class MyClass
 /// {
 ///     let tracker = KVATracker()
 /// }
 ///
 /// \endcode
 - (nonnull instancetype)init;
-/// Create a tracker— using modern Objective-C syntax.
+/// Create a tracker.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// KVATracker *tracker = [KVATracker trackerWithStorageIdString:@"alternate"];
+/// class MyClass
+/// {
+///     let tracker = KVATracker(storageIdString: "alternate")
+/// }
 ///
-/// \endcodenote:
-/// This convenience constructor exists for Objective-C and is expected to be removed in a future version.  In Swift you should use default constructor KVATracker(storageIdString:)— or preferably, the shared instance.
-/// \param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
+/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker().
 ///
-+ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
 /// Create a tracker— using modern Objective-C syntax.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// note:
@@ -3056,28 +2438,17 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// \code
 /// KVATracker *tracker = KVATracker.tracker;
 ///
-/// \endcode
+/// \endcodeFuture: @available(*, deprecated, renamed: “init()”)
 + (nonnull instancetype)tracker SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object.
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object, supporting filling into an existing initializedObject.
-/// This implementation of static func kva_from(…) is special in that this class is viewed as being primarily a container for a set of feature components.  Each of these features takes care of themselves.  At this scope we are mainly setting the fromDictionary property, which will be used as needed when the feature components are brought online.  The principle place where that takes place is when the featureArray is configured, as each feature is added to the array.  To be added this requires them to be instantiated, and, when present, decoded.  See func featureArray_configure().
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-/// \param initializedObject An initialized object.  When this is provided it will fill an existing initialized object.  When this is nil a new blank instance will be created.
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-/// Encode for a specified context.
-/// The returned value will typically be a dictionary formatted as JSON.
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure (update) the instance from another object.
-/// This method is used to configure the instance.  It is the same method used to configure the instance when the config response is returned.  This is referring to kvinit.  It can also be called from the host to override (or else default) various parameters.  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in objects $override$, $override.append$, $default$, or $default.append$, to indicate how these options are treated relative to the server’s options.
-/// $override$:  Elements within this object will override any options of the same name specified by the server.
-/// $override.append$:  Elements within this object will append/override any previously established $override$.  $override$ does not need to be used first.
-/// $default$:  Elements within this object will serve as a default for any options of the same name when not specified by the server.
-/// $default.append$:  Elements within this object will append/override any previously established $default$.  $default$ does not need to be used first.
++ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+/// Configure the instance with an object.
+/// This is the same method which is used to configure the instance when the <code>config</code> response is returned from Kochava’s servers (aka kvinit).  It can also be called from the host to change the defaults of various parameters (or else override them).  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in special objects with special keys <code>$default$</code>, <code>$default.append$</code>, <code>$override$</code>, or <code>$override.append$</code>, to indicate how these options are treated relative to the server’s options.
+/// | Special Key | Treatment  |
+/// — | —
+/// $default$ |  Elements within this object will serve as a default for any options of the same name when not specified by the server.  The use of this option will replace any previous use of <code>$default$</code> or <code>$default.append$</code>.
+/// $default.append$ |  Elements within this object will append to any previously established <code>$default$</code>.  You may use this without using <code>$default$</code> first, allowing you to specify multiple defaults over the course of multiple configuration calls.  The use of this option is generally considered preferred relative to the others.  That is because as a default it still allows for the server to specify overrides, and as an append it will respect any other previous configuration calls which you may have made at other times and places.
+/// $override$ |  Elements within this object will override any options of the same name specified by the server.  Use this option when you do not want to allow the server to specify overrides.  The use of this option will replace any previous use of <code>$override$</code> or <code>$override.append$</code>.
+/// $override.append$ |  Elements within this object will append to any previously established <code>$override$</code>.  You may use this without using <code>$override$</code> first, allowing you to specify multiple overrides over the course of multiple configuration calls.  The use of this option is generally preferred to <code>$override$</code>.  That is because as an append it will respect any other previous configuration calls which you may have made at other times and places.
 /// The following example will deny the collection of two datapoints, the idfa and idfv.  Ordinarily the best way to do this is through the Kochava dashboard, where these can be controlled within multiple version(s) of an app already in production.  However, if at build time you wanted to explicitly override server-side control, such that these two items effectively always appear in the deny datapoints list, the following code would do so:
 /// <h2>Example</h2>
 /// \code
@@ -3098,17 +2469,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// ]
 ///
 /// // KVATracker
-/// KVATracker.shared.configure(with: trackerConfigureObject, context: KVAContext.host)
+/// KVATracker.shared.configure(with: trackerConfigureObject, context: .host)
 /// KVATracker.shared.start(withAppGUIDString: "koapple-sdk-h-random-sn4i")
 ///
 /// \endcode\param object An object from which to configure the instance.  This is most commonly a JSON object.
 ///
-/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.
+/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.  When this method is called from the host, whether an app or an app extension, the specified context should be <code>.host</code>.
 ///
 - (void)configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// Configure (update) the instance from another object.
-/// This function is equivalent to func configure(with:context) however this does not first dispatch to the globalSerial queue.  It is the protocol conformance of KVAConfigureWithProtocol.  You should not use this function directly unless you have a specific need to not perform the preferred dispatch.
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Start the tracker with an appGUIDString.
 /// You may start a tracker with either an appGUIDString or a partnerNameString.  Most commonly this is done with an appGUIDString.  See also func <code>start(withPartnerNameString:)</code>.
 /// <h2>Example</h2>
@@ -3128,36 +2496,33 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 ///
 - (void)startWithPartnerNameString:(NSString * _Nonnull)partnerNameString;
 /// Start the tracker.
-/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func start(withAppGUIDString:) and func start(withPartnerNameString:).  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
+/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func <code>start(withAppGUIDString:)</code> and func <code>start(withPartnerNameString:)</code>.  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
 - (void)start;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Execute an advanced instruction.
+/// This function can be used to executed advanced instruction(s) for certain atypical use cases.  You should only use this if instructed by your Kochava Client Success Manager.
 /// \param identifierString An identifier for the advanced instruction.
 ///
 /// \param valueObject A value object for the advanced instruction.
 ///
 - (void)executeAdvancedInstructionWithIdentifierString:(NSString * _Nonnull)identifierString valueObject:(id _Nullable)valueObject;
 /// Invalidate the instance.
-/// This is similar to allowing an instance of the tracker deallocate, but it can also be used on the shared instance.  It will additionally signal certain sub-systems to invalidate themselves, which can result in a more assured and immediate halt.  The scope of this invalidation is not absolute.  Certain sub-systems will continue to run for a period of time until they may gracefully complete.  When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure it.
-/// When you are not using Intelligent Consent Management, this method can be used to signal that the tracker may no longer run following consent having been denied.  When used this way, you may re-configure a tracker if/when consent is granted.
+/// When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure and start it.
 - (void)invalidate;
 /// Invalidate the instance.
 /// See func <code>invalidate()</code>
-- (void)invalidateWithPrintLogMessageBool:(BOOL)printLogMessageBool;
+- (void)invalidateWithAsyncBool:(BOOL)asyncBool printLogMessageBool:(BOOL)printLogMessageBool;
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 @property (nonatomic, readonly, strong) KVAAdNetwork * _Nullable adNetwork;
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 @property (nonatomic, readonly, strong) KVAAppLimitAdTracking * _Nonnull appLimitAdTracking;
-/// A boolean which indicates if you want to limit ad tracking at the application level (convenience).
-/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
-@property (nonatomic) BOOL appLimitAdTrackingBool;
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 @property (nonatomic, readonly, strong) KVAAppTrackingTransparency * _Nonnull appTrackingTransparency;
 /// A feature which provides attribution information related to the install.
 @property (nonatomic, readonly, strong) KVAAttribution * _Nonnull attribution;
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
+/// This is sometimes referred to by the name of the backing service which provides the configuration, <em>kvinit</em>.
 @property (nonatomic, readonly, strong) KVATrackerConfig * _Nonnull config;
 /// A feature which serves as an authority related to consent for the sharing of personal data.
 /// Data sharing privacy laws such as GDPR require consent to be obtained before certain kinds of personal data may be collected or calculated, kept in memory, persisted or retained in persistent storage, and/or shared with partners.  During the natural lifecycle, there are times where partners may be added and cause the consent status to fall back to an unknown state.  Later the user may again be prompted and the consent status may (or may not) again come to be known.  All of this is predicated upon whether or not consent is required, which is governed by a variety of factors such as location.
@@ -3171,8 +2536,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which is responsible for the identification of a device.
 /// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
 @property (nonatomic, readonly, strong) KVADeviceId * _Nonnull deviceId;
-/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).
-@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
+@property (nonatomic, readonly, strong) KVATrackerGeneral * _Nonnull general;
 /// A feature which is responsible for linking identities.
 /// Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
 @property (nonatomic, readonly, strong) KVAIdentityLink * _Nonnull identityLink;
@@ -3183,89 +2548,61 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
 @property (nonatomic, readonly, strong) KVANetworking * _Nonnull networking;
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
+/// Privacy profiles are automatically registered from the server.  Alternatively create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.  Enable (or explicitly disable) a profile by calling class <code>KVAPrivacy</code> func <code>KVAPrivacy/setEnabledBool(forProfileNameString:enabledBool:)</code>.
 @property (nonatomic, readonly, strong) KVAPrivacy * _Nonnull privacy;
 /// A feature which provides for the measurement of push notifications.
 /// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 @property (nonatomic, readonly, strong) KVAPushNotifications * _Nonnull pushNotifications;
+/// A boolean which indicates if you want to limit ad tracking at the application level.  This is a convenience variable which is equivalent to var <code>appLimitAdTracking</code> func <code>KVAAppLimitAdTracking/bool</code>.
+/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
+@property (nonatomic) BOOL appLimitAdTrackingBool;
+/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).  This is a convenience variable which is equivalent to var <code>deviceId</code> func <code>KVADeviceId/string</code>.
+@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A boolean which when true causes the instance to sleep.  This is a convenience variable which is equivalent to var <code>networking</code> func sleepBool.
+/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
+@property (nonatomic) BOOL sleepBool;
 @property (nonatomic, readonly, strong) id <KVADeeplinksProcessor> _Nullable deeplinksProcessor;
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPushNotificationsTokenRegistrar> _Nonnull pushNotificationsTokenRegistrar;
 /// A string used as a  storage identifier for the shared instance.
-/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.  Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.  If used, it is absolutely imperative that this value be consistently set prior to accessing the shared instance for the first time.
+/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.
+/// Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.
+/// If used, it is imperative that this value be consistently set prior to accessing the shared instance for the first time.  You must make accommodations to set this as early as possible, where it would be prior to any access to var <code>shared</code> throughout all of your code.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nullable sharedStorageIdString;)
 + (NSString * _Nullable)sharedStorageIdString SWIFT_WARN_UNUSED_RESULT;
 + (void)setSharedStorageIdString:(NSString * _Nullable)sharedStorageIdString;
-/// A boolean which when true causes the instance to sleep.
-/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
-@property (nonatomic) BOOL sleepBool;
 /// A boolean indicating whether or not the instance has been started.
 @property (nonatomic, readonly) BOOL startedBool;
 @end
 
 
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
 SWIFT_CLASS_NAMED("KVATrackerConfig")
-@interface KVATrackerConfig : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerConfig : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for the collection of datapoints.
-SWIFT_CLASS_NAMED("KVATrackerDataPoints")
-@interface KVATrackerDataPoints : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+SWIFT_CLASS_NAMED("KVATrackerDatapoints")
+@interface KVATrackerDatapoints : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
 SWIFT_CLASS_NAMED("KVATrackerGeneral")
-@interface KVATrackerGeneral : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerGeneral : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for tracker-specific logging activities.
 /// You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
 SWIFT_CLASS_NAMED("KVATrackerLogging")
-@interface KVATrackerLogging : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerLogging : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVAProduct;
@@ -3275,12 +2612,10 @@ SWIFT_CLASS_NAMED("KVATrackerLogging")
 /// note:
 /// This is currently overridden to be a subclass of NSObject rather than KVAProduct so that it can be represented in Objective-C.  If you use KVAProduct it will still build, but the automatic module registration will fail to locate the class.  You can see early evidence of the problem if you also make the shared property be of the class type, where the compiler will say that it cannot use @objc because it cannot be expressed in Objective-C.  This is apparently a problem that Swift has providing Objective-C compatibility to Swift classes which subclass other Swift classes across modules.  For example, KVACoreProduct does not have this problem, presumably because it’s in the same module as KVAProduct.  In order to convert this class to subclass KVAProduct, or to subsequently allow shared to be of the class’ type, a means of registering/loading the class as a Swift-only class would be required.  More importantly, however, we’d need to give up public Objective-C support.  Since that doesn’t seem possible, the only alternative would be that Apple fixes this issue and provides the necessary support, assuming that’s possible.
 SWIFT_CLASS_NAMED("KVATrackerProduct")
-@interface KVATrackerProduct : NSObject <KVASharedPropertyProvider>
+@interface KVATrackerProduct : NSObject
 /// The singleton shared instance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAProduct * _Nonnull shared;)
 + (KVAProduct * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull sharedInstance;)
-+ (id _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -3294,17 +2629,8 @@ SWIFT_CLASS("_TtC14KochavaTracker23KVATrackerProductParams")
 
 /// A feature which updates the server when there are changes to tracked components.
 SWIFT_CLASS_NAMED("KVATrackerUpdates")
-@interface KVATrackerUpdates : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerUpdates : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 #if __has_attribute(external_source_symbol)
@@ -3512,7 +2838,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
 @import Foundation;
-@import KochavaCore;
 @import ObjectiveC;
 #endif
 
@@ -3533,32 +2858,15 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
-@class KVAContext;
-@class KVANetworking;
-@class NSDate;
-@protocol KVAMutable;
-@class KVAEvent;
-@protocol KVAAsForContextProtocol;
 @class KVAAdNetworkConversion;
 
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 SWIFT_CLASS_NAMED("KVAAdNetwork")
-@interface KVAAdNetwork : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetwork : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking measurementWindowStartDate:(NSDate * _Nullable)measurementWindowStartDate delegate:(id <KVAMutable> _Nullable)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable)eventNetTransactionWillStartRequestWithNoAdNetworkConversionResult:(KVAEvent * _Nonnull)event SWIFT_WARN_UNUSED_RESULT;
-- (void)invalidate;
 /// A closure which is called when the SKAdNetwork registerAppForAdNetworkAttribution API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didRegisterAppForAttributionBlock)(KVAAdNetwork * _Nonnull);
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The current conversion information.
 @property (nonatomic, strong) KVAAdNetworkConversion * _Nonnull conversion;
 @end
@@ -3567,15 +2875,9 @@ SWIFT_CLASS_NAMED("KVAAdNetwork")
 
 /// A feature which determines adnetwork conversion(s).
 SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
-@interface KVAAdNetworkConversion : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator, KVAStartable>
+@interface KVAAdNetworkConversion : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when the SKAdNetwork updateConversionValue API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable didUpdateValueBlock)(KVAAdNetworkConversion * _Nonnull, KVAAdNetworkConversionResult * _Nonnull);
@@ -3587,29 +2889,26 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 
 /// A class which defines an adnetwork conversion event.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
-@interface KVAAdNetworkConversionEvent : NSObject <KVAFromProtocol>
+@interface KVAAdNetworkConversionEvent : NSObject
 + (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@class KVAContext;
 @class NSString;
 @class NSNumber;
 
 /// The adnetwork conversion result.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
-@interface KVAAdNetworkConversionResult : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAMutableDelegator>
+@interface KVAAdNetworkConversionResult : NSObject <NSCopying>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
++ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// Return the conversion value integer which is used with the SKAdNetwork updateConversionValue API.
 /// Apple currently restricts this value to 6-bits.  This is a combination (OR) of the translated value (translatedValueIntNumber) with any extension interval value (extensionIntervalTranslatedValueInt.integerValue).
 - (NSInteger)valueInt SWIFT_WARN_UNUSED_RESULT;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A string which represents the model used for the conversion.
 @property (nonatomic, readonly, copy) NSString * _Nullable modelString;
 @property (nonatomic, readonly, strong) NSNumber * _Nullable translatedValueIntNumber;
@@ -3621,31 +2920,15 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversionResult")
 
 /// A feature which provides measurement for App Clips.
 SWIFT_CLASS_NAMED("KVAAppClips")
-@interface KVAAppClips : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppClips : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
-@interface KVAAppLimitAdTracking : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+@interface KVAAppLimitAdTracking : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if you want to limit ad tracking at the application level.
 /// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of true from either this feature or Apple’s will result in the limiting of ad tracking.
 @property (nonatomic) BOOL boolean;
@@ -3654,23 +2937,16 @@ SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
 
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
-@interface KVAAppTrackingTransparency : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAppTrackingTransparency : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
 /// Default true.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
 @property (nonatomic) BOOL autoRequestTrackingAuthorizationBool;
 /// A time interval to wait for the request for tracking authorization before proceeding to send the install.
 /// Default 30.0.  Subject to server-based override.  This provides time to wait to obtain the authorization necessary to collect the IDFA.
 @property (nonatomic) NSTimeInterval authorizationStatusWaitTimeInterval;
+/// A boolean indicating if this feature is enabled.
+/// Default: false.
 @property (nonatomic) BOOL enabledBool;
 /// The authorization status expressed as an NSString.
 /// This is optional and will be nil until a status is known.  For this reason this can be checked as a means of determining if a status has been determined.  Current possible values:  “authorized”, “denied”, “notDetermined”, “restricted”, “unknown”.
@@ -3680,21 +2956,7 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 
 /// A feature which interfaces with Apple Search Ads.
 SWIFT_CLASS_NAMED("KVAAppleSearchAds")
-@interface KVAAppleSearchAds : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure the instance for use.
-/// \param networking An instance of class KVANetworking.
-///
-/// \param delegate A delegate.
-///
-- (void)configureWithNetworking:(KVANetworking * _Nonnull)networking delegate:(id <KVAMutable> _Nonnull)delegate;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAds : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3702,14 +2964,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAds")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
-@interface KVAAppleSearchAdsMethod2 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nonnull instancetype)appleSearchAdsMethod2Attribution SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod2 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3717,9 +2972,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2")
 
 /// Apple’s attribution as provided by Apple Search Ads method 2.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
-@interface KVAAppleSearchAdsMethod2Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod2Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3727,13 +2980,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod2Attribution")
 
 /// A feature which provides for attribution through Apple’s Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
-@interface KVAAppleSearchAdsMethod3 : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAInvalidatable, KVAMutableDelegator>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
+@interface KVAAppleSearchAdsMethod3 : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3741,9 +2988,7 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3")
 
 /// Apple’s attribution as provided by Apple Search Ads method 3.
 SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
-@interface KVAAppleSearchAdsMethod3Attribution : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAppleSearchAdsMethod3Attribution : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -3752,21 +2997,12 @@ SWIFT_CLASS_NAMED("KVAAppleSearchAdsMethod3Attribution")
 
 /// A feature which provides attribution information related to the install.
 SWIFT_CLASS_NAMED("KVAAttribution")
-@interface KVAAttribution : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAAttribution : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Get the attribution result with a completion handler.
 /// \param completionHandler A completion handler to call once the result has been retrieved.
 ///
 - (void)retrieveResultWithCompletionHandler:(void (^ _Nonnull)(KVAAttributionResult * _Nonnull))completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A closure which is called when attribution is retrieved.
 @property (nonatomic, copy) void (^ _Nullable closure_didRetrieveResult)(KVAAttribution * _Nonnull, KVAAttributionResult * _Nonnull);
 /// A boolean indicating if an attribution result should be retrieved.
@@ -3780,9 +3016,8 @@ SWIFT_CLASS_NAMED("KVAAttribution")
 
 /// The attribution result.
 SWIFT_CLASS_NAMED("KVAAttributionResult")
-@interface KVAAttributionResult : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+@interface KVAAttributionResult : NSObject
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 /// A boolean indicating if the result attributed the install.
 @property (nonatomic, readonly) BOOL attributedBool;
 /// A boolean indicating if the current install is the first install.
@@ -3797,15 +3032,9 @@ SWIFT_CLASS_NAMED("KVAAttributionResult")
 
 
 /// A feature which is responsible for custom identifiers.
-/// Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVACustomIdentifiers : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a custom identifier.
 /// In order to send a custom identifier it must be whitelisted on your account.
 /// \param nameString The name of the identifier.
@@ -3813,9 +3042,6 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSURL;
@@ -3823,7 +3049,7 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 
 /// A deeplink.
 SWIFT_CLASS_NAMED("KVADeeplink")
-@interface KVADeeplink : NSObject <KVAFromProtocol>
+@interface KVADeeplink : NSObject
 /// Create a deeplink and then process it.
 /// \param url The deep link url as provided.
 ///
@@ -3857,8 +3083,7 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 ///
 + (void)processWithURL:(NSURL * _Nullable)url timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval processor:(id <KVADeeplinksProcessorProvider> _Nullable)processor completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+- (id _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The deeplink url as provided by the operating system.
 @property (nonatomic, copy) NSString * _Nullable urlString;
@@ -3883,16 +3108,10 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 
 /// A feature which measures deeplink activity.
-/// Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -3901,9 +3120,6 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param completionHandler A completion handler to call when processing is complete.
 ///
 - (void)processDeeplink:(KVADeeplink * _Nonnull)deeplink timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval completionHandler:(KVADeeplinkProcessCompletionHandler _Nullable)completionHandler;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
@@ -3916,19 +3132,9 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker29KVADeeplinksProcessorProvider_")
 
 
 /// A feature which is responsible for the identification of a device.
-/// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting var <code>string</code>.
 SWIFT_CLASS_NAMED("KVADeviceId")
-@interface KVADeviceId : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator>
+@interface KVADeviceId : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// A property containing the unique device ID that was generated when the tracker was first initialized on the current install.
 @property (nonatomic, readonly, copy) NSString * _Nullable string;
 @end
@@ -3936,20 +3142,18 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 @class KVAEventType;
 @protocol KVAEventSenderProvider;
 @class KVAConsent;
+@class NSDate;
 @class NSDecimalNumber;
 
 /// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
-/// Sending events is not required.  To track installation information, you do not need to do anything more than to start a tracker.  Still, many advertisers want to understand and correlate the relationship between conversion and attribution source information with user activity.  This can only be done by tracking events.
-/// Events can be sent from anywhere within the application.  Events will be coupled with device datapoints and general application information.  If they cannot be sent immediately to Kochava they will be queued and retried later.
-/// The KVAEvent class defines an individual event, providing a variety of standardized event types and parameters.  Standard event types may represent a purchase, the completion of a level, an achievement, etc.  Standard parameters may represent a currency, price, level, etc.
-/// The use of standard event types and parameters maximizes parity with external analytics partners and ensures optimal reporting and analytical output via the Kochava platform.  If the data you are sending in events can be sent using standard event types and parameters we recommend you do so.
 SWIFT_CLASS_NAMED("KVAEvent")
-@interface KVAEvent : NSObject <KVAFromProtocol>
+@interface KVAEvent : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (KVAEvent * _Nonnull)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
-+ (KVAEvent * _Nonnull)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a type— using modern Objective-C syntax.
++ (nonnull instancetype)eventWithType:(KVAEventType * _Nonnull)type SWIFT_WARN_UNUSED_RESULT;
+/// Create an event with a typeNameString— using modern Objective-C syntax.
+/// For TVML.  This constructor exists because there doesn’t appear to be a way to export an enumeration using the JSExport system Apple provides.
++ (nonnull instancetype)eventWithTypeNameString:(NSString * _Nonnull)typeNameString SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Send the event using the default KVAEventSenderProvider.
@@ -3965,11 +3169,6 @@ SWIFT_CLASS_NAMED("KVAEvent")
 ///
 - (id _Nullable)valueObjectForPropertyIdentifierString:(NSString * _Nullable)propertyIdentifierString SWIFT_WARN_UNUSED_RESULT;
 - (NSString * _Nullable)subURLIdString SWIFT_WARN_UNUSED_RESULT;
-/// An ad network conversion result.
-/// Qualifying events are ammended with this property just prior to starting a send request.
-/// note:
-/// This API is public in order to make it available for the internal use of modules within the Kochava SDK.  It should not be used unless otherwise directed by Kochava.
-@property (nonatomic, strong) id <KVAAsForContextProtocol, KVAFromProtocol> _Nullable adNetworkConversionResult;
 /// A type for the event
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
@@ -4072,7 +3271,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable endDateString;
 /// A property containing an informational dictionary of key/value pairs.
-/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.
+/// A information dictionary.  The keys and values can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.  The dictionary should not contain sub-dictionaries.  The maximum supported depth is 10, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable infoDictionary;
 /// A property containing an informational string.
 /// A informational string.  This can be any alphanumeric string value.  This field has an entirely generic quality, in that it can contain whatever you consider to be fitting value.
@@ -4098,7 +3297,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, copy) NSString * _Nullable originString;
 /// A property that contains a payload in the form of a dictionary.
-/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
+/// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  The maximum supported depth is 9, after which containers and elements will be redacted.  Instances of NSNull will also be redacted, and custom classes are not supported.
 @property (nonatomic, copy) NSDictionary * _Nullable payloadDictionary;
 /// A property that contains a price.
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.  Because it uses an NSDecimalNumber, it is better suited for preserving decimal precision than priceDoubleNumber.  priceDecimalNumber and priceDoubleNumber share the same key when sent to the server.  If both are set, the value within priceDecimalNumber will win.
@@ -4167,23 +3366,23 @@ SWIFT_CLASS_NAMED("KVAEvent")
 
 
 @interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent which has a customEventNameString, and then send it.
+/// Create an event which has a customEventNameString, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoDictionary, and then send it.
+/// Create an event which has a customEventNameString and an optional infoDictionary, and then send it.
 /// \param customEventNameString A string containing the event name.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
@@ -4191,13 +3390,13 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString An info string.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent which has a customEventNameString and an optional infoString, and then send it.
+/// Create an event which has a customEventNameString and an optional infoString, and then send it.
 /// \param customEventNameString A string containing event name.
 ///
 /// \param infoString A custom string.  It may be an unnested (single dimensional) dictionary converted to a JSON formatted string.
@@ -4205,33 +3404,33 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param senderArray Optional.  An array of senders.  These are objects which conform to protocol KVAEventSenderProvider.  If this parameter is not passed the default sender will be used.  The default sender is the shared instance of class KVATracker, which if you are using you may simply your call by using the function of the same name which omits this parameter.
 ///
 + (void)sendCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString senderArray:(NSArray<id <KVAEventSenderProvider>> * _Nullable)senderArray;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoDictionary A dictionary (single dimensional) containing any number of values with keys.
 ///
 + (nonnull instancetype)customEventWithNameString:(NSString * _Nonnull)customEventNameString infoDictionary:(NSDictionary * _Nullable)infoDictionary SWIFT_WARN_UNUSED_RESULT;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom.
+/// Create an event with event type KVAEventType.custom.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
 ///
 - (nonnull instancetype)initCustomWithNameString:(NSString * _Nonnull)customEventNameString infoString:(NSString * _Nullable)infoString;
-/// Create an instance of class KVAEvent with event type KVAEventType.custom— using modern Objective-C syntax.
+/// Create an event with event type KVAEventType.custom— using modern Objective-C syntax.
 /// \param customEventNameString A custom event name string.
 ///
 /// \param infoString An info string.
@@ -4240,7 +3439,7 @@ SWIFT_CLASS_NAMED("KVAEvent")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSender")
+SWIFT_PROTOCOL("_TtP14KochavaTracker14KVAEventSender_")
 @protocol KVAEventSender
 /// Send an event from the device to the appropriate server(s).
 /// \param event A KVAEvent configured with the values you want to associate with the event.
@@ -4249,7 +3448,7 @@ SWIFT_PROTOCOL_NAMED("KVAEventSender")
 @end
 
 
-SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker22KVAEventSenderProvider_")
 @protocol KVAEventSenderProvider
 /// A property which conforms to protocol KVAEventSender.
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
@@ -4258,28 +3457,46 @@ SWIFT_PROTOCOL_NAMED("KVAEventSenderProvider")
 
 /// A class which defines an event type.
 SWIFT_CLASS_NAMED("KVAEventType")
-@interface KVAEventType : NSObject <KVAFromProtocol>
+@interface KVAEventType : NSObject
+/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
++ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was clicked.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
++ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a cart.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToCart;)
 + (KVAEventType * _Nonnull)addToCart SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was added to a wish list.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull addToWishList;)
 + (KVAEventType * _Nonnull)addToWishList SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an achievement was achieved.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull achievement;)
-+ (KVAEventType * _Nonnull)achievement SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
++ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a checkout was started.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull checkoutStart;)
 + (KVAEventType * _Nonnull)checkoutStart SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that consent was granted.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
++ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a customEventNameString will be supplied.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull custom;)
 + (KVAEventType * _Nonnull)custom SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that there was a deep link.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
++ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a level was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull levelComplete;)
 + (KVAEventType * _Nonnull)levelComplete SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a purchase was completed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull purchase;)
 + (KVAEventType * _Nonnull)purchase SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was opened.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
++ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a push notification was received.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
++ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that an item was rated.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull rating;)
 + (KVAEventType * _Nonnull)rating SWIFT_WARN_UNUSED_RESULT;
@@ -4289,38 +3506,18 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 /// An event type which signifies that a search was performed.  You may use this in any equivalent circumstance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull search;)
 + (KVAEventType * _Nonnull)search SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
-+ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
-+ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was viewed.  You may use this in any equivalent circumstance.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adView;)
-+ (KVAEventType * _Nonnull)adView SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was received.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushReceived;)
-+ (KVAEventType * _Nonnull)pushReceived SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that a push notification was opened.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull pushOpened;)
-+ (KVAEventType * _Nonnull)pushOpened SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that consent was granted.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull consentGranted;)
-+ (KVAEventType * _Nonnull)consentGranted SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that there was a deep link.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull deeplink;)
-+ (KVAEventType * _Nonnull)deeplink SWIFT_WARN_UNUSED_RESULT;
-/// An event type which signifies that an ad was clicked.
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull adClick;)
-+ (KVAEventType * _Nonnull)adClick SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that a trial was started.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull startTrial;)
 + (KVAEventType * _Nonnull)startTrial SWIFT_WARN_UNUSED_RESULT;
 /// An event type which signifies that there was a subscription.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull subscribe;)
 + (KVAEventType * _Nonnull)subscribe SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that a tutorial was completed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull tutorialComplete;)
++ (KVAEventType * _Nonnull)tutorialComplete SWIFT_WARN_UNUSED_RESULT;
+/// An event type which signifies that an item was viewed.  You may use this in any equivalent circumstance.
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType * _Nonnull view;)
++ (KVAEventType * _Nonnull)view SWIFT_WARN_UNUSED_RESULT;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// The name.
@@ -4333,31 +3530,16 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for linking identities.
-/// Register an identity link using class func <code>register(withNameString:identifierString:)</code>.
 SWIFT_CLASS_NAMED("KVAIdentityLink")
-@interface KVAIdentityLink : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAIdentityLink : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -4366,49 +3548,30 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which provides information about the install.
-/// The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>KVATracker/config</code>.
 SWIFT_CLASS_NAMED("KVAInstall")
-@interface KVAInstall : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVAInstall : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 /// The date that the install did start first.
 /// This will be nil until the first time that the start function for the tracker has executed.
-@property (nonatomic, copy) NSDate * _Nullable didStartFirstDate;
+@property (nonatomic, readonly, copy) NSDate * _Nullable didStartFirstDate;
 @end
 
 @class KVAPrivacyProfile;
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrar")
+SWIFT_PROTOCOL("_TtP14KochavaTracker26KVAPrivacyProfileRegistrar_")
 @protocol KVAPrivacyProfileRegistrar
 - (void)registerProfile:(KVAPrivacyProfile * _Nonnull)profile;
 @end
 
 
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
 SWIFT_CLASS_NAMED("KVAPrivacy")
-@interface KVAPrivacy : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAPrivacyProfileRegistrar>
+@interface KVAPrivacy : NSObject <KVAPrivacyProfileRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Register a profile.
 /// \param profile The profile to register.
 ///
@@ -4420,16 +3583,13 @@ SWIFT_CLASS_NAMED("KVAPrivacy")
 /// \param enabledBool A boolean indicating if enabled.
 ///
 - (void)setEnabledBoolForProfileNameString:(NSString * _Nonnull)profileNameString enabledBool:(BOOL)enabledBool;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @protocol KVAPrivacyProfileRegistrarProvider;
 
 /// A privacy profile.
 SWIFT_CLASS_NAMED("KVAPrivacyProfile")
-@interface KVAPrivacyProfile : NSObject <KVAFromProtocol>
+@interface KVAPrivacyProfile : NSObject
 /// Create a privacy profile and then register it.
 /// \param nameString The name of the privacy profile.
 ///
@@ -4454,8 +3614,6 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 /// \param registrarArray An array of KVAPrivacyProfileRegistrarProvider to which to register the KVAPrivacyProfile.
 ///
 + (void)registerWithNameString:(NSString * _Nonnull)nameString payloadKeyStringArray:(NSArray<NSString *> * _Nullable)payloadKeyStringArray payloadIdStringArray:(NSArray<NSString *> * _Nullable)payloadIdStringArray registrarArray:(NSArray<id <KVAPrivacyProfileRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A unique name string.
 @property (nonatomic, readonly, copy) NSString * _Nonnull nameString;
@@ -4469,7 +3627,7 @@ SWIFT_CLASS_NAMED("KVAPrivacyProfile")
 
 
 
-SWIFT_PROTOCOL_NAMED("KVAPrivacyProfileRegistrarProvider")
+SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPrivacyProfileRegistrarProvider_")
 @protocol KVAPrivacyProfileRegistrarProvider
 /// A property which conforms to protocol KVAPrivacyProfileRegistrar.
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
@@ -4484,22 +3642,12 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker34KVAPushNotificationsTokenRegistrar_")
 
 
 /// A feature which provides for the measurement of push notifications.
-/// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 SWIFT_CLASS_NAMED("KVAPushNotifications")
-@interface KVAPushNotifications : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable, KVAPushNotificationsTokenRegistrar>
+@interface KVAPushNotifications : NSObject <KVAPushNotificationsTokenRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
 - (void)registerToken:(KVAPushNotificationsToken * _Nonnull)token;
-- (void)invalidate;
 /// A boolean indicating if push notifications is enabled.
 @property (nonatomic) BOOL enabledBool;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class NSData;
@@ -4507,7 +3655,7 @@ SWIFT_CLASS_NAMED("KVAPushNotifications")
 
 /// A push notifications token.
 SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
-@interface KVAPushNotificationsToken : NSObject <KVAFromProtocol>
+@interface KVAPushNotificationsToken : NSObject
 /// Create a push notifications token using deviceTokenData and then register.
 /// \param deviceTokenData The device token as provided in Data.
 ///
@@ -4528,8 +3676,6 @@ SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
 /// \param registrarArray An array of KVAPushNotificationsTokenRegistrarProvider to which to add the token.
 ///
 + (void)registerWithDataHexString:(NSString * _Nonnull)deviceTokenDataHexString registrarArray:(NSArray<id <KVAPushNotificationsTokenRegistrarProvider>> * _Nullable)registrarArray;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// The token data as provided by the operating system.
 @property (nonatomic, readonly, copy) NSData * _Nullable data;
@@ -4550,10 +3696,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker42KVAPushNotificationsTokenRegistrarProvider
 
 /// A class which encapsulates a session.
 SWIFT_CLASS_NAMED("KVASession")
-@interface KVASession : NSObject <KVAFromProtocol>
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_didMutate_performSideEffectsWithChildObject:(id _Nullable)childObject infoDictionary:(NSDictionary * _Nullable)infoDictionary;
+@interface KVASession : NSObject
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -4561,107 +3704,20 @@ SWIFT_CLASS_NAMED("KVASession")
 
 /// A feature which provides for the measurement of sessions.
 SWIFT_CLASS_NAMED("KVASessions")
-@interface KVASessions : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVASessions : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVATrackerConfig;
+@class KVATrackerGeneral;
+@class KVANetworking;
 
 /// The class KVATracker provides an interface between a host application and Kochava’s Attribution and Measurement servers.
-/// The class KVATracker is the main interface for module KochavaTracker.  A tracker manages the exchange of data between the client and server, along with the associated tasks and network transactions.  If you have not already integrated the KochavaTracker SDK into your project, refer to our KochavaTracker iOS SDK support documentation.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// From there, the tracker proceeds to start and perform its various tasks.  This is typically done during the earliest phases of the host’s lifecycle, so that installation attribution can be quickly established and post-install events may begin to egress.
-/// You may alternately create an instance.  If you do, it is your responsibility to maintain a strong reference.  And if you create multiple instances, it is your responsibility to configure each with a unique storageIdentifierString.
-/// <h2>Examples</h2>
-/// Example - Starting the shared instance using func <code>start(withAppGUIDString:)</code>:
-/// \code
-/// KVATracker.shared.start(withAppGUIDString: "_YOUR_APP_GUID_")
-///
-/// \endcode<h2>Features</h2>
-/// <ul>
-///   <li>
-///     <em>Ad Network</em> (var <code>adNetwork</code>) — A feature which interfaces with Apple’s SKAdNetwork attribution system.  See class <code>KVAAdNetwork</code>.
-///   </li>
-///   <li>
-///     <em>App Clips</em> (var appClips) — A feature which provides measurement for App Clips.  Implemented in internal class KVAAppClips.
-///   </li>
-///   <li>
-///     <em>Apple Search Ads</em> (var appleSearchAds ) — A feature which interfaces with Apple Search Ads.  Implemented in internal class KVAAppleSearchAds.
-///   </li>
-///   <li>
-///     <em>App Limit Ad Tracking</em> (var <code>appLimitAdTracking</code>) — A feature which may be used to limit advertising tracking from the level of the application (or host).  See class <code>KVAAppLimitAdTracking</code>.
-///   </li>
-///   <li>
-///     <em>App Tracking Transparency</em> (var <code>appTrackingTransparency</code>) — A feature which interfaces with Apple’s App Tracking Transparency system.  See class <code>KVAAppTrackingTransparency</code>.
-///   </li>
-///   <li>
-///     <em>Attribution</em> (var <code>attribution</code>) — A feature which provides attribution information related to the install.  See class <code>KVAAttribution</code>.
-///   </li>
-///   <li>
-///     <em>Config</em> (var <code>config</code>) — A feature which is responsible for controlling and updating the configuration of the tracker.  This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.  See class <code>KVATrackerConfig</code>.
-///   </li>
-///   <li>
-///     <em>Consent</em> (var <code>consent</code>) — A feature which serves as an authority related to consent for the sharing of personal data.  See class KVAConsent in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Crash Reporting</em> (var crashReporting) — A feature which can be used to report crashes.  Implemented in class KVACrashReporting.  Note:  This feature is not being compiled into the SDK at this time.  Please enquire with your Kochava client success manager if you are interested in this feature.
-///   </li>
-///   <li>
-///     <em>Custom Identifiers</em> (var <code>customIdentifiers</code>) — A feature which is responsible for custom identifiers.  See class <code>KVACustomIdentifiers</code>.  Register a custom identifier by calling func <code>KVACustomIdentifiers/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Datapoints</em> (var dataPoints) — A feature which is responsible for the collection of datapoints.  Datapoints provide insights about the device at the times when events are generated.  Implemented in internal class KVATrackerDataPoints.
-///   </li>
-///   <li>
-///     <em>Deeplinks</em> (var <code>deeplinks</code>) — A feature which measures deeplink activity.  See class <code>KVADeeplinks</code>.  Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(withURL:completionHandler:)</code>.
-///   </li>
-///   <li>
-///     <em>Device Id</em> (var <code>deviceId</code>) — A feature which is responsible for the identification of a device.  The managed id is referred to as the <em>Kochava Device Id</em>.  See class <code>KVADeviceId</code>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
-///   </li>
-///   <li>
-///     <em>Events</em> (var <code>events</code>) — A feature which tracks user behavior and actions beyond the install.  See class <code>KVAEvents</code>.  Create and send events using any of the methods available in class <code>KVAEvent</code>.
-///   </li>
-///   <li>
-///     <em>General</em> (var <code>general</code>) — A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.  Implemented in internal class <code>KVATrackerGeneral</code>.
-///   </li>
-///   <li>
-///     <em>Identity Link</em> (var <code>identityLink</code>) — A feature which is responsible for linking identities.  See class <code>KVAIdentityLink</code>.  Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
-///   </li>
-///   <li>
-///     <em>Install</em> (var <code>install</code>) — A feature which provides information about the install.  The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>config</code>.  See class <code>KVAInstall</code>.
-///   </li>
-///   <li>
-///     <em>Logging</em> (var logging) — A feature which is responsible for tracker-specific logging activities.  Implemented in internal class KVATrackerLogging.  You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
-///   </li>
-///   <li>
-///     <em>Networking</em> (var <code>networking</code>) — A feature which provides networking support.  The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
-///   </li>
-///   <li>
-///     <em>Privacy</em> (var <code>privacy</code>) — A feature which is responsible for privacy.  See class <code>KVAPrivacy</code>.  Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
-///   </li>
-///   <li>
-///     <em>Push Notifications</em> (var <code>pushNotifications</code>) — A feature which provides for the measurement of push notifications.  See class <code>KVAPushNotifications</code>.  Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
-///   </li>
-///   <li>
-///     <em>Sessions</em> (var sessions) — A feature which provides for the measurement of sessions.  Implemented in internal class KVASessions.
-///   </li>
-///   <li>
-///     <em>Updates</em> (var updates) — A feature which updates the server when there are changes to tracked components.  Implemented in internal class KVATrackerUpdates.
-///   </li>
-/// </ul>
 SWIFT_CLASS_NAMED("KVATracker")
-@interface KVATracker : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVASharedPropertyProvider, KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
+@interface KVATracker : NSObject <KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPrivacyProfileRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
 /// A shared instance, for convenience.
-/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance provides a few benefits.  First, it simplifies your implementation as you do not need to store an instance to the tracker somewhere in a public location in your own code.  Second, it ensures that if your code unintentionally tries to make use of the shared instance prior to configuration that you can receive a warning in the log from the tracker.  If you use your own property to store the tracker, and it is nil, then this provision would not be automatically available to you.
+/// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance simplifies your implementation as you do not need to store a tracker instance somewhere in a public location in your own code.
+/// By default this instance will use the default storage location equivalent to calling <code>init(storageIdString:)</code> with storageIdString nil.  If you wish to specify an alternative storage location, see var <code>sharedStorageIdString</code>.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVATracker * _Nonnull shared;)
 + (KVATracker * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
 /// A shared instance, for convenience— optional.
@@ -4675,36 +3731,25 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// class MyClass:
-/// {
-///     let tracker = KVATracker(storageIdString: "alternate")
-/// }
-///
-/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
-///
-- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
-/// Create a tracker.
-/// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
-/// <h2>Example</h2>
-/// \code
-/// class MyClass:
+/// class MyClass
 /// {
 ///     let tracker = KVATracker()
 /// }
 ///
 /// \endcode
 - (nonnull instancetype)init;
-/// Create a tracker— using modern Objective-C syntax.
+/// Create a tracker.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// <h2>Example</h2>
 /// \code
-/// KVATracker *tracker = [KVATracker trackerWithStorageIdString:@"alternate"];
+/// class MyClass
+/// {
+///     let tracker = KVATracker(storageIdString: "alternate")
+/// }
 ///
-/// \endcodenote:
-/// This convenience constructor exists for Objective-C and is expected to be removed in a future version.  In Swift you should use default constructor KVATracker(storageIdString:)— or preferably, the shared instance.
-/// \param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker(), or in Objective-C see convenience constructor tracker.
+/// \endcode\param storageIdString An optional storage identifier.  The storage identifier should be left unset (nil) unless you have a reason to not use the default storage space.  See default constructor KVATracker().
 ///
-+ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)initWithStorageIdString:(NSString * _Nullable)storageIdString OBJC_DESIGNATED_INITIALIZER;
 /// Create a tracker— using modern Objective-C syntax.
 /// You rarely create instances of class KVATracker.  Instead, you start the provided shared instance using one of the start instance methods.  See static var <code>shared</code>.
 /// note:
@@ -4713,28 +3758,17 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// \code
 /// KVATracker *tracker = KVATracker.tracker;
 ///
-/// \endcode
+/// \endcodeFuture: @available(*, deprecated, renamed: “init()”)
 + (nonnull instancetype)tracker SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object.
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-/// Decode from an object, supporting filling into an existing initializedObject.
-/// This implementation of static func kva_from(…) is special in that this class is viewed as being primarily a container for a set of feature components.  Each of these features takes care of themselves.  At this scope we are mainly setting the fromDictionary property, which will be used as needed when the feature components are brought online.  The principle place where that takes place is when the featureArray is configured, as each feature is added to the array.  To be added this requires them to be instantiated, and, when present, decoded.  See func featureArray_configure().
-/// \param object An object from which to decode.  This object is generally expected to be the output of kva_as(forContext: .persistentStorage).
-///
-/// \param initializedObject An initialized object.  When this is provided it will fill an existing initialized object.  When this is nil a new blank instance will be created.
-///
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-/// Encode for a specified context.
-/// The returned value will typically be a dictionary formatted as JSON.
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-/// Configure (update) the instance from another object.
-/// This method is used to configure the instance.  It is the same method used to configure the instance when the config response is returned.  This is referring to kvinit.  It can also be called from the host to override (or else default) various parameters.  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in objects $override$, $override.append$, $default$, or $default.append$, to indicate how these options are treated relative to the server’s options.
-/// $override$:  Elements within this object will override any options of the same name specified by the server.
-/// $override.append$:  Elements within this object will append/override any previously established $override$.  $override$ does not need to be used first.
-/// $default$:  Elements within this object will serve as a default for any options of the same name when not specified by the server.
-/// $default.append$:  Elements within this object will append/override any previously established $default$.  $default$ does not need to be used first.
++ (nonnull instancetype)trackerWithStorageIdString:(NSString * _Nullable)storageIdString SWIFT_WARN_UNUSED_RESULT;
+/// Configure the instance with an object.
+/// This is the same method which is used to configure the instance when the <code>config</code> response is returned from Kochava’s servers (aka kvinit).  It can also be called from the host to change the defaults of various parameters (or else override them).  The structure of the object you provide has the same capability as that which the server may return.  Additionally you can wrap the parameters you provide in special objects with special keys <code>$default$</code>, <code>$default.append$</code>, <code>$override$</code>, or <code>$override.append$</code>, to indicate how these options are treated relative to the server’s options.
+/// | Special Key | Treatment  |
+/// — | —
+/// $default$ |  Elements within this object will serve as a default for any options of the same name when not specified by the server.  The use of this option will replace any previous use of <code>$default$</code> or <code>$default.append$</code>.
+/// $default.append$ |  Elements within this object will append to any previously established <code>$default$</code>.  You may use this without using <code>$default$</code> first, allowing you to specify multiple defaults over the course of multiple configuration calls.  The use of this option is generally considered preferred relative to the others.  That is because as a default it still allows for the server to specify overrides, and as an append it will respect any other previous configuration calls which you may have made at other times and places.
+/// $override$ |  Elements within this object will override any options of the same name specified by the server.  Use this option when you do not want to allow the server to specify overrides.  The use of this option will replace any previous use of <code>$override$</code> or <code>$override.append$</code>.
+/// $override.append$ |  Elements within this object will append to any previously established <code>$override$</code>.  You may use this without using <code>$override$</code> first, allowing you to specify multiple overrides over the course of multiple configuration calls.  The use of this option is generally preferred to <code>$override$</code>.  That is because as an append it will respect any other previous configuration calls which you may have made at other times and places.
 /// The following example will deny the collection of two datapoints, the idfa and idfv.  Ordinarily the best way to do this is through the Kochava dashboard, where these can be controlled within multiple version(s) of an app already in production.  However, if at build time you wanted to explicitly override server-side control, such that these two items effectively always appear in the deny datapoints list, the following code would do so:
 /// <h2>Example</h2>
 /// \code
@@ -4755,17 +3789,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// ]
 ///
 /// // KVATracker
-/// KVATracker.shared.configure(with: trackerConfigureObject, context: KVAContext.host)
+/// KVATracker.shared.configure(with: trackerConfigureObject, context: .host)
 /// KVATracker.shared.start(withAppGUIDString: "koapple-sdk-h-random-sn4i")
 ///
 /// \endcode\param object An object from which to configure the instance.  This is most commonly a JSON object.
 ///
-/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.
+/// \param context The context from which the object was provided.  In rare cases this may have some bearing on the proper interpretation of what was provided.  When this method is called from the host, whether an app or an app extension, the specified context should be <code>.host</code>.
 ///
 - (void)configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// Configure (update) the instance from another object.
-/// This function is equivalent to func configure(with:context) however this does not first dispatch to the globalSerial queue.  It is the protocol conformance of KVAConfigureWithProtocol.  You should not use this function directly unless you have a specific need to not perform the preferred dispatch.
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
 /// Start the tracker with an appGUIDString.
 /// You may start a tracker with either an appGUIDString or a partnerNameString.  Most commonly this is done with an appGUIDString.  See also func <code>start(withPartnerNameString:)</code>.
 /// <h2>Example</h2>
@@ -4785,36 +3816,33 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 ///
 - (void)startWithPartnerNameString:(NSString * _Nonnull)partnerNameString;
 /// Start the tracker.
-/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func start(withAppGUIDString:) and func start(withPartnerNameString:).  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
+/// An appGUIDString or partnerNameString must be set prior to making this call.  To do this, instead see func <code>start(withAppGUIDString:)</code> and func <code>start(withPartnerNameString:)</code>.  This method is called by those two methods, and provides public conformance to protocol KVAStartable.  This method can be used to start an instance of a tracker which was created from decoded JSON.
 - (void)start;
 /// Return a description of the instance.
 @property (nonatomic, readonly, copy) NSString * _Nonnull description;
 /// Execute an advanced instruction.
+/// This function can be used to executed advanced instruction(s) for certain atypical use cases.  You should only use this if instructed by your Kochava Client Success Manager.
 /// \param identifierString An identifier for the advanced instruction.
 ///
 /// \param valueObject A value object for the advanced instruction.
 ///
 - (void)executeAdvancedInstructionWithIdentifierString:(NSString * _Nonnull)identifierString valueObject:(id _Nullable)valueObject;
 /// Invalidate the instance.
-/// This is similar to allowing an instance of the tracker deallocate, but it can also be used on the shared instance.  It will additionally signal certain sub-systems to invalidate themselves, which can result in a more assured and immediate halt.  The scope of this invalidation is not absolute.  Certain sub-systems will continue to run for a period of time until they may gracefully complete.  When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure it.
-/// When you are not using Intelligent Consent Management, this method can be used to signal that the tracker may no longer run following consent having been denied.  When used this way, you may re-configure a tracker if/when consent is granted.
+/// When using this method with the shared instance, you are guaranteed to be re-defaulted a new instance the next time it is referenced, and you may immediately move forward to re-configure and start it.
 - (void)invalidate;
 /// Invalidate the instance.
 /// See func <code>invalidate()</code>
-- (void)invalidateWithPrintLogMessageBool:(BOOL)printLogMessageBool;
+- (void)invalidateWithAsyncBool:(BOOL)asyncBool printLogMessageBool:(BOOL)printLogMessageBool;
 /// A feature which interfaces with Apple’s SKAdNetwork attribution system.
 @property (nonatomic, readonly, strong) KVAAdNetwork * _Nullable adNetwork;
 /// A feature which may be used to limit advertising tracking from the level of the application (or host).
 @property (nonatomic, readonly, strong) KVAAppLimitAdTracking * _Nonnull appLimitAdTracking;
-/// A boolean which indicates if you want to limit ad tracking at the application level (convenience).
-/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
-@property (nonatomic) BOOL appLimitAdTrackingBool;
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 @property (nonatomic, readonly, strong) KVAAppTrackingTransparency * _Nonnull appTrackingTransparency;
 /// A feature which provides attribution information related to the install.
 @property (nonatomic, readonly, strong) KVAAttribution * _Nonnull attribution;
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
+/// This is sometimes referred to by the name of the backing service which provides the configuration, <em>kvinit</em>.
 @property (nonatomic, readonly, strong) KVATrackerConfig * _Nonnull config;
 /// A feature which serves as an authority related to consent for the sharing of personal data.
 /// Data sharing privacy laws such as GDPR require consent to be obtained before certain kinds of personal data may be collected or calculated, kept in memory, persisted or retained in persistent storage, and/or shared with partners.  During the natural lifecycle, there are times where partners may be added and cause the consent status to fall back to an unknown state.  Later the user may again be prompted and the consent status may (or may not) again come to be known.  All of this is predicated upon whether or not consent is required, which is governed by a variety of factors such as location.
@@ -4828,8 +3856,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which is responsible for the identification of a device.
 /// The managed id is referred to as the <em>Kochava Device Id</em>.  Get the Kochava Device Id by getting class <code>KVADeviceId</code> var <code>KVADeviceId/string</code>.
 @property (nonatomic, readonly, strong) KVADeviceId * _Nonnull deviceId;
-/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).
-@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
+@property (nonatomic, readonly, strong) KVATrackerGeneral * _Nonnull general;
 /// A feature which is responsible for linking identities.
 /// Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(withNameString:identifierString:)</code>.
 @property (nonatomic, readonly, strong) KVAIdentityLink * _Nonnull identityLink;
@@ -4840,89 +3868,61 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// The networking instance manages the exchange of data between the client and various server(s), along with the associated tasks, network transactions, adapters, and instructions.  See class KVANetworking in module KochavaCore.
 @property (nonatomic, readonly, strong) KVANetworking * _Nonnull networking;
 /// A feature which is responsible for privacy.
-/// Privacy profiles are automatically registered from the server.  Create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.
+/// Privacy profiles are automatically registered from the server.  Alternatively create and register a privacy profile locally by calling class <code>KVAPrivacyProfile</code> func <code>KVAPrivacyProfile/register(withNameString:payloadKeyStringArray:)</code>.  Enable (or explicitly disable) a profile by calling class <code>KVAPrivacy</code> func <code>KVAPrivacy/setEnabledBool(forProfileNameString:enabledBool:)</code>.
 @property (nonatomic, readonly, strong) KVAPrivacy * _Nonnull privacy;
 /// A feature which provides for the measurement of push notifications.
 /// Create and register a push notifications token (which is a wrapper for Apple’s device token data) by calling class <code>KVAPushNotificationsToken</code> func  <code>KVAPushNotificationsToken/register(withData:)</code>.
 @property (nonatomic, readonly, strong) KVAPushNotifications * _Nonnull pushNotifications;
+/// A boolean which indicates if you want to limit ad tracking at the application level.  This is a convenience variable which is equivalent to var <code>appLimitAdTracking</code> func <code>KVAAppLimitAdTracking/bool</code>.
+/// This feature is related to the Limit Ad Tracking feature which is typically found on an Apple device under Settings, Privacy, Advertising.  In the same way that you can limit ad tracking through that setting, this feature provides a second and independent means for the host app to limit ad tracking by asking the user directly.  A value of false from either this feature or Apple’s will result in the limiting of ad tracking.
+@property (nonatomic) BOOL appLimitAdTrackingBool;
+/// A property containing the unique device ID that was generated when the tracker was first initialized on the current install (convenience).  This is a convenience variable which is equivalent to var <code>deviceId</code> func <code>KVADeviceId/string</code>.
+@property (nonatomic, readonly, copy) NSString * _Nullable deviceIdString;
+/// A boolean which when true causes the instance to sleep.  This is a convenience variable which is equivalent to var <code>networking</code> func sleepBool.
+/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
+@property (nonatomic) BOOL sleepBool;
 @property (nonatomic, readonly, strong) id <KVADeeplinksProcessor> _Nullable deeplinksProcessor;
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPushNotificationsTokenRegistrar> _Nonnull pushNotificationsTokenRegistrar;
 /// A string used as a  storage identifier for the shared instance.
-/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.  Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.  If used, it is absolutely imperative that this value be consistently set prior to accessing the shared instance for the first time.
+/// This is used to further qualify where in persistent storage the information for this instance is stored.  This property should not be used except in very specific circumstances.  Please contact your client success representative if you are interested in using this.  You would set this value to a short unique string consisting of regular alphanumeric characters.
+/// Following deployment with a given storage identifer this should never be changed except to represent an entirely new integration.
+/// If used, it is imperative that this value be consistently set prior to accessing the shared instance for the first time.  You must make accommodations to set this as early as possible, where it would be prior to any access to var <code>shared</code> throughout all of your code.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nullable sharedStorageIdString;)
 + (NSString * _Nullable)sharedStorageIdString SWIFT_WARN_UNUSED_RESULT;
 + (void)setSharedStorageIdString:(NSString * _Nullable)sharedStorageIdString;
-/// A boolean which when true causes the instance to sleep.
-/// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
-@property (nonatomic) BOOL sleepBool;
 /// A boolean indicating whether or not the instance has been started.
 @property (nonatomic, readonly) BOOL startedBool;
 @end
 
 
 /// A feature which is responsible for controlling and updating the configuration of the tracker.
-/// This feature interfaces with Kochava’s servers to provide a server-based configuration.  This is sometimes referred to by the name of the service which provides the configuration, <em>kvinit</em>.
 SWIFT_CLASS_NAMED("KVATrackerConfig")
-@interface KVATrackerConfig : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerConfig : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for the collection of datapoints.
-SWIFT_CLASS_NAMED("KVATrackerDataPoints")
-@interface KVATrackerDataPoints : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAKeyable, KVAMutableDelegator>
+SWIFT_CLASS_NAMED("KVATrackerDatapoints")
+@interface KVATrackerDatapoints : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
 SWIFT_CLASS_NAMED("KVATrackerGeneral")
-@interface KVATrackerGeneral : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerGeneral : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 
 /// A feature which is responsible for tracker-specific logging activities.
 /// You can set the KVALog.shared.level to control what level of log messages are printed, as well as configure various other options through module KochavaCore class KVALog.
 SWIFT_CLASS_NAMED("KVATrackerLogging")
-@interface KVATrackerLogging : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerLogging : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 @class KVAProduct;
@@ -4932,12 +3932,10 @@ SWIFT_CLASS_NAMED("KVATrackerLogging")
 /// note:
 /// This is currently overridden to be a subclass of NSObject rather than KVAProduct so that it can be represented in Objective-C.  If you use KVAProduct it will still build, but the automatic module registration will fail to locate the class.  You can see early evidence of the problem if you also make the shared property be of the class type, where the compiler will say that it cannot use @objc because it cannot be expressed in Objective-C.  This is apparently a problem that Swift has providing Objective-C compatibility to Swift classes which subclass other Swift classes across modules.  For example, KVACoreProduct does not have this problem, presumably because it’s in the same module as KVAProduct.  In order to convert this class to subclass KVAProduct, or to subsequently allow shared to be of the class’ type, a means of registering/loading the class as a Swift-only class would be required.  More importantly, however, we’d need to give up public Objective-C support.  Since that doesn’t seem possible, the only alternative would be that Apple fixes this issue and provides the necessary support, assuming that’s possible.
 SWIFT_CLASS_NAMED("KVATrackerProduct")
-@interface KVATrackerProduct : NSObject <KVASharedPropertyProvider>
+@interface KVATrackerProduct : NSObject
 /// The singleton shared instance.
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAProduct * _Nonnull shared;)
 + (KVAProduct * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
-SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull sharedInstance;)
-+ (id _Nonnull)sharedInstance SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -4951,17 +3949,8 @@ SWIFT_CLASS("_TtC14KochavaTracker23KVATrackerProductParams")
 
 /// A feature which updates the server when there are changes to tracked components.
 SWIFT_CLASS_NAMED("KVATrackerUpdates")
-@interface KVATrackerUpdates : NSObject <KVAConfigureWithProtocol, KVAFromProtocol, KVAFromWithInitializedObjectProtocol, KVAInvalidatable, KVAKeyable, KVAMutableDelegator, KVAStartable>
+@interface KVATrackerUpdates : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
-+ (nullable instancetype)kva_from:(id _Nullable)object initializedObject:(id _Nullable)initializedObject SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)kva_asForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (NSObject * _Nullable)keyForContext:(KVAContext * _Nullable)context SWIFT_WARN_UNUSED_RESULT;
-- (void)kva_configureWith:(id _Nullable)object context:(KVAContext * _Nullable)context;
-- (void)start;
-- (void)invalidate;
-/// A mutable delegate.
-@property (nonatomic, weak) id <KVAMutable> _Nullable mutableDelegate;
 @end
 
 #if __has_attribute(external_source_symbol)

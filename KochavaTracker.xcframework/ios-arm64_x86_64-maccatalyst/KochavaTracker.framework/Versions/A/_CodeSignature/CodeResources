@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		YuWG1iI5Zl+H7uRewhELJLEMbG4=
+		qGjywZX4V89f94LObb6xRzDasDs=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -36,7 +36,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			W9FN7Mp5WkoL8aW3bWGYJkZSXqikl9nKp/vVa+I08ko=
+			r28wfYGVgybfdzoahbtIDchPBRzybRL4Pr37TfTvB9Q=
 			</data>
 		</dict>
 		<key>Headers/KochavaTracker.h</key>
@@ -50,42 +50,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WLW5hyh56NVrRZa2aYp+/UjbaSj6xfY6lmnLOo6zpnU=
+			LeosevV2FROF/sYY26igatzFD7UMmerpUFmA183u9jc=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			JZklBBqfc4yCEmDYpPZ7KmL1Ls/75u9R/rLfwgS9ISg=
+			GV9RWMli7idYA6JdNpLDJQ2AuS1s7O/iYznWXSemdvw=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			M5rRQ80Cdio136/TBWWwtsEodIUPS+gvHuMUeTJDWCg=
+			llSvJaw5dJjSsU5z2p6N5/Fbag3jUiG5n1BvDPmdLXM=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			u+NIyGat0Qggh6Y0GoWEKwR6CPG9/dWABXB6O5mz81M=
+			E3hjwM57zBVDscokt/pMTaYKCzniX8M44kHEwTiepFc=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UQJyBLA8oesc/ugfDppfJKCUrAWMdtgvPejSDZEU0jM=
+			vFg1ojyf8wWmQE5HJjRCyPqpKm1D+Pj7MlIsWDSD3rE=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Crzzt37Mn0qSSx0YK8UxBpERXiMblElS3hC9tr5E5hI=
+			K1UIYHExUP2DU8nx7Vj2g0IArXVfdFDHhC9YPxTX89U=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -99,7 +99,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			FHyjj98v3yUPoCO7dU7LOM6RGJry/n+T8pTD6i0A+l0=
+			ykvMo3WQigWunwasVRBTle8tiSxeWRVoGPOZrX4wIh0=
 			</data>
 		</dict>
 	</dict>
