@@ -6,10 +6,10 @@ import PackageDescription
 let package = Package(
     name: "KochavaTracker",
     platforms: [
-        .iOS("10.3"),
+        .iOS("12.4"),
         .macOS("10.14"),
-        .tvOS("10.2"),
-        .watchOS("3.2")
+        .tvOS("12.4"),
+        .watchOS("5.2")
     ],
     products:
     [
@@ -29,7 +29,7 @@ let package = Package(
         .package(
             name: "KochavaCore",
             url: "https://github.com/Kochava/Apple-SwiftPackage-KochavaCore",
-            from: "6.1.1"
+            from: "7.0.0"
         ),
     ],
     targets:

@@ -1,9 +1,9 @@
 //
 //  KVAAdNetwork.h
-//  KochavaAdNetwork
+//  KochavaTracker
 //
 //  Created by John Bushnell on 8/20/20.
-//  Copyright © 2020 - 2022 Kochava, Inc.  All rights reserved.
+//  Copyright © 2020 - 2023 Kochava, Inc.  All rights reserved.
 //
 
 
@@ -33,7 +33,7 @@
 typedef void (^ KVAAdNetworkDidRegisterAppForAttributionBlock)
 (
     KVAAdNetwork * _Nonnull adNetwork
-);
+ ) DEPRECATED_MSG_ATTRIBUTE("renamed to 'KVAAdNetwork.Closure_DidRegisterAppForAttribution'.  Use 'KVAAdNetwork.Closure_DidRegisterAppForAttribution' instead.  If in Objective-C then describe the closure through its low-level format instead.  Example: void (^closure_didRegisterAppForAttribution)(KVAAdNetwork * _Nonnull adNetwork) = ^(KVAAdNetwork * _Nonnull adNetwork) { /* ... */ };");
 
 
 

@@ -6,6 +6,6 @@ framework module KochavaTracker {
 }
 
 module KochavaTracker.Swift {
-    header "KochavaTracker-Swift.h"
-    requires objc
+  header "KochavaTracker-Swift.h"
+  requires objc
 }
