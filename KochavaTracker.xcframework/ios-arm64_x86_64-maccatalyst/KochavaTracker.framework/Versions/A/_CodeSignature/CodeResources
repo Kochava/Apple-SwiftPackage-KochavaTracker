@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		8OHuy4/LjzIjGxMtx/Qm1ju4sJs=
+		9eOG4imqnsa+OV3biomXHvb8NOI=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -50,7 +50,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			78205Zf5HQtgG8j22873qAq3mEvcolbHSB+25X3/iTg=
+			52TKfu0ytyjZzhf/vaqTjr2D3y1GVlAg1kofemsU2m4=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.private.swiftinterface</key>
@@ -78,14 +78,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9qst6iqrEB39qMkX4knli/OPSCvOCMg8O39GopqcEQU=
+			PJTEdOvyyFPWwtDwGTj7sMkEqB/y0pIL6+8ZOanwq0M=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			78205Zf5HQtgG8j22873qAq3mEvcolbHSB+25X3/iTg=
+			52TKfu0ytyjZzhf/vaqTjr2D3y1GVlAg1kofemsU2m4=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.private.swiftinterface</key>
@@ -113,7 +113,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Dcv2jYqwg5zWU8wJSxvqCTXvg/55Jar5tG7YpTOtLLI=
+			Vt39EdMaa4S/bgaCgBnT2T/8L6SsYE4fca0II+soh/M=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -127,7 +127,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dQsIwmsLxt2sTiUQESjqzneIhiz2KBjF+t4kg4+9nNU=
+			QN1mkSmFTbs6dj3WsapmZJlQvi9YnK4hH5ZWd+fDl3Y=
 			</data>
 		</dict>
 	</dict>
