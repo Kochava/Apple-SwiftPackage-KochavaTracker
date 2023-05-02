@@ -26,11 +26,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		DqwUZ928+j7heTVoqLD6nnNFCQI=
+		dgs0NWyv1wHIUuesRb8Urhv8rt8=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		JmMsvaVia1GrIMQv2MGRATx1QI0=
+		NPP6q6dul7rZAhPB6zL8T7lw8g4=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		nLi2IVtf0I81Oym2Sx79QEPRf0E=
+		xGq6rhoL2fObEAZvcqU+quw+DA8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -94,7 +94,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0yVlJgvWd2rMQoHl178QFJpZCKpKwafkdz1F8VKPL9s=
+			acd1X5WxHR8LBiHr6ePsEZ0B5SnYSkzQOPVuKGybFaw=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
@@ -122,7 +122,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			vFyqjxwSKIAzVxzTF9g1I2S09NWIGQkjW+U4OeCHnmc=
+			wVus0xmc4O33Bv6jMwazYCBxPDxQ6L5bvhLJRMRTDX0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
