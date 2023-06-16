@@ -278,7 +278,6 @@ SWIFT_CLASS_NAMED("KVAAdNetwork")
 SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 @interface KVAAdNetworkConversion : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A closure which is called when the SKAdNetwork updatePostbackConversionValue API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable closure_didUpdatePostbackValue)(KVAAdNetworkConversion * _Nonnull, KVAAdNetworkConversionResult * _Nonnull);
@@ -294,7 +293,6 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 /// A class which defines an adnetwork conversion event.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
 @interface KVAAdNetworkConversionEvent : NSObject
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -304,7 +302,6 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionLockWindow")
 @interface KVAAdNetworkConversionLockWindow : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 @end
 
 @class KVAContext;
@@ -347,11 +344,15 @@ SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
 @property (nonatomic) BOOL boolean;
 @end
 
+@class KVANetworking;
 
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
-@interface KVAAppTrackingTransparency : NSObject
+@interface KVAAppTrackingTransparency : NSObject <NSCopying, KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
 /// Default true.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
 @property (nonatomic) BOOL autoRequestTrackingAuthorizationBool;
@@ -369,7 +370,9 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 
 /// A feature which interfaces with Apple Search Ads.
 SWIFT_CLASS_NAMED("KVAAppleSearchAds")
-@interface KVAAppleSearchAds : NSObject
+@interface KVAAppleSearchAds : NSObject <KVANetworkingProvider>
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -427,34 +430,143 @@ SWIFT_CLASS_NAMED("KVAAttributionResult")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@protocol KVACustomIdentifierRegistrarProvider;
+
+/// A custom identifier.
+SWIFT_CLASS_NAMED("KVACustomIdentifier")
+@interface KVACustomIdentifier : NSObject <KVANetworkingProvider>
+/// Create a custom identifier and then register it.
+/// \param name The name of the custom identifier.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create a custom identifier and then register it.
+/// \param name The name of the custom identifier.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param registrarArray An array of KVACustomIdentifierRegistrarProvider to which to register the custom identifier.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVACustomIdentifierRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the custom identifier.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker28KVACustomIdentifierRegistrar_")
+@protocol KVACustomIdentifierRegistrar
+- (void)register:(KVACustomIdentifier * _Nonnull)customIdentifier;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker36KVACustomIdentifierRegistrarProvider_")
+@protocol KVACustomIdentifierRegistrarProvider
+/// A property which conforms to protocol KVACustomIdentifierRegistrar.
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
+@end
+
 
 /// A feature which is responsible for custom identifiers.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject
+@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom identifier.
-/// In order to send a custom identifier it must be whitelisted on your account.
+/// See class <code>KVACustomIdentifier</code>.
+/// In order to send a custom identifier it must be allowed on your account.
+/// \param customIdentifier The custom identifier.
+///
+- (void)register:(KVACustomIdentifier * _Nonnull)customIdentifier;
+/// Register a custom identifier.
+/// In order to send a custom identifier it must be allowed on your account.
 /// \param name The name of the identifier.
 ///
 /// \param identifier The identifier.
 ///
-- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
 /// Register a custom identifier.
-/// In order to send a custom identifier it must be whitelisted on your account.
+/// In order to send a custom identifier it must be allowed on your account.
 /// \param nameString The name of the identifier.
 ///
 /// \param identifierString The identifier.
 ///
-- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Use Swift func register(name:identifier:) instead.  For Objective-C use method -registerWithName:identifier:.", "registerWithName:identifier:");
+- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+@end
+
+@protocol KVACustomValueRegistrarProvider;
+
+/// A custom value.
+SWIFT_CLASS_NAMED("KVACustomValue")
+@interface KVACustomValue : NSObject <KVANetworkingProvider>
+/// Create a custom value and then register it.
+/// \param name The name of the custom value.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value;
+/// Create a custom value and then register it.
+/// \param name The name of the custom value.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
+/// \param registrarArray An array of KVACustomValueRegistrarProvider to which to register the custom value.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value registrarArray:(NSArray<id <KVACustomValueRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the custom value.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The value.
+@property (nonatomic, readonly) id _Nullable value;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker23KVACustomValueRegistrar_")
+@protocol KVACustomValueRegistrar
+- (void)register:(KVACustomValue * _Nonnull)customValue;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker31KVACustomValueRegistrarProvider_")
+@protocol KVACustomValueRegistrarProvider
+/// A property which conforms to protocol KVACustomValueRegistrar.
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
+@end
+
+
+/// A feature which is responsible for custom values.
+SWIFT_CLASS_NAMED("KVACustomValues")
+@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar>
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// Register a custom value.
+/// See class <code>KVACustomValue</code>.
+/// \param customValue The custom value.
+///
+- (void)register:(KVACustomValue * _Nonnull)customValue;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
 
 @class NSURL;
 @protocol KVADeeplinksProcessorProvider;
-@class KVANetworking;
 
 /// A deeplink.
 SWIFT_CLASS_NAMED("KVADeeplink")
-@interface KVADeeplink : NSObject <KVANetworkingSetterProvider>
+@interface KVADeeplink : NSObject <KVANetworkingProvider>
 /// Create a deeplink and then process it.
 /// \param url The deep link url as provided.
 ///
@@ -525,12 +637,19 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 /// The deeplink url as provided by the operating system.
 @property (nonatomic, copy) NSString * _Nullable urlString;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// The destination for the deeplink.
 @property (nonatomic, copy) NSString * _Nullable destinationString;
 /// A dictionary containing raw information about the deeplink.
 @property (nonatomic, copy) NSDictionary * _Nullable rawDictionary;
+@end
+
+@class KVADeeplinksDeferredPrefetch;
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker37KVADeeplinksDeferredPrefetchAugmenter_")
+@protocol KVADeeplinksDeferredPrefetchAugmenter
+- (void)augment:(KVADeeplinksDeferredPrefetch * _Nonnull)deferredPrefetch;
 @end
 
 
@@ -549,15 +668,19 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 /// A feature which measures deeplink activity.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// Augment deferred prefetch.
+/// \param deferredPrefetch The deferred prefetch.
+///
+- (void)augment:(KVADeeplinksDeferredPrefetch * _Nonnull)deferredPrefetch;
 /// Augment deferred prefetch.
 /// \param name The name for the identifier.
 ///
 /// \param identifier The identifier.
 ///
-- (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVADeeplinks.DeferredPrefetch.augment(name:identifier:) instead.  In Objective-C use -[KVADeeplinksDeferredPrefetch augmentWithName:identifier:].");
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -566,6 +689,50 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param closure_didComplete A completion handler to call when processing is complete.
 ///
 - (void)processDeeplink:(KVADeeplink * _Nonnull)deeplink timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval closure_didComplete:(void (^ _Nullable)(KVADeeplink * _Nonnull))closure_didComplete;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+@end
+
+
+@interface KVADeeplinks (SWIFT_EXTENSION(KochavaTracker))
+@end
+
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider;
+
+/// A deferred prefetch for deeplinks.
+SWIFT_CLASS_NAMED("DeferredPrefetch")
+@interface KVADeeplinksDeferredPrefetch : NSObject <KVANetworkingProvider>
+/// Create a deferred prefetch and then augment the deeplink process with it.
+/// \param name The name of the deferred prefetch.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)augmentWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create a deferred prefetch and then augment it.
+/// \param name The name of the deferred prefetch.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param augmenterArray An array of KVADeeplinksDeferredPrefetchAugmenterProvider to which to augment the deferred prefetch.
+///
++ (void)augmentWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier augmenterArray:(NSArray<id <KVADeeplinksDeferredPrefetchAugmenterProvider>> * _Nullable)augmenterArray;
+/// A unique name for the deferred prefetch augmentation.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
+/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 @end
 
 
@@ -593,7 +760,7 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 
 /// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
 SWIFT_CLASS_NAMED("KVAEvent")
-@interface KVAEvent : NSObject <KVANetworkingSetterProvider>
+@interface KVAEvent : NSObject <KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Create an event.
 /// The designated initializer.
@@ -627,8 +794,8 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean indicating if an asynchronous dispatch should occur when the event is sent.
 /// Default true.  The default behavior dispatches the sending of an event to the default queue that should be used when sending the event (i.e. KVADispatchQueue.globalSerial).  If it is known that you are already on the appropriate queue, you may set this to true to avoid an additional dispatch.  This can have the effect of fine tuning behavior to ensure that related operations essentially occur atomically.  It is important to not use this feature if you are not on the appropriate queue already.
 /// note:
@@ -693,6 +860,8 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This is expected to contain a boolean which indicates if something is completed.  This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, strong) NSNumber * _Nullable completedBoolNumber;
 /// An instance of KVAConsent.
+/// note:
+/// This is an internal managed parameter which is stamped automatically when the event is sent.
 @property (nonatomic, strong) KVAConsent * _Nullable consent;
 /// A property containing a content identifier string.
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
@@ -828,6 +997,52 @@ SWIFT_CLASS_NAMED("KVAEvent")
 
 
 @interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
+@end
+
+@protocol KVAEventDefaultParameterRegistrarProvider;
+
+/// An event default parameter.
+SWIFT_CLASS_NAMED("DefaultParameter")
+@interface KVAEventDefaultParameter : NSObject <KVANetworkingProvider>
+/// Create an event default parameter for a userIdString and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param userIdString The value.  A value of nil will remove any existing value under the user_id name.
+///
++ (void)registerWithUserIdString:(NSString * _Nullable)userIdString;
+/// Create an event default parameter for a userIdString and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param userIdString The value.  A value of nil will remove any existing value under the user_id name.
+///
+/// \param registrarArray An array of KVAEventDefaultParameterRegistrarProvider to which to register the event default parameter.
+///
++ (void)registerWithUserIdString:(NSString * _Nullable)userIdString registrarArray:(NSArray<id <KVAEventDefaultParameterRegistrarProvider>> * _Nullable)registrarArray;
+/// Create an event default parameter and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value;
+/// Create an event default parameter and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
+/// \param registrarArray An array of KVAEventDefaultParameterRegistrarProvider to which to register the event default parameter.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value registrarArray:(NSArray<id <KVAEventDefaultParameterRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the parameter.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
 /// Create an event which has a custom event name, and then send it.
 /// \param eventName A string containing the custom event name.
 ///
@@ -939,6 +1154,19 @@ SWIFT_CLASS_NAMED("KVAEvent")
 @end
 
 
+SWIFT_PROTOCOL("_TtP14KochavaTracker33KVAEventDefaultParameterRegistrar_")
+@protocol KVAEventDefaultParameterRegistrar
+- (void)register:(KVAEventDefaultParameter * _Nonnull)eventDefaultParameter;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker41KVAEventDefaultParameterRegistrarProvider_")
+@protocol KVAEventDefaultParameterRegistrarProvider
+/// A property which conforms to protocol KVAEventDefaultParameterRegistrar.
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
+@end
+
+
 SWIFT_PROTOCOL("_TtP14KochavaTracker14KVAEventSender_")
 @protocol KVAEventSender
 /// Send an event from the device to the appropriate server(s).
@@ -1030,16 +1258,69 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Register a default parameter.
+/// See class KVAEvent.<code>KVAEvent/DefaultParameter</code>.
+/// \param defaultParameter The default parameter.
+///
+- (void)register:(KVAEventDefaultParameter * _Nonnull)defaultParameter;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
+@end
+
+@protocol KVAIdentityLinkRegistrarProvider;
+
+/// An identity link.
+SWIFT_CLASS_NAMED("KVAIdentityLink")
+@interface KVAIdentityLink : NSObject <KVANetworkingProvider>
+/// Create an identity link and then register it.
+/// \param name The name of the identity link.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create an identity link and then register it.
+/// \param name The name of the identity link.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param registrarArray An array of KVAIdentityLinkRegistrarProvider to which to register the identity link.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVAIdentityLinkRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the identity link.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker24KVAIdentityLinkRegistrar_")
+@protocol KVAIdentityLinkRegistrar
+- (void)register:(KVAIdentityLink * _Nonnull)identityLink;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker32KVAIdentityLinkRegistrarProvider_")
+@protocol KVAIdentityLinkRegistrarProvider
+/// A property which conforms to protocol KVAIdentityLinkRegistrar.
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @end
 
 
 /// A feature which is responsible for linking identities.
-SWIFT_CLASS_NAMED("KVAIdentityLink")
-@interface KVAIdentityLink : NSObject
+SWIFT_CLASS_NAMED("KVAIdentityLinking")
+@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Register an identity link.
+/// See class <code>KVAIdentityLink</code>.
+/// \param identityLink The identity link.
+///
+- (void)register:(KVAIdentityLink * _Nonnull)identityLink;
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -1047,7 +1328,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 ///
 /// \param identifier The identifier.
 ///
-- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier SWIFT_DEPRECATED_MSG("Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -1055,7 +1336,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 ///
 /// \param identifierString The identifier.
 ///
-- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Use Swift func register(name:identifier:) instead.  In Objective-C use method -registerWithName:identifier:.", "registerWithName:identifier:");
+- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
 @end
 
 
@@ -1090,7 +1371,7 @@ SWIFT_CLASS_NAMED("KVAPushNotifications")
 
 /// A push notifications token.
 SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
-@interface KVAPushNotificationsToken : NSObject <KVANetworkingSetterProvider>
+@interface KVAPushNotificationsToken : NSObject <KVANetworkingProvider>
 /// Create a push notifications token using data and then register.
 /// \param data The device token as provided in Data.
 ///
@@ -1117,8 +1398,8 @@ SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
 /// The date that the token was provided by the operating system.
 @property (nonatomic, readonly, copy) NSDate * _Nullable providedDate;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1153,7 +1434,7 @@ SWIFT_CLASS_NAMED("KVASessions")
 
 /// The class KVATracker provides an interface between a host application and Kochava’s Attribution and Measurement servers.
 SWIFT_CLASS_NAMED("KVATracker")
-@interface KVATracker : NSObject <KVAPrivacyProfileRegistrarProvider, KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPushNotificationsTokenRegistrarProvider>
+@interface KVATracker : NSObject <KVAPrivacyProfileRegistrarProvider, KVACustomIdentifierRegistrarProvider, KVACustomValueRegistrarProvider, KVADeeplinksDeferredPrefetchAugmenterProvider, KVADeeplinksProcessorProvider, KVAEventDefaultParameterRegistrarProvider, KVAEventSenderProvider, KVAIdentityLinkRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
 /// A shared instance, for convenience.
 /// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance simplifies your implementation as you do not need to store a tracker instance somewhere in a public location in your own code.
 /// By default this instance will use the default storage location equivalent to calling <code>init(storageIdentifier:)</code> with storageIdentifier nil.  If you wish to specify an alternative storage location, see var <code>sharedStorageIdentifier</code>.
@@ -1316,6 +1597,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which is responsible for custom identifiers.
 /// Register a custom identifier by calling class <code>KVACustomIdentifiers</code> func <code>KVACustomIdentifiers/register(name:identifier:)</code>.
 @property (nonatomic, readonly, strong) KVACustomIdentifiers * _Nonnull customIdentifiers;
+/// A feature which is responsible for custom values.
+/// Register a custom value by calling class <code>KVACustomValue</code> func <code>KVACustomValue/register(name:value:)</code>.
+@property (nonatomic, readonly, strong) KVACustomValues * _Nonnull customValues;
 /// A feature which measures deeplink activity.
 /// Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(url:closure_didComplete:)</code>.
 @property (nonatomic, readonly, strong) KVADeeplinks * _Nonnull deeplinks;
@@ -1325,8 +1609,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
 @property (nonatomic, readonly, strong) KVATrackerGeneral * _Nonnull general;
 /// A feature which is responsible for linking identities.
-/// Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(name:identifier:)</code>.
-@property (nonatomic, readonly, strong) KVAIdentityLink * _Nonnull identityLink;
+/// Register an identity link by calling class <code>KVAIdentityLinking</code> func <code>KVAIdentityLinking/register(name:identifier:)</code>.
+@property (nonatomic, readonly, strong) KVAIdentityLinking * _Nonnull identityLink;
 /// A feature which provides information about the install.
 /// The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>config</code>.
 @property (nonatomic, readonly, strong) KVAInstall * _Nonnull install;
@@ -1347,8 +1631,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A boolean which when true causes the instance to sleep.  This is a convenience variable which is fully equivalent to, and interchangeable with, <code>networking</code>.sleepBool.
 /// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
 @property (nonatomic) BOOL sleepBool;
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 @property (nonatomic, readonly, strong) id <KVADeeplinksProcessor> _Nullable deeplinksProcessor;
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPushNotificationsTokenRegistrar> _Nonnull pushNotificationsTokenRegistrar;
 /// A string used as a  storage identifier for the shared instance.
@@ -1397,6 +1686,12 @@ SWIFT_CLASS_NAMED("KVATrackerDatapoints")
 SWIFT_CLASS_NAMED("KVATrackerGeneral")
 @interface KVATrackerGeneral : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// A string containing the partner name, when applicable.
+/// An example would be “Moloco”.
+@property (nonatomic, copy) NSString * _Nullable partnerNameString;
+/// A unique identifier for an app, resolved.
+/// This value is a resolved value when taking into consideration both the hostAppGUIDString as well as the serverAppGUIDString.  This is the app GUID that is ultimately sent to the server to identify the app in general contexts.  When set, this defaults to setting the hostAppGUIDString.
+@property (nonatomic, copy) NSString * _Nullable appGUIDString;
 @end
 
 
@@ -1723,7 +2018,6 @@ SWIFT_CLASS_NAMED("KVAAdNetwork")
 SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 @interface KVAAdNetworkConversion : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A closure which is called when the SKAdNetwork updatePostbackConversionValue API has been called.
 /// Your code should assume that if some action needs to be performed on the main queue that it should first dispatch asynchronously to it.
 @property (nonatomic, copy) void (^ _Nullable closure_didUpdatePostbackValue)(KVAAdNetworkConversion * _Nonnull, KVAAdNetworkConversionResult * _Nonnull);
@@ -1739,7 +2033,6 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversion")
 /// A class which defines an adnetwork conversion event.
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
 @interface KVAAdNetworkConversionEvent : NSObject
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1749,7 +2042,6 @@ SWIFT_CLASS_NAMED("KVAAdNetworkConversionEvent")
 SWIFT_CLASS_NAMED("KVAAdNetworkConversionLockWindow")
 @interface KVAAdNetworkConversionLockWindow : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-+ (nullable instancetype)kva_from:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 @end
 
 @class KVAContext;
@@ -1792,11 +2084,15 @@ SWIFT_CLASS_NAMED("KVAAppLimitAdTracking")
 @property (nonatomic) BOOL boolean;
 @end
 
+@class KVANetworking;
 
 /// A feature which interfaces with Apple’s App Tracking Transparency system.
 SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
-@interface KVAAppTrackingTransparency : NSObject
+@interface KVAAppTrackingTransparency : NSObject <NSCopying, KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
 /// Default true.  Subject to server-based override.  Also subject to enabledBool.  See enabledBool.
 @property (nonatomic) BOOL autoRequestTrackingAuthorizationBool;
@@ -1814,7 +2110,9 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 
 /// A feature which interfaces with Apple Search Ads.
 SWIFT_CLASS_NAMED("KVAAppleSearchAds")
-@interface KVAAppleSearchAds : NSObject
+@interface KVAAppleSearchAds : NSObject <KVANetworkingProvider>
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -1872,34 +2170,143 @@ SWIFT_CLASS_NAMED("KVAAttributionResult")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@protocol KVACustomIdentifierRegistrarProvider;
+
+/// A custom identifier.
+SWIFT_CLASS_NAMED("KVACustomIdentifier")
+@interface KVACustomIdentifier : NSObject <KVANetworkingProvider>
+/// Create a custom identifier and then register it.
+/// \param name The name of the custom identifier.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create a custom identifier and then register it.
+/// \param name The name of the custom identifier.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param registrarArray An array of KVACustomIdentifierRegistrarProvider to which to register the custom identifier.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVACustomIdentifierRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the custom identifier.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker28KVACustomIdentifierRegistrar_")
+@protocol KVACustomIdentifierRegistrar
+- (void)register:(KVACustomIdentifier * _Nonnull)customIdentifier;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker36KVACustomIdentifierRegistrarProvider_")
+@protocol KVACustomIdentifierRegistrarProvider
+/// A property which conforms to protocol KVACustomIdentifierRegistrar.
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
+@end
+
 
 /// A feature which is responsible for custom identifiers.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject
+@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom identifier.
-/// In order to send a custom identifier it must be whitelisted on your account.
+/// See class <code>KVACustomIdentifier</code>.
+/// In order to send a custom identifier it must be allowed on your account.
+/// \param customIdentifier The custom identifier.
+///
+- (void)register:(KVACustomIdentifier * _Nonnull)customIdentifier;
+/// Register a custom identifier.
+/// In order to send a custom identifier it must be allowed on your account.
 /// \param name The name of the identifier.
 ///
 /// \param identifier The identifier.
 ///
-- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
 /// Register a custom identifier.
-/// In order to send a custom identifier it must be whitelisted on your account.
+/// In order to send a custom identifier it must be allowed on your account.
 /// \param nameString The name of the identifier.
 ///
 /// \param identifierString The identifier.
 ///
-- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Use Swift func register(name:identifier:) instead.  For Objective-C use method -registerWithName:identifier:.", "registerWithName:identifier:");
+- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+@end
+
+@protocol KVACustomValueRegistrarProvider;
+
+/// A custom value.
+SWIFT_CLASS_NAMED("KVACustomValue")
+@interface KVACustomValue : NSObject <KVANetworkingProvider>
+/// Create a custom value and then register it.
+/// \param name The name of the custom value.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value;
+/// Create a custom value and then register it.
+/// \param name The name of the custom value.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
+/// \param registrarArray An array of KVACustomValueRegistrarProvider to which to register the custom value.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value registrarArray:(NSArray<id <KVACustomValueRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the custom value.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The value.
+@property (nonatomic, readonly) id _Nullable value;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker23KVACustomValueRegistrar_")
+@protocol KVACustomValueRegistrar
+- (void)register:(KVACustomValue * _Nonnull)customValue;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker31KVACustomValueRegistrarProvider_")
+@protocol KVACustomValueRegistrarProvider
+/// A property which conforms to protocol KVACustomValueRegistrar.
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
+@end
+
+
+/// A feature which is responsible for custom values.
+SWIFT_CLASS_NAMED("KVACustomValues")
+@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar>
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// Register a custom value.
+/// See class <code>KVACustomValue</code>.
+/// \param customValue The custom value.
+///
+- (void)register:(KVACustomValue * _Nonnull)customValue;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
 
 @class NSURL;
 @protocol KVADeeplinksProcessorProvider;
-@class KVANetworking;
 
 /// A deeplink.
 SWIFT_CLASS_NAMED("KVADeeplink")
-@interface KVADeeplink : NSObject <KVANetworkingSetterProvider>
+@interface KVADeeplink : NSObject <KVANetworkingProvider>
 /// Create a deeplink and then process it.
 /// \param url The deep link url as provided.
 ///
@@ -1970,12 +2377,19 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 /// The deeplink url as provided by the operating system.
 @property (nonatomic, copy) NSString * _Nullable urlString;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// The destination for the deeplink.
 @property (nonatomic, copy) NSString * _Nullable destinationString;
 /// A dictionary containing raw information about the deeplink.
 @property (nonatomic, copy) NSDictionary * _Nullable rawDictionary;
+@end
+
+@class KVADeeplinksDeferredPrefetch;
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker37KVADeeplinksDeferredPrefetchAugmenter_")
+@protocol KVADeeplinksDeferredPrefetchAugmenter
+- (void)augment:(KVADeeplinksDeferredPrefetch * _Nonnull)deferredPrefetch;
 @end
 
 
@@ -1994,15 +2408,19 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 /// A feature which measures deeplink activity.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
+/// Augment deferred prefetch.
+/// \param deferredPrefetch The deferred prefetch.
+///
+- (void)augment:(KVADeeplinksDeferredPrefetch * _Nonnull)deferredPrefetch;
 /// Augment deferred prefetch.
 /// \param name The name for the identifier.
 ///
 /// \param identifier The identifier.
 ///
-- (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVADeeplinks.DeferredPrefetch.augment(name:identifier:) instead.  In Objective-C use -[KVADeeplinksDeferredPrefetch augmentWithName:identifier:].");
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -2011,6 +2429,50 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param closure_didComplete A completion handler to call when processing is complete.
 ///
 - (void)processDeeplink:(KVADeeplink * _Nonnull)deeplink timeoutTimeInterval:(NSTimeInterval)timeoutTimeInterval closure_didComplete:(void (^ _Nullable)(KVADeeplink * _Nonnull))closure_didComplete;
+/// An instance of networking.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+@end
+
+
+@interface KVADeeplinks (SWIFT_EXTENSION(KochavaTracker))
+@end
+
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider;
+
+/// A deferred prefetch for deeplinks.
+SWIFT_CLASS_NAMED("DeferredPrefetch")
+@interface KVADeeplinksDeferredPrefetch : NSObject <KVANetworkingProvider>
+/// Create a deferred prefetch and then augment the deeplink process with it.
+/// \param name The name of the deferred prefetch.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)augmentWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create a deferred prefetch and then augment it.
+/// \param name The name of the deferred prefetch.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param augmenterArray An array of KVADeeplinksDeferredPrefetchAugmenterProvider to which to augment the deferred prefetch.
+///
++ (void)augmentWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier augmenterArray:(NSArray<id <KVADeeplinksDeferredPrefetchAugmenterProvider>> * _Nullable)augmenterArray;
+/// A unique name for the deferred prefetch augmentation.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
+/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 @end
 
 
@@ -2038,7 +2500,7 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 
 /// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
 SWIFT_CLASS_NAMED("KVAEvent")
-@interface KVAEvent : NSObject <KVANetworkingSetterProvider>
+@interface KVAEvent : NSObject <KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Create an event.
 /// The designated initializer.
@@ -2072,8 +2534,8 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean indicating if an asynchronous dispatch should occur when the event is sent.
 /// Default true.  The default behavior dispatches the sending of an event to the default queue that should be used when sending the event (i.e. KVADispatchQueue.globalSerial).  If it is known that you are already on the appropriate queue, you may set this to true to avoid an additional dispatch.  This can have the effect of fine tuning behavior to ensure that related operations essentially occur atomically.  It is important to not use this feature if you are not on the appropriate queue already.
 /// note:
@@ -2138,6 +2600,8 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// This is expected to contain a boolean which indicates if something is completed.  This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
 @property (nonatomic, strong) NSNumber * _Nullable completedBoolNumber;
 /// An instance of KVAConsent.
+/// note:
+/// This is an internal managed parameter which is stamped automatically when the event is sent.
 @property (nonatomic, strong) KVAConsent * _Nullable consent;
 /// A property containing a content identifier string.
 /// This field has a somewhat generic quality, in that it can contain whatever you consider to be fitting value.
@@ -2273,6 +2737,52 @@ SWIFT_CLASS_NAMED("KVAEvent")
 
 
 @interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
+@end
+
+@protocol KVAEventDefaultParameterRegistrarProvider;
+
+/// An event default parameter.
+SWIFT_CLASS_NAMED("DefaultParameter")
+@interface KVAEventDefaultParameter : NSObject <KVANetworkingProvider>
+/// Create an event default parameter for a userIdString and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param userIdString The value.  A value of nil will remove any existing value under the user_id name.
+///
++ (void)registerWithUserIdString:(NSString * _Nullable)userIdString;
+/// Create an event default parameter for a userIdString and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param userIdString The value.  A value of nil will remove any existing value under the user_id name.
+///
+/// \param registrarArray An array of KVAEventDefaultParameterRegistrarProvider to which to register the event default parameter.
+///
++ (void)registerWithUserIdString:(NSString * _Nullable)userIdString registrarArray:(NSArray<id <KVAEventDefaultParameterRegistrarProvider>> * _Nullable)registrarArray;
+/// Create an event default parameter and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value;
+/// Create an event default parameter and then register it.
+/// \param name The name of the event default parameter.
+///
+/// \param value The value.  Must be a String or NSNumber (which includes NSDecimalNumber, Int, Double, and Bool).  A value of nil will remove any existing value under the specified name.
+///
+/// \param registrarArray An array of KVAEventDefaultParameterRegistrarProvider to which to register the event default parameter.
+///
++ (void)registerWithName:(NSString * _Nonnull)name value:(id _Nullable)value registrarArray:(NSArray<id <KVAEventDefaultParameterRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the parameter.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface KVAEvent (SWIFT_EXTENSION(KochavaTracker))
 /// Create an event which has a custom event name, and then send it.
 /// \param eventName A string containing the custom event name.
 ///
@@ -2384,6 +2894,19 @@ SWIFT_CLASS_NAMED("KVAEvent")
 @end
 
 
+SWIFT_PROTOCOL("_TtP14KochavaTracker33KVAEventDefaultParameterRegistrar_")
+@protocol KVAEventDefaultParameterRegistrar
+- (void)register:(KVAEventDefaultParameter * _Nonnull)eventDefaultParameter;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker41KVAEventDefaultParameterRegistrarProvider_")
+@protocol KVAEventDefaultParameterRegistrarProvider
+/// A property which conforms to protocol KVAEventDefaultParameterRegistrar.
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
+@end
+
+
 SWIFT_PROTOCOL("_TtP14KochavaTracker14KVAEventSender_")
 @protocol KVAEventSender
 /// Send an event from the device to the appropriate server(s).
@@ -2475,16 +2998,69 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Register a default parameter.
+/// See class KVAEvent.<code>KVAEvent/DefaultParameter</code>.
+/// \param defaultParameter The default parameter.
+///
+- (void)register:(KVAEventDefaultParameter * _Nonnull)defaultParameter;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
+@end
+
+@protocol KVAIdentityLinkRegistrarProvider;
+
+/// An identity link.
+SWIFT_CLASS_NAMED("KVAIdentityLink")
+@interface KVAIdentityLink : NSObject <KVANetworkingProvider>
+/// Create an identity link and then register it.
+/// \param name The name of the identity link.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier;
+/// Create an identity link and then register it.
+/// \param name The name of the identity link.
+///
+/// \param identifier The identifier.  An identifier of nil will remove any existing identifier under the specified name.
+///
+/// \param registrarArray An array of KVAIdentityLinkRegistrarProvider to which to register the identity link.
+///
++ (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVAIdentityLinkRegistrarProvider>> * _Nullable)registrarArray;
+/// A unique name for the identity link.
+@property (nonatomic, readonly, copy) NSString * _Nonnull name;
+/// The identifier.
+@property (nonatomic, readonly, copy) NSString * _Nullable identifier;
+/// An instance of networking.
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker24KVAIdentityLinkRegistrar_")
+@protocol KVAIdentityLinkRegistrar
+- (void)register:(KVAIdentityLink * _Nonnull)identityLink;
+@end
+
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker32KVAIdentityLinkRegistrarProvider_")
+@protocol KVAIdentityLinkRegistrarProvider
+/// A property which conforms to protocol KVAIdentityLinkRegistrar.
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @end
 
 
 /// A feature which is responsible for linking identities.
-SWIFT_CLASS_NAMED("KVAIdentityLink")
-@interface KVAIdentityLink : NSObject
+SWIFT_CLASS_NAMED("KVAIdentityLinking")
+@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Register an identity link.
+/// See class <code>KVAIdentityLink</code>.
+/// \param identityLink The identity link.
+///
+- (void)register:(KVAIdentityLink * _Nonnull)identityLink;
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -2492,7 +3068,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 ///
 /// \param identifier The identifier.
 ///
-- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier;
+- (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nonnull)identifier SWIFT_DEPRECATED_MSG("Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
 /// Register an identity link.
 /// note:
 /// When used, and when possible, this method should be called before (or as soon as possible after) the tracker is started.  This helps to ensure that your identity values are associated with your install.
@@ -2500,7 +3076,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 ///
 /// \param identifierString The identifier.
 ///
-- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Use Swift func register(name:identifier:) instead.  In Objective-C use method -registerWithName:identifier:.", "registerWithName:identifier:");
+- (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
 @end
 
 
@@ -2535,7 +3111,7 @@ SWIFT_CLASS_NAMED("KVAPushNotifications")
 
 /// A push notifications token.
 SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
-@interface KVAPushNotificationsToken : NSObject <KVANetworkingSetterProvider>
+@interface KVAPushNotificationsToken : NSObject <KVANetworkingProvider>
 /// Create a push notifications token using data and then register.
 /// \param data The device token as provided in Data.
 ///
@@ -2562,8 +3138,8 @@ SWIFT_CLASS_NAMED("KVAPushNotificationsToken")
 /// The date that the token was provided by the operating system.
 @property (nonatomic, readonly, copy) NSDate * _Nullable providedDate;
 /// An instance of networking.
-/// This exists here related to the conformance to KVAExecutable and then KVANetworkingSetterProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
-@property (nonatomic, weak) KVANetworking * _Nullable networking;
+/// This exists here related to the conformance to KVAExecutable and then KVANetworkingProvider.  When this instance is constructed and then executed as an executable from within the the networking class, the networking class will also when possible stamp itself here as an indication of where it originated, so that this instance can properly default where it should be sent to be executed.  This can be derived from the networking.mutator.mutableDelegate when cast to whatever it may be expected to be.  Because it’s weak it may disappear at some point, but if it’s there it’s a better default than a shared instance.
+@property (nonatomic, strong) KVANetworking * _Nullable networking;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -2598,7 +3174,7 @@ SWIFT_CLASS_NAMED("KVASessions")
 
 /// The class KVATracker provides an interface between a host application and Kochava’s Attribution and Measurement servers.
 SWIFT_CLASS_NAMED("KVATracker")
-@interface KVATracker : NSObject <KVAPrivacyProfileRegistrarProvider, KVADeeplinksProcessorProvider, KVAEventSenderProvider, KVAPushNotificationsTokenRegistrarProvider>
+@interface KVATracker : NSObject <KVAPrivacyProfileRegistrarProvider, KVACustomIdentifierRegistrarProvider, KVACustomValueRegistrarProvider, KVADeeplinksDeferredPrefetchAugmenterProvider, KVADeeplinksProcessorProvider, KVAEventDefaultParameterRegistrarProvider, KVAEventSenderProvider, KVAIdentityLinkRegistrarProvider, KVAPushNotificationsTokenRegistrarProvider>
 /// A shared instance, for convenience.
 /// This is the preferred way of using a tracker.  To complete the integration you must call func <code>start(withAppGUIDString:)</code> or func <code>start(withPartnerNameString:)</code>.  You may alternatively use a constructor to create your own tracker.  The shared instance simplifies your implementation as you do not need to store a tracker instance somewhere in a public location in your own code.
 /// By default this instance will use the default storage location equivalent to calling <code>init(storageIdentifier:)</code> with storageIdentifier nil.  If you wish to specify an alternative storage location, see var <code>sharedStorageIdentifier</code>.
@@ -2761,6 +3337,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which is responsible for custom identifiers.
 /// Register a custom identifier by calling class <code>KVACustomIdentifiers</code> func <code>KVACustomIdentifiers/register(name:identifier:)</code>.
 @property (nonatomic, readonly, strong) KVACustomIdentifiers * _Nonnull customIdentifiers;
+/// A feature which is responsible for custom values.
+/// Register a custom value by calling class <code>KVACustomValue</code> func <code>KVACustomValue/register(name:value:)</code>.
+@property (nonatomic, readonly, strong) KVACustomValues * _Nonnull customValues;
 /// A feature which measures deeplink activity.
 /// Create and process a basic deeplink (which is a wrapper for Apple’s url) by calling class <code>KVADeeplink</code> func <code>KVADeeplink/process(url:closure_didComplete:)</code>.
 @property (nonatomic, readonly, strong) KVADeeplinks * _Nonnull deeplinks;
@@ -2770,8 +3349,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A feature which encapsulates all of the general aspects of a tracker not belonging to any other encapsulated features.
 @property (nonatomic, readonly, strong) KVATrackerGeneral * _Nonnull general;
 /// A feature which is responsible for linking identities.
-/// Register an identity link by calling class <code>KVAIdentityLink</code> func <code>KVAIdentityLink/register(name:identifier:)</code>.
-@property (nonatomic, readonly, strong) KVAIdentityLink * _Nonnull identityLink;
+/// Register an identity link by calling class <code>KVAIdentityLinking</code> func <code>KVAIdentityLinking/register(name:identifier:)</code>.
+@property (nonatomic, readonly, strong) KVAIdentityLinking * _Nonnull identityLink;
 /// A feature which provides information about the install.
 /// The install is automatically sent to Kochava’s servers after starting the tracker, and after the retrieval of the tracker’s configuration in feature var <code>config</code>.
 @property (nonatomic, readonly, strong) KVAInstall * _Nonnull install;
@@ -2792,8 +3371,13 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) id _Nonnull 
 /// A boolean which when true causes the instance to sleep.  This is a convenience variable which is fully equivalent to, and interchangeable with, <code>networking</code>.sleepBool.
 /// The default is false.  When set to true, this causes tasks to effectively be suspended until this condition is lifted.  While this is set to true, tasks are not lost per-say;  however, if a task may have otherwise occurred multiple times, it may be represented only once once the condition is lifted.
 @property (nonatomic) BOOL sleepBool;
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 @property (nonatomic, readonly, strong) id <KVADeeplinksProcessor> _Nullable deeplinksProcessor;
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
 @property (nonatomic, readonly, strong) id <KVAEventSender> _Nonnull eventSender;
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPrivacyProfileRegistrar> _Nonnull privacyProfileRegistrar;
 @property (nonatomic, readonly, strong) id <KVAPushNotificationsTokenRegistrar> _Nonnull pushNotificationsTokenRegistrar;
 /// A string used as a  storage identifier for the shared instance.
@@ -2842,6 +3426,12 @@ SWIFT_CLASS_NAMED("KVATrackerDatapoints")
 SWIFT_CLASS_NAMED("KVATrackerGeneral")
 @interface KVATrackerGeneral : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// A string containing the partner name, when applicable.
+/// An example would be “Moloco”.
+@property (nonatomic, copy) NSString * _Nullable partnerNameString;
+/// A unique identifier for an app, resolved.
+/// This value is a resolved value when taking into consideration both the hostAppGUIDString as well as the serverAppGUIDString.  This is the app GUID that is ultimately sent to the server to identify the app in general contexts.  When set, this defaults to setting the hostAppGUIDString.
+@property (nonatomic, copy) NSString * _Nullable appGUIDString;
 @end
 
 

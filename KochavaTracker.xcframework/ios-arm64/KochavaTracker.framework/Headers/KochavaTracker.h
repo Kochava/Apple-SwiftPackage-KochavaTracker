@@ -29,7 +29,7 @@
 #import <Foundation/Foundation.h>
 
 #pragma mark KochavaCore
-@import KochavaCore;
+#import <KochavaCore/KochavaCore.h>
 
 #pragma mark KochavaTracker
 #import <KochavaTracker/KVAAdNetwork.h>
