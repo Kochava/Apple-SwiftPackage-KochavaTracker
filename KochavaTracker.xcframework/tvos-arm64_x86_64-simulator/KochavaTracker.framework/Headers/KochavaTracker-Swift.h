@@ -355,7 +355,7 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 /// Notify that a request for tracking authorization did complete.
 /// \param status The provided authorization status.
 ///
-- (void)authorizationDidCompleteWithStatus:(ATTrackingManagerAuthorizationStatus)status SWIFT_AVAILABILITY(ios_app_extension,introduced=14.0) SWIFT_AVAILABILITY(tvos,introduced=14.0) SWIFT_AVAILABILITY(maccatalyst,introduced=14.0) SWIFT_AVAILABILITY(macos,introduced=11.0) SWIFT_AVAILABILITY(ios,introduced=14.0);
+- (void)authorizationDidCompleteWithStatus:(ATTrackingManagerAuthorizationStatus)status SWIFT_AVAILABILITY(ios_app_extension,introduced=14.0) SWIFT_AVAILABILITY(tvos,introduced=14.0) SWIFT_AVAILABILITY(macos,introduced=11.0) SWIFT_AVAILABILITY(maccatalyst,introduced=14.0) SWIFT_AVAILABILITY(ios,introduced=14.0);
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
@@ -481,7 +481,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker36KVACustomIdentifierRegistrarProvider_")
 
 /// A feature which is responsible for custom identifiers.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar>
+@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar, KVACustomIdentifierRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom identifier.
@@ -504,6 +504,7 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
@@ -554,7 +555,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker31KVACustomValueRegistrarProvider_")
 
 /// A feature which is responsible for custom values.
 SWIFT_CLASS_NAMED("KVACustomValues")
-@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar>
+@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar, KVACustomValueRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom value.
@@ -562,6 +563,7 @@ SWIFT_CLASS_NAMED("KVACustomValues")
 /// \param customValue The custom value.
 ///
 - (void)register:(KVACustomValue * _Nonnull)customValue;
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
@@ -650,6 +652,14 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 @property (nonatomic, copy) NSDictionary * _Nullable rawDictionary;
 @end
 
+@protocol KVADeeplinksDeferredPrefetchAugmenter;
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
+/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
+@end
+
 @class KVADeeplinksDeferredPrefetch;
 
 SWIFT_PROTOCOL("_TtP14KochavaTracker37KVADeeplinksDeferredPrefetchAugmenter_")
@@ -673,7 +683,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 /// A feature which measures deeplink activity.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksDeferredPrefetchAugmenterProvider, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Augment deferred prefetch.
@@ -686,6 +696,7 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param identifier The identifier.
 ///
 - (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVADeeplinks.DeferredPrefetch.augment(name:identifier:) instead.  In Objective-C use -[KVADeeplinksDeferredPrefetch augmentWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -702,7 +713,6 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 @interface KVADeeplinks (SWIFT_EXTENSION(KochavaTracker))
 @end
 
-@protocol KVADeeplinksDeferredPrefetchAugmenterProvider;
 
 /// A deferred prefetch for deeplinks.
 SWIFT_CLASS_NAMED("DeferredPrefetch")
@@ -733,12 +743,6 @@ SWIFT_CLASS_NAMED("DeferredPrefetch")
 @end
 
 
-
-SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
-@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
-/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
-@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
-@end
 
 
 
@@ -1263,13 +1267,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventDefaultParameterRegistrarProvider, KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Register a default parameter.
 /// See class KVAEvent.<code>KVAEvent/DefaultParameter</code>.
 /// \param defaultParameter The default parameter.
 ///
 - (void)register:(KVAEventDefaultParameter * _Nonnull)defaultParameter;
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
 @end
 
@@ -1292,6 +1297,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 /// \param registrarArray An array of KVAIdentityLinkRegistrarProvider to which to register the identity link.
 ///
 + (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVAIdentityLinkRegistrarProvider>> * _Nullable)registrarArray;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A unique name for the identity link.
 @property (nonatomic, readonly, copy) NSString * _Nonnull name;
 /// The identifier.
@@ -1319,7 +1325,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker32KVAIdentityLinkRegistrarProvider_")
 
 /// A feature which is responsible for linking identities.
 SWIFT_CLASS_NAMED("KVAIdentityLinking")
-@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar>
+@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar, KVAIdentityLinkRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Register an identity link.
 /// See class <code>KVAIdentityLink</code>.
@@ -1342,6 +1348,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLinking")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @end
 
 
@@ -2100,7 +2107,7 @@ SWIFT_CLASS_NAMED("KVAAppTrackingTransparency")
 /// Notify that a request for tracking authorization did complete.
 /// \param status The provided authorization status.
 ///
-- (void)authorizationDidCompleteWithStatus:(ATTrackingManagerAuthorizationStatus)status SWIFT_AVAILABILITY(ios_app_extension,introduced=14.0) SWIFT_AVAILABILITY(tvos,introduced=14.0) SWIFT_AVAILABILITY(maccatalyst,introduced=14.0) SWIFT_AVAILABILITY(macos,introduced=11.0) SWIFT_AVAILABILITY(ios,introduced=14.0);
+- (void)authorizationDidCompleteWithStatus:(ATTrackingManagerAuthorizationStatus)status SWIFT_AVAILABILITY(ios_app_extension,introduced=14.0) SWIFT_AVAILABILITY(tvos,introduced=14.0) SWIFT_AVAILABILITY(macos,introduced=11.0) SWIFT_AVAILABILITY(maccatalyst,introduced=14.0) SWIFT_AVAILABILITY(ios,introduced=14.0);
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 /// A boolean which indicates if the instance should automatically request tracking authorization.
@@ -2226,7 +2233,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker36KVACustomIdentifierRegistrarProvider_")
 
 /// A feature which is responsible for custom identifiers.
 SWIFT_CLASS_NAMED("KVACustomIdentifiers")
-@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar>
+@interface KVACustomIdentifiers : NSObject <NSCopying, KVANetworkingProvider, KVACustomIdentifierRegistrar, KVACustomIdentifierRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom identifier.
@@ -2249,6 +2256,7 @@ SWIFT_CLASS_NAMED("KVACustomIdentifiers")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVACustomIdentifier.register(name:identifier:) instead.  In Objective-C use -[KVACustomIdentifier registerWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVACustomIdentifierRegistrar> _Nonnull customIdentifierRegistrar;
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
@@ -2299,7 +2307,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker31KVACustomValueRegistrarProvider_")
 
 /// A feature which is responsible for custom values.
 SWIFT_CLASS_NAMED("KVACustomValues")
-@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar>
+@interface KVACustomValues : NSObject <NSCopying, KVANetworkingProvider, KVACustomValueRegistrar, KVACustomValueRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Register a custom value.
@@ -2307,6 +2315,7 @@ SWIFT_CLASS_NAMED("KVACustomValues")
 /// \param customValue The custom value.
 ///
 - (void)register:(KVACustomValue * _Nonnull)customValue;
+@property (nonatomic, readonly, strong) id <KVACustomValueRegistrar> _Nonnull customValueRegistrar;
 /// An instance of networking.
 @property (nonatomic, strong) KVANetworking * _Nullable networking;
 @end
@@ -2395,6 +2404,14 @@ SWIFT_CLASS_NAMED("KVADeeplink")
 @property (nonatomic, copy) NSDictionary * _Nullable rawDictionary;
 @end
 
+@protocol KVADeeplinksDeferredPrefetchAugmenter;
+
+SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
+@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
+/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
+@end
+
 @class KVADeeplinksDeferredPrefetch;
 
 SWIFT_PROTOCOL("_TtP14KochavaTracker37KVADeeplinksDeferredPrefetchAugmenter_")
@@ -2418,7 +2435,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker21KVADeeplinksProcessor_")
 
 /// A feature which measures deeplink activity.
 SWIFT_CLASS_NAMED("KVADeeplinks")
-@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksProcessor>
+@interface KVADeeplinks : NSObject <NSCopying, KVANetworkingProvider, KVADeeplinksDeferredPrefetchAugmenter, KVADeeplinksDeferredPrefetchAugmenterProvider, KVADeeplinksProcessor>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 - (id _Nonnull)copyWithZone:(struct _NSZone * _Nullable)zone SWIFT_WARN_UNUSED_RESULT;
 /// Augment deferred prefetch.
@@ -2431,6 +2448,7 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 /// \param identifier The identifier.
 ///
 - (void)augmentDeferredPrefetchWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier SWIFT_DEPRECATED_MSG("Please use KVADeeplinks.DeferredPrefetch.augment(name:identifier:) instead.  In Objective-C use -[KVADeeplinksDeferredPrefetch augmentWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
 /// Process a deeplink.
 /// \param deeplink An instance of KVADeeplink.
 ///
@@ -2447,7 +2465,6 @@ SWIFT_CLASS_NAMED("KVADeeplinks")
 @interface KVADeeplinks (SWIFT_EXTENSION(KochavaTracker))
 @end
 
-@protocol KVADeeplinksDeferredPrefetchAugmenterProvider;
 
 /// A deferred prefetch for deeplinks.
 SWIFT_CLASS_NAMED("DeferredPrefetch")
@@ -2478,12 +2495,6 @@ SWIFT_CLASS_NAMED("DeferredPrefetch")
 @end
 
 
-
-SWIFT_PROTOCOL("_TtP14KochavaTracker45KVADeeplinksDeferredPrefetchAugmenterProvider_")
-@protocol KVADeeplinksDeferredPrefetchAugmenterProvider
-/// A property which conforms to protocol KVADeeplinksDeferredPrefetchAugmenter.
-@property (nonatomic, readonly, strong) id <KVADeeplinksDeferredPrefetchAugmenter> _Nonnull deeplinksDeferredPrefetchAugmenter;
-@end
 
 
 
@@ -3008,13 +3019,14 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) KVAEventType
 
 /// A feature which tracks user behavior and actions beyond the install.
 SWIFT_CLASS_NAMED("KVAEvents")
-@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventSender>
+@interface KVAEvents : NSObject <KVAEventDefaultParameterRegistrar, KVAEventDefaultParameterRegistrarProvider, KVAEventSender>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Register a default parameter.
 /// See class KVAEvent.<code>KVAEvent/DefaultParameter</code>.
 /// \param defaultParameter The default parameter.
 ///
 - (void)register:(KVAEventDefaultParameter * _Nonnull)defaultParameter;
+@property (nonatomic, readonly, strong) id <KVAEventDefaultParameterRegistrar> _Nonnull eventDefaultParameterRegistrar;
 - (void)sendEvent:(KVAEvent * _Nonnull)event;
 @end
 
@@ -3037,6 +3049,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLink")
 /// \param registrarArray An array of KVAIdentityLinkRegistrarProvider to which to register the identity link.
 ///
 + (void)registerWithName:(NSString * _Nonnull)name identifier:(NSString * _Nullable)identifier registrarArray:(NSArray<id <KVAIdentityLinkRegistrarProvider>> * _Nullable)registrarArray;
+- (BOOL)isEqual:(id _Nullable)object SWIFT_WARN_UNUSED_RESULT;
 /// A unique name for the identity link.
 @property (nonatomic, readonly, copy) NSString * _Nonnull name;
 /// The identifier.
@@ -3064,7 +3077,7 @@ SWIFT_PROTOCOL("_TtP14KochavaTracker32KVAIdentityLinkRegistrarProvider_")
 
 /// A feature which is responsible for linking identities.
 SWIFT_CLASS_NAMED("KVAIdentityLinking")
-@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar>
+@interface KVAIdentityLinking : NSObject <KVAIdentityLinkRegistrar, KVAIdentityLinkRegistrarProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 /// Register an identity link.
 /// See class <code>KVAIdentityLink</code>.
@@ -3087,6 +3100,7 @@ SWIFT_CLASS_NAMED("KVAIdentityLinking")
 /// \param identifierString The identifier.
 ///
 - (void)registerWithNameString:(NSString * _Nonnull)nameString identifierString:(NSString * _Nonnull)identifierString SWIFT_DEPRECATED_MSG("Modern Objective-C-style method deprecated.  Please use KVAIdentityLink.register(name:identifier:) instead.  In Objective-C use -[KVAIdentityLink registerWithName:identifier:].");
+@property (nonatomic, readonly, strong) id <KVAIdentityLinkRegistrar> _Nonnull identityLinkRegistrar;
 @end
 
 
