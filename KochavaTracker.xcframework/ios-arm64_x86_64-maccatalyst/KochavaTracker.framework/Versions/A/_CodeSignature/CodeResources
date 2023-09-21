@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		y68VmMn9lCxj1rlZK3018ILmuT0=
+		PP1WtUTL3xqvuQouw+CVBJhdDuk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -36,7 +36,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pcRpB6s/V/B+0MCPR0E4Bhw6X/g29sHwzJaja9DKrhc=
+			wI3n/bpxGVIVM8x0Nc5XQbJcU5oa18wg6aYd7nnCRw0=
 			</data>
 		</dict>
 		<key>Headers/KochavaTracker.h</key>
@@ -50,70 +50,70 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			kvJ1zSQqmsCuB4CynwUoa2LyO6Y5eMJH01iBAZ4hrl0=
+			R350dJtkpW5sOifascmkj50btE4pQTlCCOyXuTGh1JA=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zTzGSm6W8rP/w5A3vzokFCv23YDGD1XEagcW8UiKOco=
+			7Hf/ezR9Kj3XHrz24qqRl2UgyIqV/Xc9FaeuDPme0fw=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rrnIDpkDNvqWjS+cU7vhhuu1O50hL7i9HdtwPHq7/N4=
+			ewqyjBWVo5hdhvk4RAZuGin1RV5znzvSGMLQzEzEXGY=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zTzGSm6W8rP/w5A3vzokFCv23YDGD1XEagcW8UiKOco=
+			7Hf/ezR9Kj3XHrz24qqRl2UgyIqV/Xc9FaeuDPme0fw=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			oI8NtE2JpIpahPUY9/hXXVp5Fht6WNLYcbI48/G+ovg=
+			n5l9TPNkqARb+tMZxlOVmWCbhd5NxjPrEpgleMw+I8c=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			kvJ1zSQqmsCuB4CynwUoa2LyO6Y5eMJH01iBAZ4hrl0=
+			R350dJtkpW5sOifascmkj50btE4pQTlCCOyXuTGh1JA=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UFcYOGiGBfvhVTY0tnNdOVieRJpq4ayyJ+9K9etWfv4=
+			Z6/fSPQrF6/FhaNGDrNLBVltx5ZuzTDMGbtVborWTvM=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vfAF9x8Bpw2Kovq9KB1TUlZy06qZ7j8TmPT3MP3rAsY=
+			DMTrqAJYqjRLAtLAxqL+YLZkHpenf0kFfZLHXWN/yhc=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UFcYOGiGBfvhVTY0tnNdOVieRJpq4ayyJ+9K9etWfv4=
+			Z6/fSPQrF6/FhaNGDrNLBVltx5ZuzTDMGbtVborWTvM=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-ios-macabi.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			kRps16/Bqrce3rUCXppIsNtMebcL/4qUrFUevW/S3bA=
+			qn1Xun0aSzMcUe2PDSCaAyKWkn8tYGed3Gs1I4ec6GM=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -127,7 +127,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			zxaPp2LYDOO8szL8EE/iapVgRdEMv4wBH3qJ6jMaeL0=
+			SlN9BU4aIqqI9ioP7HHnuHb7BrF2axYyQbfB6DPSL3k=
 			</data>
 		</dict>
 	</dict>

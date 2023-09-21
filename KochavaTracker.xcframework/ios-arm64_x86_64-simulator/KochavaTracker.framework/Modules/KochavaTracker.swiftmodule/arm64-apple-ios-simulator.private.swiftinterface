@@ -82,7 +82,7 @@ extension KochavaTracker.KVAEvent {
 @objc public protocol KVAEventDefaultParameterRegistrarProvider {
   @objc var eventDefaultParameterRegistrar: KochavaTracker.KVAEventDefaultParameterRegistrar { get }
 }
-@_inheritsConvenienceInitializers @objc(KVAEvent) final public class KVAEvent : ObjectiveC.NSObject, KochavaCore.KVAAsForContextProtocol, KochavaCore.KVAExecutable, KochavaCore.KVAFromProtocol, KochavaCore.KVANetTransactionServiceLocallyBoolPropertyProvider, KochavaCore.KVANetTransactionSubURLIdStringMethodProvider, KochavaCore.KVANetworkingProvider {
+@_inheritsConvenienceInitializers @objc(KVAEvent) final public class KVAEvent : ObjectiveC.NSObject, KochavaCore.KVAAsForContextProtocol, KochavaCore.KVAExecutable, KochavaCore.KVAFromProtocol, KochavaCore.KVANetTransactionServiceLocallyBoolPropertyProvider, KochavaCore.KVANetTransactionSubIdentifierProvider, KochavaCore.KVANetworkingProvider {
   @objc override required dynamic public init()
   @objc(initWithType:) public init(type: KochavaTracker.KVAEventType)
   @available(*, deprecated, renamed: "init(type:)", message: "Modern Objective-C-style factory method deprecated.  Use Swift init(type:) instead.  If in Objective-C then use [[KVAEvent alloc] initWithType:]")
@@ -103,7 +103,8 @@ extension KochavaTracker.KVAEvent {
   @objc final public func eventNameString() -> Swift.String
   @objc(valueObjectForPropertyIdentifier:) final public func valueObject(forPropertyIdentifier propertyIdentifier: KochavaTracker.KVAEvent.PropertyIdentifier?) -> Swift.AnyObject?
   public typealias PropertyIdentifier = Swift.String
-  @objc final public func subURLIdString() -> Swift.String?
+  final public func netTransaction_serviceLocallyBool() -> Swift.Bool
+  final public func netTransaction_subIdentifier() -> Swift.String?
   final public var mutator: KochavaCore.KVAMutator {
     get
   }

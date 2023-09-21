@@ -767,7 +767,7 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 @class NSDate;
 @class NSDecimalNumber;
 
-/// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
+/// Events provide a means of defining a post-install event, providing standardized parameters.
 SWIFT_CLASS_NAMED("KVAEvent")
 @interface KVAEvent : NSObject <KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -798,7 +798,6 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param propertyIdentifier A string which generally would be equivalent to the name of the key of the property as it would appear in the event payload.
 ///
 - (id _Nullable)valueObjectForPropertyIdentifier:(NSString * _Nullable)propertyIdentifier SWIFT_WARN_UNUSED_RESULT;
-- (NSString * _Nullable)subURLIdString SWIFT_WARN_UNUSED_RESULT;
 /// A type for the event
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
@@ -2519,7 +2518,7 @@ SWIFT_CLASS_NAMED("KVADeviceId")
 @class NSDate;
 @class NSDecimalNumber;
 
-/// The class KVAEvent provides a means of defining a post-install event, providing standardized parameters.
+/// Events provide a means of defining a post-install event, providing standardized parameters.
 SWIFT_CLASS_NAMED("KVAEvent")
 @interface KVAEvent : NSObject <KVANetworkingProvider>
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
@@ -2550,7 +2549,6 @@ SWIFT_CLASS_NAMED("KVAEvent")
 /// \param propertyIdentifier A string which generally would be equivalent to the name of the key of the property as it would appear in the event payload.
 ///
 - (id _Nullable)valueObjectForPropertyIdentifier:(NSString * _Nullable)propertyIdentifier SWIFT_WARN_UNUSED_RESULT;
-- (NSString * _Nullable)subURLIdString SWIFT_WARN_UNUSED_RESULT;
 /// A type for the event
 /// Although these types are standardized, custom events are designated using type .custom.
 @property (nonatomic, readonly, strong) KVAEventType * _Nonnull eventType;
