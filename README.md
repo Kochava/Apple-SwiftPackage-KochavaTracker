@@ -4,7 +4,15 @@
 
 <img src="https://storage.googleapis.com/kochava-web/2016/07/Kochava-horizontal-black-800x154.png" width="260" />
 
-## Apple Swift-Package KochavaTracker
+## Deprecation Notice
+
+This repository was deprecated on February 22, 2024.  Please instead use [Apple-SwiftPackage-KochavaMeasurement-XCFramework](https://github.com/Kochava/Apple-SwiftPackage-KochavaMeasurement-XCFramework) with [Apple-SwiftPackage-KochavaTracking-XCFramework](https://github.com/Kochava/Apple-SwiftPackage-KochavaTracking-XCFramework).
+
+There is a process to migrate from v7.x to v8.x which for most integrations is expected to take about 15 minutes.
+
+For more information, please see [Migrating to v8](https://support.kochava.com/sdk-integration/ios-sdk-integration/ios-migrating-to-v8/).
+
+## KochavaTracker
 
 The KochavaTracker swift package is an optional module within the Kochava SDK providing install attribution and analytics.
 
