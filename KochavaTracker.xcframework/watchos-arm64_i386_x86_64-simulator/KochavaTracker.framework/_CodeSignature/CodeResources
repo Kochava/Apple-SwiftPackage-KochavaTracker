@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/KochavaTracker-Swift.h</key>
 		<data>
-		YELOSDhJ/4Gc7xAonX8OyjBspTg=
+		JkpDLIwBnhoWFF3iOyXClJCOtmc=
 		</data>
 		<key>Headers/KochavaTracker.h</key>
 		<data>
@@ -26,71 +26,71 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		G7K0kew1D6gW8Ttk/LxVq0U8GJs=
+		kC6UJbbbQnU6VpXnE9IPsIX0CFs=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.abi.json</key>
 		<data>
-		b/92cHDbJdE/43mmk8beGxcJgBU=
+		Bnge5hDXuGOBzuWdPz3tJywngk8=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.private.swiftinterface</key>
 		<data>
-		xqKN57Jp2bKjogtTRwEbPCjp+Do=
+		SBV5VXcYophBQCUZEMKXpTwiIHU=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftdoc</key>
 		<data>
-		vQw4wUDBrSx3CKUEL0Lai2BEP3o=
+		jJl/8cO70IkjMg9mQ2U2a2G6tE4=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftinterface</key>
 		<data>
-		xqKN57Jp2bKjogtTRwEbPCjp+Do=
+		SBV5VXcYophBQCUZEMKXpTwiIHU=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftmodule</key>
 		<data>
-		DLUNhtTi+TkLAVTk5DzrOm7JEFE=
+		ndXLvXItNl7gvuhg14PEvCnnVT0=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.abi.json</key>
 		<data>
-		b/92cHDbJdE/43mmk8beGxcJgBU=
+		Bnge5hDXuGOBzuWdPz3tJywngk8=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.private.swiftinterface</key>
 		<data>
-		5qTZfXHoI0wJJNYG3NPgNdoBOZc=
+		EbX+jism2fQaNvROTDyhBZRvDek=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftdoc</key>
 		<data>
-		/nID6l7yAtKAcKMebATZ7xyVy20=
+		BLvLw/AYX1pqctU5Wcsn/n8bC/c=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftinterface</key>
 		<data>
-		5qTZfXHoI0wJJNYG3NPgNdoBOZc=
+		EbX+jism2fQaNvROTDyhBZRvDek=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftmodule</key>
 		<data>
-		3nQmrzdrjCCO7KQ/7kFqTeTpB4U=
+		dpkzs+Gn13Um1d8xr4f6wpGdKlE=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.abi.json</key>
 		<data>
-		b/92cHDbJdE/43mmk8beGxcJgBU=
+		Bnge5hDXuGOBzuWdPz3tJywngk8=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.private.swiftinterface</key>
 		<data>
-		z85SBmESXcGAUhbgRnXYxS8uxSU=
+		eIbdFhTmtBGRIfQmNBYmlyJdZuA=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftdoc</key>
 		<data>
-		nd9/MaqOeeVYK4oofF2D82caYZg=
+		ukOhWqU9eC0TpTWWHhnJpsC7ZSE=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftinterface</key>
 		<data>
-		z85SBmESXcGAUhbgRnXYxS8uxSU=
+		eIbdFhTmtBGRIfQmNBYmlyJdZuA=
 		</data>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftmodule</key>
 		<data>
-		gz5auS3s34RsufF8364NeB3MaUc=
+		K5VyGTbZ6sjLX17u8mQU8udMfuY=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		D0ZlNJ3LzwuUC9tH79i+WsY8dew=
+		ph9ZcuTkKw3ZY4IGLjSMwn5cD38=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -132,11 +132,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			YELOSDhJ/4Gc7xAonX8OyjBspTg=
+			JkpDLIwBnhoWFF3iOyXClJCOtmc=
 			</data>
 			<key>hash2</key>
 			<data>
-			jbcA7LNbEKRqHULsdROVQV3pGisiKdd5W/4vcY+uLCI=
+			MWw5UNqfTjqkCuV6PVNpUwk+G+oTdDlOt9Avl/BuKVM=
 			</data>
 		</dict>
 		<key>Headers/KochavaTracker.h</key>
@@ -154,176 +154,176 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			b/92cHDbJdE/43mmk8beGxcJgBU=
+			Bnge5hDXuGOBzuWdPz3tJywngk8=
 			</data>
 			<key>hash2</key>
 			<data>
-			qrsbaNArywQV/yzVJgh1GVrHFA/Xbw959/PVgwhBXxY=
+			DfGISpXf6DZnbu3R3Ii3mjSiL8PEeHd284pOjBU4DVI=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			xqKN57Jp2bKjogtTRwEbPCjp+Do=
+			SBV5VXcYophBQCUZEMKXpTwiIHU=
 			</data>
 			<key>hash2</key>
 			<data>
-			IbLSSmvfyKux1vNRxcv26VNBeYNnrv5Bzrh/+23ThTU=
+			LvdoB8S/b0x4mOpyHnww+cM74LBvHx2fZlATWTG99Bk=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			vQw4wUDBrSx3CKUEL0Lai2BEP3o=
+			jJl/8cO70IkjMg9mQ2U2a2G6tE4=
 			</data>
 			<key>hash2</key>
 			<data>
-			8KO4fVvAJYu0B3q3zuAV59AWtBCRqLwFTZs2Ovpb/t0=
+			x678JjHAL4BGVXT8OEYBpCvYPZBZ62otVpV5gZ5rrJg=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			xqKN57Jp2bKjogtTRwEbPCjp+Do=
+			SBV5VXcYophBQCUZEMKXpTwiIHU=
 			</data>
 			<key>hash2</key>
 			<data>
-			IbLSSmvfyKux1vNRxcv26VNBeYNnrv5Bzrh/+23ThTU=
+			LvdoB8S/b0x4mOpyHnww+cM74LBvHx2fZlATWTG99Bk=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/arm64-apple-watchos-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			DLUNhtTi+TkLAVTk5DzrOm7JEFE=
+			ndXLvXItNl7gvuhg14PEvCnnVT0=
 			</data>
 			<key>hash2</key>
 			<data>
-			4BndlWX3DUoW32XSVoUCaSuJytpm82pOBAj2IQjBmsc=
+			Osv450fqESgm32YA//FKnlyHd+ZBlvSvEUhhmESqsOg=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.abi.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			b/92cHDbJdE/43mmk8beGxcJgBU=
+			Bnge5hDXuGOBzuWdPz3tJywngk8=
 			</data>
 			<key>hash2</key>
 			<data>
-			qrsbaNArywQV/yzVJgh1GVrHFA/Xbw959/PVgwhBXxY=
+			DfGISpXf6DZnbu3R3Ii3mjSiL8PEeHd284pOjBU4DVI=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			5qTZfXHoI0wJJNYG3NPgNdoBOZc=
+			EbX+jism2fQaNvROTDyhBZRvDek=
 			</data>
 			<key>hash2</key>
 			<data>
-			sAoPIXIdRGOSqAtbzbTXNO6BWo/CILFRJ4MjnaOmJwM=
+			sUSRqD32dOA6dX3H5GoVL1HJFrSEdsPwg0lMVVp2tzs=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			/nID6l7yAtKAcKMebATZ7xyVy20=
+			BLvLw/AYX1pqctU5Wcsn/n8bC/c=
 			</data>
 			<key>hash2</key>
 			<data>
-			zSu9Xrd33ND+z9FujFkVnPpr3FURvr7Qf6kGv+sQ6h4=
+			sDa/bZzWbiMHs1osxAPTgxczgNgH9b8De1o6Me496vw=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			5qTZfXHoI0wJJNYG3NPgNdoBOZc=
+			EbX+jism2fQaNvROTDyhBZRvDek=
 			</data>
 			<key>hash2</key>
 			<data>
-			sAoPIXIdRGOSqAtbzbTXNO6BWo/CILFRJ4MjnaOmJwM=
+			sUSRqD32dOA6dX3H5GoVL1HJFrSEdsPwg0lMVVp2tzs=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/i386-apple-watchos-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			3nQmrzdrjCCO7KQ/7kFqTeTpB4U=
+			dpkzs+Gn13Um1d8xr4f6wpGdKlE=
 			</data>
 			<key>hash2</key>
 			<data>
-			HbrWtNU3kEJJJmPxPVp+dsw1VAyuIzNZ+6mGLXSaN5c=
+			fDXNwH0WiCFxJ7k0cWuqNl7sh9tta+yXKTdVZWeG2/k=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.abi.json</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			b/92cHDbJdE/43mmk8beGxcJgBU=
+			Bnge5hDXuGOBzuWdPz3tJywngk8=
 			</data>
 			<key>hash2</key>
 			<data>
-			qrsbaNArywQV/yzVJgh1GVrHFA/Xbw959/PVgwhBXxY=
+			DfGISpXf6DZnbu3R3Ii3mjSiL8PEeHd284pOjBU4DVI=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			z85SBmESXcGAUhbgRnXYxS8uxSU=
+			eIbdFhTmtBGRIfQmNBYmlyJdZuA=
 			</data>
 			<key>hash2</key>
 			<data>
-			H35+fBujTnwTXjY3NAtR433+DueyL9eTxZ4O+WNXzNM=
+			15ywehpyYjjgtMutbxxjpmWe5K/BMAIZbHAFzcbGZf0=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			nd9/MaqOeeVYK4oofF2D82caYZg=
+			ukOhWqU9eC0TpTWWHhnJpsC7ZSE=
 			</data>
 			<key>hash2</key>
 			<data>
-			M2fbcO/dbIAVcvlVugWBU/S8aVupN0tmBvbrGxX2WA0=
+			X8/TnbKmNhXGk7aA+ijpJ6Mgn4bh3gLPBd9faqIaFlc=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftinterface</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			z85SBmESXcGAUhbgRnXYxS8uxSU=
+			eIbdFhTmtBGRIfQmNBYmlyJdZuA=
 			</data>
 			<key>hash2</key>
 			<data>
-			H35+fBujTnwTXjY3NAtR433+DueyL9eTxZ4O+WNXzNM=
+			15ywehpyYjjgtMutbxxjpmWe5K/BMAIZbHAFzcbGZf0=
 			</data>
 		</dict>
 		<key>Modules/KochavaTracker.swiftmodule/x86_64-apple-watchos-simulator.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			gz5auS3s34RsufF8364NeB3MaUc=
+			K5VyGTbZ6sjLX17u8mQU8udMfuY=
 			</data>
 			<key>hash2</key>
 			<data>
-			L20OAEdtlISKIqvjHp4Un69Gk8nGwkF+NRsaB98SOHg=
+			23DTbPDlWUM2gWkre5kayDShW09T3GKrT9B88xTzl8c=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			D0ZlNJ3LzwuUC9tH79i+WsY8dew=
+			ph9ZcuTkKw3ZY4IGLjSMwn5cD38=
 			</data>
 			<key>hash2</key>
 			<data>
-			PVF4hEB09E+RftHxTVBy0DCtPTii5k/JiXbs7JFOd9w=
+			5c1cPfI3j040BeMVlEchgq54V13raVfLPXMjdOBjFgM=
 			</data>
 		</dict>
 	</dict>
