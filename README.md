@@ -20,7 +20,7 @@ The Kochava SDK is a lightweight and easy to integrate SDK written in Swift, pro
 
 ## Built on
 
-* Xcode 15.2
+* Xcode 15.3
 
 ## Platforms
 
